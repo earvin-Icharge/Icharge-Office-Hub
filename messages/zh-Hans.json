@@ -554,5 +554,39 @@
     "milestone": "里程碑",
     "holiday": "假日",
     "leave": "休假"
+  },
+  "meetings": {
+    "title": "会议",
+    "newMeeting": "+ 新建会议",
+    "upcoming": "即将进行",
+    "past": "已结束",
+    "none": "暂无会议。",
+    "f": {
+      "title": "会议标题",
+      "when": "日期和时间",
+      "location": "地点或链接",
+      "agenda": "议程",
+      "notes": "会议记录",
+      "attendees": "参会人",
+      "multiHelp": "按住 Ctrl（Windows）或 ⌘（Mac）可多选。"
+    },
+    "create": "创建会议",
+    "save": "保存",
+    "edit": "编辑会议",
+    "delete": "移到回收站",
+    "actions": "行动项",
+    "addAction": "添加行动项",
+    "actionHelp": "每个行动项都会成为一个任务，有一名负责人和截止日期。",
+    "noActions": "暂无行动项。",
+    "send": "将会议记录和行动项发送给参会人",
+    "sentAt": "会议记录已于 {date} 发送",
+    "attendeeCount": "{n} 位参会人",
+    "ok": {
+      "created": "会议已创建。",
+      "saved": "已保存。",
+      "sent": "会议记录已发送给参会人。",
+      "action": "行动项已添加。",
+      "deleted": "已移到回收站。"
+    }
   }
 }

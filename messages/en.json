@@ -554,5 +554,39 @@
     "milestone": "Milestone",
     "holiday": "Holiday",
     "leave": "On leave"
+  },
+  "meetings": {
+    "title": "Meetings",
+    "newMeeting": "+ New meeting",
+    "upcoming": "Upcoming",
+    "past": "Past",
+    "none": "No meetings.",
+    "f": {
+      "title": "Meeting title",
+      "when": "Date and time",
+      "location": "Place or link",
+      "agenda": "Agenda",
+      "notes": "Notes",
+      "attendees": "Attendees",
+      "multiHelp": "Hold Ctrl (Windows) or ⌘ (Mac) to pick several."
+    },
+    "create": "Create meeting",
+    "save": "Save",
+    "edit": "Edit meeting",
+    "delete": "Move to Trash",
+    "actions": "Action items",
+    "addAction": "Add action item",
+    "actionHelp": "Each action item becomes a task with one owner and a due date.",
+    "noActions": "No action items yet.",
+    "send": "Send notes and action list to attendees",
+    "sentAt": "Notes sent {date}",
+    "attendeeCount": "{n, plural, one {# attendee} other {# attendees}}",
+    "ok": {
+      "created": "Meeting created.",
+      "saved": "Saved.",
+      "sent": "Notes sent to attendees.",
+      "action": "Action item added.",
+      "deleted": "Moved to Trash."
+    }
   }
 }
