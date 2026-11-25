@@ -16,7 +16,7 @@ export type NavItem = {
   canSee: (v: Viewer) => boolean;
 };
 
-const boss = (v: Viewer) => v.level === "boss";
+const leader = (v: Viewer) => v.level === "leader";
 const manager = (v: Viewer) => v.level === "manager";
 const heads = (v: Viewer, code: string) => v.headOf.includes(code);
 const everyone = () => true;
@@ -29,13 +29,13 @@ export const NAV: NavItem[] = [
   { key: "issues", href: "/issues", icon: "issues", section: "work", step: "6", canSee: everyone },
   {
     key: "clients", href: "/clients", icon: "clients", section: "work", step: "6",
-    canSee: (v) => boss(v) || v.finance || heads(v, "bd") || (v.level === "staff" && v.departmentCode === "bd"),
+    canSee: (v) => leader(v) || v.finance || heads(v, "bd") || (v.level === "staff" && v.departmentCode === "bd"),
   },
   {
     key: "cs", href: "/cs", icon: "cs", section: "work", step: "6",
-    canSee: (v) => boss(v) || manager(v) || v.finance || v.departmentCode === "cs" || v.departmentCode === "ops",
+    canSee: (v) => leader(v) || manager(v) || v.finance || v.departmentCode === "cs" || v.departmentCode === "ops",
   },
-  { key: "team", href: "/team", icon: "team", section: "work", step: "11", canSee: (v) => boss(v) || manager(v) },
+  { key: "team", href: "/team", icon: "team", section: "work", step: "11", canSee: (v) => leader(v) || manager(v) },
 
   { key: "employees", href: "/hr/employees", icon: "employees", section: "hr", step: "7", canSee: everyone },
   { key: "attendance", href: "/hr/attendance", icon: "attendance", section: "hr", step: "8", canSee: everyone },
@@ -43,16 +43,16 @@ export const NAV: NavItem[] = [
   { key: "discipline", href: "/hr/discipline", icon: "discipline", section: "hr", step: "10", canSee: everyone }, // own cases for everyone (Staff basics)
   { key: "performance", href: "/performance", icon: "performance", section: "hr", step: "11", canSee: everyone }, // own snapshot for everyone
 
-  { key: "dashboard", href: "/dashboard", icon: "dashboard", section: "admin", step: "11", canSee: (v) => boss(v) || manager(v) || v.hr || v.finance },
+  { key: "dashboard", href: "/dashboard", icon: "dashboard", section: "admin", step: "11", canSee: (v) => leader(v) || manager(v) || v.hr || v.finance },
   { key: "reports", href: "/reports", icon: "reports", section: "admin", step: "11", canSee: everyone },
-  { key: "access", href: "/settings/access", icon: "access", section: "admin", step: "1b", canSee: (v) => boss(v) || v.hr },
-  { key: "updates", href: "/settings/updates", icon: "updates", section: "admin", step: "1c", canSee: boss },
+  { key: "access", href: "/settings/access", icon: "access", section: "admin", step: "1b", canSee: (v) => leader(v) || v.hr },
+  { key: "updates", href: "/settings/updates", icon: "updates", section: "admin", step: "1c", canSee: leader },
   {
     key: "settings", href: "/settings", icon: "settings", section: "admin", step: "later",
-    canSee: (v) => boss(v) || v.hr || heads(v, "cs") || heads(v, "ops"),
+    canSee: (v) => leader(v) || v.hr || heads(v, "cs") || heads(v, "ops"),
   },
-  { key: "audit", href: "/audit", icon: "audit", section: "admin", step: "12", canSee: (v) => boss(v) || v.hr },
-  { key: "trash", href: "/trash", icon: "trash", section: "admin", step: "12", canSee: boss },
+  { key: "audit", href: "/audit", icon: "audit", section: "admin", step: "12", canSee: (v) => leader(v) || v.hr },
+  { key: "trash", href: "/trash", icon: "trash", section: "admin", step: "12", canSee: leader },
 ];
 
 export function visibleNav(v: Viewer) {

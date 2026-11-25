@@ -4,7 +4,7 @@ Work + HR app for iCharge staff. The full plan is in [SPEC.md](SPEC.md).
 
 ## Build status
 - [x] Step 1a: foundation (theme, languages, email-code sign-in, access levels, RLS helpers, test accounts)
-- [ ] Step 1b: access requests and invites
+- [x] Step 1b: access requests and invites (emails for these come in step 3)
 - [ ] Step 1c: phone app (PWA), quick sign-in, app updates
 
 ## Where things are

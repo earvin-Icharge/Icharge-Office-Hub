@@ -1,6 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
+import { createClient } from "@/lib/supabase/server";
+import { SIGNED_IN_COOKIE } from "@/lib/session";
 import { getTranslations } from "next-intl/server";
 import { LogOut, UserRound } from "lucide-react";
 import { Logo } from "@/components/Logo";
@@ -12,10 +15,26 @@ import { PageTitle } from "@/components/PageTitle";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const viewer = await getViewer();
+  if (!viewer) {
+    // An approved invite gives access right after the first code (spec 3.5).
+    const supabase = await createClient();
+    const { data: claimed } = await supabase.rpc("claim_invite");
+    if (claimed) redirect("/today");
+  }
   if (!viewer || !viewer.active) redirect("/pending");
 
+  // An access change ends older sessions (spec 3.5).
+  const signedInAt = (await cookies()).get(SIGNED_IN_COOKIE)?.value;
+  if (signedInAt && new Date(viewer.accessChangedAt) > new Date(signedInAt)) redirect("/auth/reauth");
+
+  let accessBadge = 0;
+  if (viewer.level === "leader" || viewer.hr) {
+    const supabase = await createClient();
+    accessBadge = (await supabase.rpc("access_inbox_count")).data ?? 0;
+  }
+
   const t = await getTranslations();
-  const items = visibleNav(viewer).map((i) => ({ key: i.key, href: i.href, icon: i.icon, section: i.section, label: t(`nav.${i.key}`) }));
+  const items = visibleNav(viewer).map((i) => ({ key: i.key, href: i.href, icon: i.icon, section: i.section, label: t(`nav.${i.key}`), badge: i.key === "access" ? accessBadge : 0 }));
   const phone = (key: string) => {
     const i = NAV.find((n) => n.key === key)!;
     return { key: i.key, href: i.href, icon: i.icon, label: t(`nav.${i.key}`) };

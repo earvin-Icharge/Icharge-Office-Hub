@@ -29,7 +29,7 @@ type Account = {
   employee_id: string;
   position: string;
   dept: string | null;
-  access_level: "boss" | "manager" | "staff";
+  access_level: "leader" | "manager" | "staff";
   hr_access?: boolean;
   finance_access?: boolean;
   supervisor?: string;
@@ -37,7 +37,7 @@ type Account = {
 };
 
 const ACCOUNTS: Account[] = [
-  { email: "earvin@icharge.com.ph", name: "Earvin", employee_id: "IC-0001", position: "Special Assistant to the CEO", dept: null, access_level: "boss" },
+  { email: "earvin@icharge.com.ph", name: "Earvin", employee_id: "IC-0001", position: "Special Assistant to the CEO", dept: null, access_level: "leader" },
   { email: "earvin+manager@icharge.com.ph", name: "Test Manager", employee_id: "TEST-MGR", position: "Operations head", dept: "ops", access_level: "manager", heads: "ops" },
   { email: "earvin+hr@icharge.com.ph", name: "Test HR", employee_id: "TEST-HR", position: "HR officer", dept: "hr", access_level: "staff", hr_access: true },
   { email: "earvin+finance@icharge.com.ph", name: "Test Finance", employee_id: "TEST-FIN", position: "Payroll officer", dept: "finance", access_level: "staff", finance_access: true },
