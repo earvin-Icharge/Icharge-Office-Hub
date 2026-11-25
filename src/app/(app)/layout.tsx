@@ -9,6 +9,7 @@ import { AppRuntime } from "@/components/AppRuntime";
 import { Bell } from "@/components/Bell";
 import { getTranslations } from "next-intl/server";
 import { LogOut, UserRound } from "lucide-react";
+import { PhoneMenu } from "@/components/PhoneMenu";
 import { Logo } from "@/components/Logo";
 import { SideNav } from "@/components/SideNav";
 import { PhoneNav } from "@/components/PhoneNav";
@@ -56,18 +57,17 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   const titles = Object.fromEntries([...NAV.map((n) => [n.href, t(`nav.${n.key}`)]), ["/profile", t("nav.profile")], ["/notifications", t("nav.notifications")]]);
 
   return (
-    <div className="flex min-h-screen flex-wrap bg-paper">
+    <div className="flex min-h-screen flex-wrap content-start bg-paper min-[700px]:content-stretch">
       {/* Phone top bar */}
-      <header className="sticky top-0 z-[5] flex flex-[1_1_100%] items-center justify-between gap-2.5 bg-forest px-4 py-3 text-white min-[700px]:hidden">
-        <span className="flex items-center gap-2">
+      <header className="sticky top-[env(safe-area-inset-top)] z-[5] flex flex-[1_1_100%] items-center justify-between gap-2 bg-forest py-2 pr-2 pl-4 text-white min-[700px]:hidden">
+        <span className="flex flex-none items-center gap-2">
           <Logo size={30} wordmarkClass="text-xl" />
         </span>
-        <span className="flex items-center gap-3">
-          <PageTitle titles={titles} className="text-[13px] font-semibold text-mist" />
-          <Bell count={unread ?? 0} label={t("nav.notifications")} className="text-mist" />
-          <Link href="/profile" aria-label={t("nav.profile")} className="flex h-11 w-11 items-center justify-center rounded-full text-mist">
-            <UserRound aria-hidden size={22} />
-          </Link>
+        <span className="flex min-w-0 items-center gap-1">
+          <PageTitle titles={titles} className="line-clamp-2 min-w-0 pr-1 text-right text-[13px] leading-tight font-semibold text-mist max-[359px]:hidden" />
+          <Bell count={unread ?? 0} label={t("nav.notifications")} className="flex-none text-mist" />
+          <PhoneMenu items={items} name={viewer.name} sections={{ work: t("nav.work"), hr: t("nav.hr"), admin: t("nav.admin") }}
+            labels={{ open: t("nav.openMenu"), close: t("nav.closeMenu"), title: t("nav.mainMenu"), profile: t("nav.profile"), signOut: t("common.signOut") }} />
         </span>
       </header>
 

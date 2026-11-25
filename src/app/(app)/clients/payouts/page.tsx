@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SwipeHint } from "@/components/SwipeHint";
 import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { payoutRows } from "@/lib/payouts";
@@ -26,6 +27,7 @@ export default async function PayoutsPage({ searchParams }: { searchParams: Prom
         <button className="h-10 rounded-[10px] border border-field bg-white px-4 text-sm font-semibold">OK</button>
         <a href={`/api/export/payouts?month=${month}`} className="inline-flex h-10 items-center rounded-[10px] bg-charge px-4 text-sm font-bold text-forest">{t("export")}</a>
       </form>
+      <SwipeHint className="-mb-3" />
       <div className="overflow-x-auto rounded-[14px] border border-line bg-white">
         <table className="w-full min-w-[760px] text-sm">
           <thead><tr className="text-left text-xs text-muted"><th className="p-3">Client</th><th className="p-3">BD</th><th className="p-3">Kiosks</th><th className="p-3">Rentals</th><th className="p-3">Sales</th><th className="p-3">{t("kind.venue_share")}</th><th className="p-3">Due</th>{bd && <><th className="p-3">{t("kind.bd_share")}</th><th className="p-3">Due</th></>}</tr></thead>

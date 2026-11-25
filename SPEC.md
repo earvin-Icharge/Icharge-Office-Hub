@@ -19,7 +19,7 @@ Users: iCharge employees only (BD, Marketing, Operations, Customer service, Fina
 - Supabase: Postgres, Auth, Storage (private buckets), Row Level Security, Realtime, cron (pg_cron)
 - **Web and phone app (one codebase):**
   - **Phase 1, at launch:** one Progressive Web App (PWA). On a computer it opens in the browser. On a phone, staff install it from the browser ("Add to Home Screen" on iPhone, "Install app" on Android): it gets its own icon, opens full screen and can send push notifications. GPS, camera and push all work on iPhone and Android this way (on iPhone, push needs the Home Screen install).
-  - **Phone layout** (screens narrower than 700 px): top bar with the logo and page name; bottom menu with My day, Tasks, a big round **Time in** button in the middle, Leave and Issues. The side menu is hidden.
+  - **Phone layout** (screens narrower than 700 px): top bar with the logo, page name, bell and a **☰ menu** button that opens the full menu (every page the person may open), My profile and Sign out; bottom menu with My day, Tasks, a big round **Time in** button in the middle, Leave and Issues. The side menu is hidden. Wide tables show as cards on phones (Team, Audit log) or scroll sideways with a hint; fields use 16 px text so iPhone does not zoom; picking several people uses tick boxes.
   - **Updates over the air (OTA):** every release reaches all phones and computers without reinstalling. See 3.6 for the Update button.
   - **Works with weak signal:** a service worker keeps the app shell offline. A time-in or time-out made with no signal is saved on the phone (time, GPS point, selfie) and sent when back online (see 5.2).
   - **Phase 2, optional:** wrap the same code with Capacitor into Android and iPhone apps for staff only (screens and logic still update over the air; only changes to the native shell need a store update): iPhone as an unlisted App Store app or a Custom App through Apple Business Manager; Android through a closed Play Store track. This adds a fake-GPS (mock location) check on Android and more reliable notifications. Costs: Apple Developer Program US$99 a year, Google Play US$25 once.
@@ -483,7 +483,7 @@ Menu items a person can't use are hidden.
 - No location is recorded between time-in and time-out.
 - Time-in cannot be saved without a live selfie, and a gallery photo cannot be used.
 - Selfies older than 90 days and location data older than 1 year are deleted automatically.
-- All pages work on a 375px-wide phone screen: the side menu is hidden and the bottom menu with the Time in button shows.
+- All pages work on a 320px-wide phone screen: the side menu is hidden, the ☰ menu reaches every page, and the bottom menu with the Time in button shows.
 - The app installs to the Home Screen on an iPhone and on an Android phone, opens full screen, and receives a push notification on both.
 - A Field time-in within 200 m of the chosen site is verified; one further away is saved and flagged; "Other" is always flagged with its reason.
 - Field time-in is blocked when location permission is off.

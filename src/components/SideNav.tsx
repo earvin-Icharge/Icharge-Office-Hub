@@ -7,7 +7,8 @@ import { NavIcon } from "./NavIcon";
 
 export type SideNavItem = { key: string; href: string; icon: NavIconName; label: string; section: "work" | "hr" | "admin"; badge?: number };
 
-export function SideNav({ items, sections }: { items: SideNavItem[]; sections: Record<"work" | "hr" | "admin", string> }) {
+/** `big`: larger rows for the phone menu. */
+export function SideNav({ items, sections, big = false }: { items: SideNavItem[]; sections: Record<"work" | "hr" | "admin", string>; big?: boolean }) {
   const pathname = usePathname();
   // Highlight only the closest match (so /settings/access lights up Access, not Settings too).
   const activeHref = items
@@ -29,7 +30,7 @@ export function SideNav({ items, sections }: { items: SideNavItem[]; sections: R
                   key={i.key}
                   href={i.href}
                   aria-current={active ? "page" : undefined}
-                  className={`flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm ${
+                  className={`flex items-center gap-2.5 rounded-lg px-3 ${big ? "py-3 text-base" : "py-2.5 text-sm"} ${
                     active ? "bg-charge font-semibold text-forest" : "text-mist hover:bg-forest-2"
                   }`}
                 >

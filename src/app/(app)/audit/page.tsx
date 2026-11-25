@@ -41,7 +41,22 @@ export default async function AuditPage({ searchParams }: { searchParams: Promis
         <label className="flex flex-col gap-1 text-xs font-semibold">{t("from")}<input type="date" name="from" defaultValue={sp.from ?? ""} className="h-10 rounded-[10px] border border-field bg-white px-3 text-sm" /></label>
         <button className="h-10 rounded-[10px] border border-field bg-white px-4 text-sm font-semibold">OK</button>
       </form>
-      <div className="overflow-x-auto rounded-[14px] border border-line bg-white">
+      {(data ?? []).length > 0 && (
+        /* Phones: one card per change */
+        <ul className="flex flex-col gap-2 min-[700px]:hidden">
+          {((data ?? []) as Row[]).map((r) => (
+            <li key={r.id} className="flex flex-col gap-1 rounded-[14px] border border-line bg-white p-3.5 text-sm">
+              <div className="flex flex-wrap items-baseline justify-between gap-x-3">
+                <b>{name(r.actor_id)}</b>
+                <span className="text-xs text-muted">{format.dateTime(new Date(r.at), { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" })}</span>
+              </div>
+              <p className="text-xs break-words text-muted">{r.table_name ?? "—"} · {r.action}{r.subject_profile_id ? ` · ${name(r.subject_profile_id)}` : ""}</p>
+              <p className="text-xs break-words text-ink-2">{changed(r)}</p>
+            </li>
+          ))}
+        </ul>
+      )}
+      <div className={`overflow-x-auto rounded-[14px] border border-line bg-white ${(data ?? []).length > 0 ? "hidden min-[700px]:block" : ""}`}>
         {(data ?? []).length === 0 ? <p className="p-4 text-sm text-muted">{t("none")}</p> : (
           <table className="w-full min-w-[760px] text-sm">
             <thead><tr className="text-left text-xs text-muted"><th className="p-3">When</th><th className="p-3">{t("actor")}</th><th className="p-3">{t("table")}</th><th className="p-3">{t("person")}</th><th className="p-3">What</th></tr></thead>

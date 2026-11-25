@@ -1,5 +1,6 @@
 {
   "common": {
+    "swipe": "Swipe sideways to see all columns →",
     "appName": "Office Hub",
     "officeHub": "OFFICE HUB",
     "signOut": "Sign out",
@@ -52,7 +53,9 @@
     "mainMenu": "Main menu",
     "phoneMenu": "Phone menu",
     "notifications": "Notifications",
-    "calendar": "Calendar"
+    "calendar": "Calendar",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
   },
   "login": {
     "staffOnly": "For iCharge staff only",
@@ -385,7 +388,7 @@
       "priority": "Priority",
       "needsApproval": "Needs my approval when done",
       "watchers": "Watchers",
-      "watchersHelp": "Hold Ctrl (Windows) or ⌘ (Mac) to pick several.",
+      "watchersHelp": "Tick everyone who should be included.",
       "checklist": "Checklist",
       "checklistHelp": "One item per line.",
       "followUp": "Remind me to follow up on",
@@ -514,7 +517,7 @@
       "priority": "Priority",
       "description": "Description",
       "status": "Status",
-      "multiHelp": "Hold Ctrl (Windows) or ⌘ (Mac) to pick several."
+      "multiHelp": "Tick everyone who should be included."
     },
     "create": "Create project",
     "save": "Save changes",
@@ -562,7 +565,7 @@
       "agenda": "Agenda",
       "notes": "Notes",
       "attendees": "Attendees",
-      "multiHelp": "Hold Ctrl (Windows) or ⌘ (Mac) to pick several."
+      "multiHelp": "Tick everyone who should be included."
     },
     "create": "Create meeting",
     "save": "Save",

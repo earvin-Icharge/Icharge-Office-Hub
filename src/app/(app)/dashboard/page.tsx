@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SwipeHint } from "@/components/SwipeHint";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { Battery } from "@/components/Battery";
@@ -92,6 +93,7 @@ export default async function DashboardPage() {
       {(leader || manager) && (
         <section className="overflow-x-auto rounded-[14px] border border-line bg-white p-[18px]">
           <h2 className="mb-2 text-base font-bold">{t("byDept")}</h2>
+          <SwipeHint className="mb-2" />
           <table className="w-full min-w-[560px] text-sm">
             <thead><tr className="text-left text-xs text-muted"><th className="py-2">{t("dept")}</th><th className="py-2">{t("open")}</th><th className="py-2">{t("overdue")}</th><th className="py-2">{t("onTime")}</th></tr></thead>
             <tbody>{depts.map((d) => {

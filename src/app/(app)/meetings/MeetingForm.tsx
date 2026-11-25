@@ -1,4 +1,5 @@
 import { getTranslations } from "next-intl/server";
+import { PickMany } from "@/components/PickMany";
 import { getPeople } from "@/lib/people";
 import { toManilaInput } from "@/lib/time";
 import { saveMeeting } from "./actions";
@@ -19,9 +20,7 @@ export async function MeetingForm({ meeting, me }: { meeting?: M; me: string }) 
         <label className={label}>{t("f.when")}<input type="datetime-local" name="meeting_at" required defaultValue={toManilaInput(m.meeting_at)} className={field} /></label>
         <label className={label}>{t("f.location")}<input name="location" defaultValue={m.location ?? ""} className={field} /></label>
       </div>
-      <label className={label}>{t("f.attendees")}
-        <select name="attendees" multiple defaultValue={m.attendees ?? [me]} className="h-32 rounded-[10px] border border-field bg-white px-2 py-1 text-sm">{people.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}</select>
-        <span className="text-xs font-normal text-muted">{t("f.multiHelp")}</span></label>
+      <PickMany label={t("f.attendees")} name="attendees" defaultValue={m.attendees ?? [me]} options={people.map((p) => ({ value: p.id, label: p.name }))} help={t("f.multiHelp")} />
       <label className={label}>{t("f.agenda")}<textarea name="agenda" rows={3} defaultValue={m.agenda ?? ""} className="rounded-[10px] border border-field px-3 py-2 text-[15px]" /></label>
       <label className={label}>{t("f.notes")}<textarea name="notes" rows={6} defaultValue={m.notes ?? ""} className="rounded-[10px] border border-field px-3 py-2 text-[15px]" /></label>
       <button className="h-11 w-fit rounded-[10px] bg-charge px-5 text-sm font-bold text-forest">{m.id ? t("save") : t("create")}</button>

@@ -27,29 +27,46 @@ export default async function TeamPage() {
   ]);
   const now = Date.now();
   if (!team.length) return <p className="text-sm text-muted">{t("none")}</p>;
+  const rows = team.map((p) => {
+    const mine = (tasks ?? []).filter((x) => x.owner_id === p.id);
+    const over = mine.filter((x) => new Date(x.due_at).getTime() < now).length;
+    const a = (att ?? []).find((x) => x.profile_id === p.id);
+    const onLeave = (leave ?? []).find((x) => x.profile_id === p.id && x.status === "approved" && x.start_date <= today && x.end_date >= today);
+    const pend = (leave ?? []).filter((x) => x.profile_id === p.id && x.status === "pending").length;
+    const todayPill = onLeave ? <Pill tone="wait">{t("onLeave")}</Pill> : a ? <Pill tone={a.location_ok ? "ok" : "wait"}>{ta(a.mode)} · {format.dateTime(new Date(a.time_in), { hour: "numeric", minute: "2-digit" })}{a.location_ok ? ` · ${ta("verified")}` : a.in_distance_m ? ` · ${ta("awayM", { m: a.in_distance_m })}` : ""}</Pill> : <Pill>{t("notIn")}</Pill>;
+    return { p, open: mine.length, over, pend, todayPill };
+  });
+  const name = (p: (typeof team)[number]) => <Link href={`/performance?who=${p.id}`} className="font-semibold text-leaf hover:underline">{p.name}</Link>;
   return (
     <>
       <h1 className="font-display text-[26px] font-bold min-[700px]:text-[30px]">{t("title")}</h1>
-      <div className="overflow-x-auto rounded-[14px] border border-line bg-white">
+      {/* Phones: one card per person */}
+      <ul className="flex flex-col gap-2.5 min-[700px]:hidden">
+        {rows.map(({ p, open, over, pend, todayPill }) => (
+          <li key={p.id} className="flex flex-col gap-2 rounded-[14px] border border-line bg-white p-4">
+            <div>{name(p)}<p className="text-xs text-muted">{p.position ?? ""}</p></div>
+            <div>{todayPill}</div>
+            <dl className="grid grid-cols-3 gap-2 text-sm">
+              <div><dt className="text-xs text-muted">{t("open")}</dt><dd className="font-semibold">{open}</dd></div>
+              <div><dt className="text-xs text-muted">{t("overdue")}</dt><dd className="font-semibold">{over ? <Pill tone="bad">{over}</Pill> : 0}</dd></div>
+              <div><dt className="text-xs text-muted">{t("pendingLeave")}</dt><dd className="font-semibold">{pend ? <Link href="/hr/leave" className="text-leaf">{pend}</Link> : "—"}</dd></div>
+            </dl>
+          </li>
+        ))}
+      </ul>
+      <div className="hidden overflow-x-auto rounded-[14px] border border-line bg-white min-[700px]:block">
         <table className="w-full min-w-[640px] text-sm">
           <thead><tr className="text-left text-xs text-muted"><th className="p-3">{t("title")}</th><th className="p-3">{t("open")}</th><th className="p-3">{t("overdue")}</th><th className="p-3">{t("today")}</th><th className="p-3">{t("pendingLeave")}</th></tr></thead>
           <tbody>
-            {team.map((p) => {
-              const mine = (tasks ?? []).filter((x) => x.owner_id === p.id);
-              const over = mine.filter((x) => new Date(x.due_at).getTime() < now).length;
-              const a = (att ?? []).find((x) => x.profile_id === p.id);
-              const onLeave = (leave ?? []).find((x) => x.profile_id === p.id && x.status === "approved" && x.start_date <= today && x.end_date >= today);
-              const pend = (leave ?? []).filter((x) => x.profile_id === p.id && x.status === "pending");
-              return (
-                <tr key={p.id} className="border-t border-line">
-                  <td className="p-3"><Link href={`/performance?who=${p.id}`} className="font-semibold text-leaf hover:underline">{p.name}</Link><br /><span className="text-xs text-muted">{p.position ?? ""}</span></td>
-                  <td className="p-3">{mine.length}</td>
-                  <td className="p-3">{over ? <Pill tone="bad">{over}</Pill> : 0}</td>
-                  <td className="p-3">{onLeave ? <Pill tone="wait">{t("onLeave")}</Pill> : a ? <Pill tone={a.location_ok ? "ok" : "wait"}>{ta(a.mode)} · {format.dateTime(new Date(a.time_in), { hour: "numeric", minute: "2-digit" })}{a.location_ok ? ` · ${ta("verified")}` : a.in_distance_m ? ` · ${ta("awayM", { m: a.in_distance_m })}` : ""}</Pill> : <Pill>{t("notIn")}</Pill>}</td>
-                  <td className="p-3">{pend.length ? <Link href="/hr/leave" className="text-leaf">{pend.length}</Link> : "—"}</td>
-                </tr>
-              );
-            })}
+            {rows.map(({ p, open, over, pend, todayPill }) => (
+              <tr key={p.id} className="border-t border-line">
+                <td className="p-3">{name(p)}<br /><span className="text-xs text-muted">{p.position ?? ""}</span></td>
+                <td className="p-3">{open}</td>
+                <td className="p-3">{over ? <Pill tone="bad">{over}</Pill> : 0}</td>
+                <td className="p-3">{todayPill}</td>
+                <td className="p-3">{pend ? <Link href="/hr/leave" className="text-leaf">{pend}</Link> : "—"}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

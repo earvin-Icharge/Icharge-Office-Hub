@@ -55,7 +55,7 @@ export default async function CalendarPage({ searchParams }: { searchParams: Pro
     <>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="font-display text-[26px] font-bold min-[700px]:text-[30px]">{t("title")}</h1>
-        <nav className="flex items-center gap-2" aria-label={t("title")}>
+        <nav className="flex flex-wrap items-center gap-2" aria-label={t("title")}>
           <Link href={`/calendar?m=${prev}`} className="inline-flex h-10 items-center rounded-[10px] border border-field bg-white px-3 text-sm font-semibold" aria-label={t("prev")}>←</Link>
           <span className="min-w-[150px] text-center font-semibold">{format.dateTime(new Date(`${start}T12:00:00Z`), { month: "long", year: "numeric" })}</span>
           <Link href={`/calendar?m=${next}`} className="inline-flex h-10 items-center rounded-[10px] border border-field bg-white px-3 text-sm font-semibold" aria-label={t("next")}>→</Link>

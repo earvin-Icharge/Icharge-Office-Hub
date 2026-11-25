@@ -1,5 +1,6 @@
 {
   "common": {
+    "swipe": "左右滑动查看所有列 →",
     "appName": "Office Hub",
     "officeHub": "OFFICE HUB",
     "signOut": "退出登录",
@@ -52,7 +53,9 @@
     "mainMenu": "主菜单",
     "phoneMenu": "手机菜单",
     "notifications": "通知",
-    "calendar": "日历"
+    "calendar": "日历",
+    "openMenu": "打开菜单",
+    "closeMenu": "关闭菜单"
   },
   "login": {
     "staffOnly": "仅限 iCharge 员工",
@@ -385,7 +388,7 @@
       "priority": "优先级",
       "needsApproval": "完成后需要我批准",
       "watchers": "关注人",
-      "watchersHelp": "按住 Ctrl（Windows）或 ⌘（Mac）可多选。",
+      "watchersHelp": "勾选所有需要加入的人。",
       "checklist": "清单",
       "checklistHelp": "每行一项。",
       "followUp": "提醒我跟进的日期",
@@ -514,7 +517,7 @@
       "priority": "优先级",
       "description": "描述",
       "status": "状态",
-      "multiHelp": "按住 Ctrl（Windows）或 ⌘（Mac）可多选。"
+      "multiHelp": "勾选所有需要加入的人。"
     },
     "create": "创建项目",
     "save": "保存更改",
@@ -562,7 +565,7 @@
       "agenda": "议程",
       "notes": "会议记录",
       "attendees": "参会人",
-      "multiHelp": "按住 Ctrl（Windows）或 ⌘（Mac）可多选。"
+      "multiHelp": "勾选所有需要加入的人。"
     },
     "create": "创建会议",
     "save": "保存",

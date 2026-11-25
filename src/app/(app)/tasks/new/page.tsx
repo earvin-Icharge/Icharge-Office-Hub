@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PickMany } from "@/components/PickMany";
 import { getTranslations } from "next-intl/server";
 import { redirect } from "next/navigation";
 import { Flash } from "@/components/Flash";
@@ -68,12 +69,7 @@ export default async function NewTaskPage({ searchParams }: { searchParams: Prom
             </select>
           </label>
           <label className={label}>{t("f.followUp")}<input type="datetime-local" name="follow_up_at" defaultValue={sp.follow_up_at ?? ""} className={field} /></label>
-          <label className={label}>{t("f.watchers")}
-            <select name="watchers" multiple className="h-24 rounded-[10px] border border-field bg-white px-2 py-1 text-sm">
-              {people.filter((p) => p.id !== viewer.id).map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
-            </select>
-            <span className="text-xs font-normal text-muted">{t("f.watchersHelp")}</span>
-          </label>
+          <PickMany label={t("f.watchers")} name="watchers" options={people.filter((p) => p.id !== viewer.id).map((p) => ({ value: p.id, label: p.name }))} help={t("f.watchersHelp")} />
         </div>
         <label className={label}>{t("f.checklist")}
           <textarea name="checklist" rows={3} defaultValue={sp.checklist ?? ""} className="rounded-[10px] border border-field px-3 py-2 text-[15px]" />
