@@ -913,5 +913,88 @@
       "ops": "Sent to Ops.",
       "status": "Status updated."
     }
+  },
+  "hr": {
+    "employees": "Employees",
+    "search": "Search name or position",
+    "allDepts": "All departments",
+    "none": "No one found.",
+    "myFile": "My HR file",
+    "directory": "Directory",
+    "employment": "Employment",
+    "private": "Private details",
+    "notes": "Private HR notes",
+    "documents": "Documents",
+    "onboarding": "Onboarding and offboarding",
+    "checklists": "Checklists",
+    "f": {
+      "name": "Name",
+      "employeeId": "Employee ID",
+      "position": "Position",
+      "department": "Department",
+      "supervisor": "Supervisor",
+      "backup": "Backup approver",
+      "phone": "Work phone",
+      "email": "Work email",
+      "status": "Employment status",
+      "start": "Start date",
+      "regularization": "Regularization date",
+      "end": "End date",
+      "setup": "Work setup",
+      "shift": "Shift",
+      "address": "Address",
+      "emergency": "Emergency contact",
+      "emergencyPhone": "Emergency phone",
+      "relation": "Relationship",
+      "sss": "SSS",
+      "philhealth": "PhilHealth",
+      "pagibig": "Pag-IBIG",
+      "tin": "TIN",
+      "wfh": "WFH address",
+      "wfhPin": "WFH pin (latitude, longitude)",
+      "lat": "Latitude",
+      "lng": "Longitude"
+    },
+    "statusV": {
+      "probationary": "Probationary",
+      "regular": "Regular",
+      "contractual": "Contractual",
+      "project_based": "Project-based",
+      "resigned": "Resigned"
+    },
+    "setupV": {
+      "office": "Office",
+      "wfh": "WFH",
+      "hybrid": "Hybrid"
+    },
+    "save": "Save",
+    "show": "Show private details",
+    "logged": "Opening private details is recorded in the audit log.",
+    "addNote": "Add note",
+    "upload": "Upload document",
+    "noDocs": "No documents yet.",
+    "wfhPending": "WFH address change waiting: {address}",
+    "approve": "Approve",
+    "reject": "Reject",
+    "startOnboarding": "Start onboarding checklist",
+    "startOffboarding": "Start offboarding checklist",
+    "date": "Date",
+    "openItems": "Still owns: {tasks} tasks, {projects} projects, {issues} issues, {clients} clients, {cases} customer cases.",
+    "openNone": "Nothing open: ready to deactivate.",
+    "deactivateHint": "Deactivate from Access › People once everything is handed over.",
+    "kind": "For",
+    "role": {
+      "hr": "HR",
+      "manager": "Manager",
+      "employee": "Employee"
+    },
+    "offset": "Days from start/end date",
+    "add": "Add item",
+    "active": "Active",
+    "ok": {
+      "saved": "Saved.",
+      "started": "Checklist tasks created.",
+      "uploaded": "Document uploaded."
+    }
   }
 }

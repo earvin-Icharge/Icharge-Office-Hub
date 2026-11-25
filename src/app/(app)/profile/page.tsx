@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { cookies } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
