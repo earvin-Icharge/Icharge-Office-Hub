@@ -5,6 +5,9 @@ import { Battery } from "@/components/Battery";
 import { BusinessSwitch } from "@/components/BusinessSwitch";
 import { getViewer } from "@/lib/viewer";
 import { TaskTabs } from "./TaskTabs";
+import { QuickPrompt } from "./QuickPrompt";
+import { cookies } from "next/headers";
+import { getDevice, readDeviceKey } from "@/lib/device";
 
 export const metadata = { title: "My day" };
 
@@ -30,6 +33,7 @@ export default async function TodayPage() {
     { key: "assigned", label: t("tileAssigned") },
   ];
   const yesNo = (b: boolean) => (b ? t("yes") : t("no"));
+  const device = await getDevice(readDeviceKey(await cookies()), viewer.id);
 
   return (
     <>
@@ -37,6 +41,8 @@ export default async function TodayPage() {
         <span className="text-[13px] text-muted">{format.dateTime(now, { weekday: "long", day: "numeric", month: "long", year: "numeric" })}</span>
         <h1 className="font-display text-[26px] font-bold min-[700px]:text-[30px]">{greeting}</h1>
       </div>
+
+      {!device?.quick_method && <QuickPrompt />}
 
       <div className="flex flex-wrap items-center gap-[18px] rounded-[18px] bg-forest px-[22px] py-3.5 text-white">
         <Image src="/mascot/thumbs-up.png" alt="iCharge mascot giving a thumbs up" width={104} height={104} className="h-[104px] w-[104px] flex-none object-contain" />

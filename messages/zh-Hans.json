@@ -86,7 +86,8 @@
       "wrongCode": "验证码错误或已过期，还可尝试 {tries} 次。",
       "codeFormat": "验证码为 6 位数字。",
       "linkFailed": "此登录链接已过期或已被使用。",
-      "accessChanged": "您的权限已更改，请重新登录。"
+      "accessChanged": "您的权限已更改，请重新登录。",
+      "signInAgain": "为了安全，请使用邮箱验证码重新登录。"
     }
   },
   "pending": {
@@ -224,6 +225,122 @@
     "okDeactivated": "账户已停用，下次加载页面时即失效。",
     "okReactivated": "账户已重新启用。",
     "byName": "提议人：{name}",
-    "sentLabel": "提交时间"
+    "sentLabel": "提交时间",
+    "okDevicesRemoved": "已移除所有设备。下次访问需要邮箱验证码。"
+  },
+  "runtime": {
+    "newVersion": "新版本已就绪",
+    "updateNow": "立即更新",
+    "mustUpdateTitle": "需要更新",
+    "mustUpdateBody": "领导要求所有人使用最新版本，只需几秒钟。",
+    "whatsNewTitle": "版本 {version} 新内容",
+    "gotIt": "知道了"
+  },
+  "quick": {
+    "title": "快速登录",
+    "help": "使用指纹、面容 ID 或 6 位 PIN 码打开应用，无需邮箱验证码。仅限本设备。",
+    "fingerprint": "指纹或面容 ID",
+    "fingerprintHelp": "使用本手机或电脑自带的解锁方式。您的指纹不会离开设备。",
+    "pin": "6 位 PIN 码",
+    "pinHelp": "不能 6 位相同，不能是 123456 或 654321。",
+    "setUp": "设置",
+    "change": "更改",
+    "on": "已开启",
+    "off": "未开启",
+    "notAvailable": "本设备不支持",
+    "newPin": "新 PIN 码",
+    "confirmPin": "再输入一次",
+    "savePin": "保存 PIN 码",
+    "removeAll": "关闭本设备的快速登录",
+    "saved": "已保存。",
+    "removed": "本设备已关闭快速登录。",
+    "promptTitle": "设置快速登录",
+    "promptBody": "下次可用指纹或 PIN 码打开 Office Hub。",
+    "promptSetUp": "立即设置",
+    "promptSkip": "暂不设置",
+    "unlockTitle": "欢迎回来，{name}",
+    "unlockHelp": "应用已关闭一段时间，请解锁后继续。",
+    "touchToUnlock": "触摸以登录",
+    "usePin": "改用 PIN 码",
+    "useFingerprint": "改用指纹",
+    "unlock": "解锁",
+    "useEmail": "改用邮箱验证码登录",
+    "emailNeeded": "新设备、每 90 天或输错 5 次 PIN 码后，需要邮箱验证码。",
+    "errors": {
+      "pinFormat": "PIN 码为 6 位数字。",
+      "pinSame": "不能 6 位都相同。",
+      "pinSequence": "不能使用 123456 或 654321。",
+      "pinMismatch": "两次输入的 PIN 码不一致。",
+      "wrongPin": "PIN 码错误，还可尝试 {tries} 次。",
+      "pinLocked": "PIN 码错误 5 次，已从本设备删除。请使用邮箱验证码登录。",
+      "notVerified": "验证失败，请重试。",
+      "expired": "操作超时，请重试。",
+      "cancelled": "已取消。",
+      "signedOut": "请重新登录。",
+      "generic": "出错了，请重试。"
+    }
+  },
+  "devices": {
+    "title": "我的设备",
+    "thisDevice": "本设备",
+    "lastSeen": "最近使用 {date}",
+    "version": "版本 {v}",
+    "remove": "移除",
+    "none": "暂无设备。",
+    "methodPasskey": "指纹",
+    "methodPin": "PIN 码",
+    "methodBoth": "指纹 + PIN 码",
+    "methodNone": "仅邮箱验证码",
+    "removeAllFor": "移除所有设备",
+    "removedAll": "已移除所有设备。下次访问需要邮箱验证码。"
+  },
+  "push": {
+    "title": "手机通知",
+    "help": "在本设备接收提醒和审批通知。",
+    "turnOn": "开启",
+    "turnOff": "关闭",
+    "on": "本设备已开启",
+    "test": "发送测试通知",
+    "testTitle": "Office Hub",
+    "testBody": "本设备已开启通知。",
+    "testSent": "测试通知已发送，几秒后应会出现。",
+    "testNone": "本设备尚未订阅通知。",
+    "blocked": "此网站的通知已被阻止。请在浏览器或手机设置中允许。",
+    "unsupported": "此浏览器无法接收通知。",
+    "iphoneHint": "iPhone：请先点“分享”›“添加到主屏幕”，再从主屏幕打开 Office Hub。"
+  },
+  "install": {
+    "title": "安装到本手机",
+    "button": "安装应用",
+    "installed": "已安装，请从主屏幕打开。",
+    "iphone": "iPhone（Safari）：点“分享”，再点“添加到主屏幕”。",
+    "android": "Android（Chrome）：点 ⋮ 菜单，再点“安装应用”。"
+  },
+  "offline": {
+    "title": "您已离线",
+    "body": "此页面需要网络连接。恢复联网后即可正常使用。",
+    "retry": "重试"
+  },
+  "updates": {
+    "title": "应用更新",
+    "current": "当前版本",
+    "released": "发布于 {date}",
+    "whatsNew": "新内容",
+    "minVersion": "最低版本",
+    "noMin": "无（所有人可继续使用旧版本）",
+    "askEveryone": "要求所有人立即更新",
+    "askEveryoneHelp": "旧版本应用必须更新后才能继续使用。",
+    "asked": "已完成。使用旧版本的人必须更新到 {version}。",
+    "behind": "仍在使用旧版本的人员",
+    "allCurrent": "所有人都在使用当前版本。",
+    "person": "人员",
+    "device": "设备",
+    "lastSeen": "最近使用",
+    "remind": "提醒",
+    "neverOpened": "本次更新后尚未打开",
+    "reminded": "已向 {count} 台设备发送提醒。",
+    "noPush": "此人尚未开启手机通知。",
+    "remindTitle": "Office Hub",
+    "remindBody": "Office Hub 新版本已就绪。请打开应用并点“更新”。"
   }
 }

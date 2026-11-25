@@ -13,3 +13,18 @@ export const signedInCookieOptions = {
   path: "/",
   maxAge: SESSION_MAX_AGE_SECONDS,
 };
+
+/** Quick sign-in rules (spec 3.5). Will move to Settings when the Settings page is built. */
+export const LOCK_AFTER_HOURS = 12;
+export const EMAIL_CODE_EVERY_DAYS = 90;
+export const MAX_WRONG_PINS = 5;
+
+/** Random id for this phone/computer, kept in an httpOnly cookie. */
+export const DEVICE_COOKIE = "oh_device";
+export const deviceCookieOptions = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "lax" as const,
+  path: "/",
+  maxAge: 60 * 60 * 24 * 400,
+};

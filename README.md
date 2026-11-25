@@ -5,7 +5,7 @@ Work + HR app for iCharge staff. The full plan is in [SPEC.md](SPEC.md).
 ## Build status
 - [x] Step 1a: foundation (theme, languages, email-code sign-in, access levels, RLS helpers, test accounts)
 - [x] Step 1b: access requests and invites (emails for these come in step 3)
-- [ ] Step 1c: phone app (PWA), quick sign-in, app updates
+- [x] Step 1c: phone app (PWA), quick sign-in, app updates
 
 ## Where things are
 | What | Where |
@@ -24,3 +24,10 @@ npm run seed                # create departments + the 5 test accounts
 npm run test-login staff    # one-time sign-in link: manager | hr | finance | staff
 ```
 Secrets go in `.env.local` (see `.env.example`). Never commit it.
+
+## Releasing a new version
+1. Raise `APP_VERSION` in `src/lib/version.ts`.
+2. Add a row to `app_releases` with the same version and What's new (English + 简体中文).
+3. Push to a branch: Vercel makes a private test link. Check it.
+4. Merge to `main`: it goes live, and open apps show "New version ready · Update now".
+5. Problem? Vercel › Deployments › previous one › Instant Rollback.

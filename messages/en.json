@@ -86,7 +86,8 @@
       "wrongCode": "That code is wrong or expired. {tries, plural, one {# try left} other {# tries left}}.",
       "codeFormat": "The code is 6 digits.",
       "linkFailed": "That sign-in link has expired or was already used.",
-      "accessChanged": "Your access was changed. Please sign in again."
+      "accessChanged": "Your access was changed. Please sign in again.",
+      "signInAgain": "For your security, please sign in again with an email code."
     }
   },
   "pending": {
@@ -224,6 +225,122 @@
     "okDeactivated": "Account deactivated. It stops working on the next page load.",
     "okReactivated": "Account reactivated.",
     "byName": "By {name}",
-    "sentLabel": "Sent"
+    "sentLabel": "Sent",
+    "okDevicesRemoved": "All devices removed. Their next visit needs an email code."
+  },
+  "runtime": {
+    "newVersion": "New version ready",
+    "updateNow": "Update now",
+    "mustUpdateTitle": "Update needed",
+    "mustUpdateBody": "A Leader asked everyone to use the newest version. It takes a few seconds.",
+    "whatsNewTitle": "What's new in version {version}",
+    "gotIt": "Got it"
+  },
+  "quick": {
+    "title": "Quick sign-in",
+    "help": "Open the app with your fingerprint, Face ID or a 6-digit PIN instead of an email code. For this device only.",
+    "fingerprint": "Fingerprint or Face ID",
+    "fingerprintHelp": "Uses this phone's or computer's own lock. Your fingerprint never leaves the device.",
+    "pin": "6-digit PIN",
+    "pinHelp": "Not all the same digit, not 123456 or 654321.",
+    "setUp": "Set up",
+    "change": "Change",
+    "on": "On",
+    "off": "Off",
+    "notAvailable": "Not available on this device",
+    "newPin": "New PIN",
+    "confirmPin": "Type it again",
+    "savePin": "Save PIN",
+    "removeAll": "Turn off quick sign-in on this device",
+    "saved": "Saved.",
+    "removed": "Quick sign-in is off on this device.",
+    "promptTitle": "Set up quick sign-in",
+    "promptBody": "Next time, open Office Hub with your fingerprint or a PIN.",
+    "promptSetUp": "Set up now",
+    "promptSkip": "Skip for now",
+    "unlockTitle": "Welcome back, {name}",
+    "unlockHelp": "The app was closed for a while. Unlock to continue.",
+    "touchToUnlock": "Touch to sign in",
+    "usePin": "Use PIN instead",
+    "useFingerprint": "Use fingerprint instead",
+    "unlock": "Unlock",
+    "useEmail": "Sign in with an email code instead",
+    "emailNeeded": "An email code is needed on a new device, every 90 days, or after 5 wrong PINs.",
+    "errors": {
+      "pinFormat": "The PIN is 6 digits.",
+      "pinSame": "Don't use the same digit 6 times.",
+      "pinSequence": "Don't use 123456 or 654321.",
+      "pinMismatch": "The two PINs don't match.",
+      "wrongPin": "Wrong PIN. {tries, plural, one {# try left} other {# tries left}}.",
+      "pinLocked": "5 wrong PINs. The PIN was removed from this device. Please sign in with an email code.",
+      "notVerified": "That didn't work. Please try again.",
+      "expired": "That took too long. Please try again.",
+      "cancelled": "Cancelled.",
+      "signedOut": "Please sign in again.",
+      "generic": "Something went wrong. Please try again."
+    }
+  },
+  "devices": {
+    "title": "My devices",
+    "thisDevice": "This device",
+    "lastSeen": "Last used {date}",
+    "version": "Version {v}",
+    "remove": "Remove",
+    "none": "No devices yet.",
+    "methodPasskey": "Fingerprint",
+    "methodPin": "PIN",
+    "methodBoth": "Fingerprint + PIN",
+    "methodNone": "Email code only",
+    "removeAllFor": "Remove all devices",
+    "removedAll": "All devices removed. Their next visit needs an email code."
+  },
+  "push": {
+    "title": "Phone notifications",
+    "help": "Get reminders and approvals on this device.",
+    "turnOn": "Turn on",
+    "turnOff": "Turn off",
+    "on": "On for this device",
+    "test": "Send me a test",
+    "testTitle": "Office Hub",
+    "testBody": "Notifications are on for this device.",
+    "testSent": "Test sent. It should appear in a few seconds.",
+    "testNone": "This device isn't subscribed yet.",
+    "blocked": "Notifications are blocked for this site. Allow them in your browser or phone settings.",
+    "unsupported": "This browser can't receive notifications.",
+    "iphoneHint": "On iPhone: first tap Share › Add to Home Screen, then open Office Hub from the Home Screen."
+  },
+  "install": {
+    "title": "Install on this phone",
+    "button": "Install app",
+    "installed": "Installed. Open it from your Home Screen.",
+    "iphone": "On iPhone (Safari): tap Share, then Add to Home Screen.",
+    "android": "On Android (Chrome): tap the ⋮ menu, then Install app."
+  },
+  "offline": {
+    "title": "You're offline",
+    "body": "Office Hub needs a connection for this page. It will work again when you're back online.",
+    "retry": "Try again"
+  },
+  "updates": {
+    "title": "App updates",
+    "current": "Current version",
+    "released": "Released {date}",
+    "whatsNew": "What's new",
+    "minVersion": "Minimum version",
+    "noMin": "None (everyone may stay on older versions)",
+    "askEveryone": "Ask everyone to update now",
+    "askEveryoneHelp": "Older apps must update before they continue.",
+    "asked": "Done. Everyone on an older version must update to {version}.",
+    "behind": "People still on an older version",
+    "allCurrent": "Everyone is on the current version.",
+    "person": "Person",
+    "device": "Device",
+    "lastSeen": "Last seen",
+    "remind": "Remind",
+    "neverOpened": "Not opened since this update",
+    "reminded": "Reminder sent to {count, plural, one {# device} other {# devices}}.",
+    "noPush": "This person hasn't turned on phone notifications.",
+    "remindTitle": "Office Hub",
+    "remindBody": "A new version of Office Hub is ready. Open the app and tap Update."
   }
 }

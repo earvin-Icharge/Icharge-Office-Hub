@@ -33,7 +33,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
         </div>
         <LanguageToggle />
         <div className="flex w-full max-w-[440px] flex-col gap-4 rounded-[20px] border border-line bg-white p-6 sm:p-8">
-          <LoginForm initialError={e === "link" ? t("login.errors.linkFailed") : e === "inactive" ? t("login.errors.inactive") : e === "changed" ? t("login.errors.accessChanged") : undefined} />
+          <LoginForm initialError={e === "link" ? t("login.errors.linkFailed") : e === "inactive" ? t("login.errors.inactive") : e === "changed" ? t("login.errors.accessChanged") : e === "device" ? t("login.errors.signInAgain") : undefined} />
         </div>
         <p className="max-w-[440px] text-center text-xs leading-normal text-muted">{t("login.privacy")}</p>
       </main>

@@ -1,13 +1,14 @@
 "use server";
 
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
+import { newDeviceKey, readDeviceKey, recordEmailSignIn } from "@/lib/device";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import {
   MAX_WRONG_CODES, RESEND_SECONDS, clearAttempts, getAttempts, isAllowedDomain, isDeactivated,
   languageFor, looksLikeEmail, markCodeSent, minutesLeft, normalizeEmail, registerFailure,
 } from "@/lib/auth-rules";
-import { LOCALE_COOKIE, SIGNED_IN_COOKIE, signedInCookieOptions } from "@/lib/session";
+import { DEVICE_COOKIE, LOCALE_COOKIE, SIGNED_IN_COOKIE, deviceCookieOptions, signedInCookieOptions } from "@/lib/session";
 
 export type SendResult =
   | { ok: true; email: string; triesLeft: number }
@@ -69,6 +70,13 @@ export async function verifyCode(rawEmail: string, rawCode: string): Promise<Ver
   const store = await cookies();
   store.set(SIGNED_IN_COOKIE, new Date().toISOString(), signedInCookieOptions);
   store.set(LOCALE_COOKIE, await languageFor(data.user.id), { path: "/", maxAge: 60 * 60 * 24 * 365 });
+  // This device is trusted again for 90 days (spec 3.5).
+  let key = readDeviceKey(store);
+  if (!key) {
+    key = newDeviceKey();
+    store.set(DEVICE_COOKIE, key, deviceCookieOptions);
+  }
+  await recordEmailSignIn(key, data.user.id, (await headers()).get("user-agent")).catch(() => undefined);
   redirect("/today");
 }
 

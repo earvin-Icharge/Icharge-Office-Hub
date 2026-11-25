@@ -15,12 +15,15 @@ export const metadata: Metadata = {
   title: { default: "iCharge Office Hub", template: "%s · iCharge Office Hub" },
   description: "Work and HR app for iCharge staff",
   robots: { index: false, follow: false },
+  appleWebApp: { capable: true, title: "Office Hub", statusBarStyle: "black-translucent" },
+  icons: { apple: "/icons/apple-touch-icon.png" },
 };
 
 export const viewport: Viewport = {
   themeColor: "#16210F",
   width: "device-width",
   initialScale: 1,
+  viewportFit: "cover",
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {

@@ -83,3 +83,18 @@ export async function reactivate(f: FormData) {
   if (!err) await createAdminClient().auth.admin.updateUserById(id, { ban_duration: "none" });
   done("people", err, "okReactivated");
 }
+
+/** Lost phone: HR or a Leader removes all devices of a person (spec 3.5). Their next visit needs an email code. */
+export async function removeAllDevices(f: FormData) {
+  const { getViewer } = await import("@/lib/viewer");
+  const viewer = await getViewer();
+  if (!viewer?.active || !(viewer.hr || viewer.level === "leader")) done("people", { message: "Only HR or a Leader can do this." }, "ok");
+  const id = s(f, "profile_id");
+  const db = createAdminClient();
+  await db.from("user_devices")
+    .update({ removed_at: new Date().toISOString(), passkey_credential_id: null, passkey_public_key: null, pin_hash: null, quick_method: null })
+    .eq("profile_id", id).is("removed_at", null);
+  await db.from("push_subscriptions").delete().eq("profile_id", id);
+  await db.from("audit_log").insert({ actor_id: viewer!.id, action: "devices_removed_all", table_name: "user_devices", subject_profile_id: id, new: { by: viewer!.name } });
+  done("people", null, "okDevicesRemoved");
+}

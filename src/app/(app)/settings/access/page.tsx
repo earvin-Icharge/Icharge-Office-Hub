@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getViewer } from "@/lib/viewer";
 import {
   approveRequest, createInvite, deactivate, decideChange, decideInvite, declineRequest, proposeChange,
-  proposeRequest, reactivate, sendBackRequest,
+  proposeRequest, reactivate, removeAllDevices, sendBackRequest,
 } from "./actions";
 import { AccessFields, ReasonForm, btnDanger, btnPlain, btnPrimary, fieldCls } from "./AccessFields";
 
@@ -271,6 +271,8 @@ export default async function AccessPage({ searchParams }: { searchParams: Promi
                       </details>
                     )}
                     {canDeactivate && <ReasonForm action={deactivate} hidden={{ profile_id: p.id }} button={t("access.deactivate")} summary={t("access.deactivate")} cls={btnDanger} />}
+                    <form action={removeAllDevices}><input type="hidden" name="profile_id" value={p.id} />
+                      <button type="submit" className={btnPlain}>{t("devices.removeAllFor")}</button></form>
                     {!p.active && isLeader && <ReasonForm action={reactivate} hidden={{ profile_id: p.id }} button={t("access.reactivate")} summary={t("access.reactivate")} />}
                   </div>
                 )}

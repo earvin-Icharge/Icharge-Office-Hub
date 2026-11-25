@@ -4,6 +4,8 @@ import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
 import { SIGNED_IN_COOKIE } from "@/lib/session";
+import { deviceGate, getDevice, readDeviceKey } from "@/lib/device";
+import { AppRuntime } from "@/components/AppRuntime";
 import { getTranslations } from "next-intl/server";
 import { LogOut, UserRound } from "lucide-react";
 import { Logo } from "@/components/Logo";
@@ -24,8 +26,14 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   if (!viewer || !viewer.active) redirect("/pending");
 
   // An access change ends older sessions (spec 3.5).
-  const signedInAt = (await cookies()).get(SIGNED_IN_COOKIE)?.value;
+  const store = await cookies();
+  const signedInAt = store.get(SIGNED_IN_COOKIE)?.value;
   if (signedInAt && new Date(viewer.accessChangedAt) > new Date(signedInAt)) redirect("/auth/reauth");
+
+  // Quick sign-in (spec 3.5): removed device or 90 days -> email code; closed over 12 h -> fingerprint/PIN.
+  const gate = deviceGate(await getDevice(readDeviceKey(store), viewer.id));
+  if (gate === "reauth") redirect("/auth/reauth?why=device");
+  if (gate === "unlock") redirect("/unlock");
 
   let accessBadge = 0;
   if (viewer.level === "leader" || viewer.hr) {
@@ -85,6 +93,8 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       <main className="flex min-w-0 flex-[999_1_560px] flex-col gap-5 px-4 pt-4 pb-28 min-[700px]:px-8 min-[700px]:py-7">
         {children}
       </main>
+
+      <AppRuntime />
 
       <PhoneNav
         label={t("nav.phoneMenu")}
