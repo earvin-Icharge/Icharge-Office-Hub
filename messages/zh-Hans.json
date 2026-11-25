@@ -51,7 +51,8 @@
     "profile": "我的资料",
     "mainMenu": "主菜单",
     "phoneMenu": "手机菜单",
-    "notifications": "通知"
+    "notifications": "通知",
+    "calendar": "日历"
   },
   "login": {
     "staffOnly": "仅限 iCharge 员工",
@@ -493,5 +494,65 @@
     "telegramOpen": "打开 Office Hub 机器人",
     "telegramNotReady": "Telegram 机器人尚未设置。",
     "save": "保存"
+  },
+  "projects": {
+    "title": "项目",
+    "newProject": "+ 新建项目",
+    "board": "看板",
+    "list": "列表",
+    "noProjects": "暂无项目。",
+    "status": {
+      "planning": "规划中",
+      "active": "进行中",
+      "on_hold": "暂停",
+      "done": "已完成"
+    },
+    "moveTo": "移到",
+    "progress": "已完成 {done}/{total} 项任务",
+    "f": {
+      "name": "项目名称",
+      "business": "业务",
+      "owner": "负责人",
+      "departments": "部门",
+      "members": "成员",
+      "start": "开始日期",
+      "due": "截止日期",
+      "priority": "优先级",
+      "description": "描述",
+      "status": "状态",
+      "multiHelp": "按住 Ctrl（Windows）或 ⌘（Mac）可多选。"
+    },
+    "create": "创建项目",
+    "save": "保存更改",
+    "edit": "编辑项目",
+    "delete": "移到回收站",
+    "milestones": "里程碑",
+    "addMilestone": "添加里程碑",
+    "milestoneTitle": "里程碑",
+    "noMilestones": "暂无里程碑。",
+    "tasks": "任务",
+    "addTask": "+ 添加任务",
+    "noTasks": "此项目暂无任务。",
+    "files": "文件",
+    "members": "成员",
+    "owner": "负责人",
+    "dates": "日期",
+    "due": "截止 {date}",
+    "ok": {
+      "created": "项目已创建。",
+      "saved": "已保存。",
+      "deleted": "已移到回收站。"
+    }
+  },
+  "calendar": {
+    "title": "日历",
+    "prev": "上个月",
+    "next": "下个月",
+    "today": "今天",
+    "nothing": "本月没有安排。",
+    "task": "任务",
+    "milestone": "里程碑",
+    "holiday": "假日",
+    "leave": "休假"
   }
 }

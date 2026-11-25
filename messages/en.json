@@ -51,7 +51,8 @@
     "profile": "My profile",
     "mainMenu": "Main menu",
     "phoneMenu": "Phone menu",
-    "notifications": "Notifications"
+    "notifications": "Notifications",
+    "calendar": "Calendar"
   },
   "login": {
     "staffOnly": "For iCharge staff only",
@@ -493,5 +494,65 @@
     "telegramOpen": "Open the Office Hub bot",
     "telegramNotReady": "The Telegram bot isn't set up yet.",
     "save": "Save"
+  },
+  "projects": {
+    "title": "Projects",
+    "newProject": "+ New project",
+    "board": "Board",
+    "list": "List",
+    "noProjects": "No projects yet.",
+    "status": {
+      "planning": "Planning",
+      "active": "Active",
+      "on_hold": "On hold",
+      "done": "Done"
+    },
+    "moveTo": "Move to",
+    "progress": "{done} of {total} tasks done",
+    "f": {
+      "name": "Project name",
+      "business": "Business",
+      "owner": "Owner",
+      "departments": "Departments",
+      "members": "Members",
+      "start": "Start date",
+      "due": "Due date",
+      "priority": "Priority",
+      "description": "Description",
+      "status": "Status",
+      "multiHelp": "Hold Ctrl (Windows) or ⌘ (Mac) to pick several."
+    },
+    "create": "Create project",
+    "save": "Save changes",
+    "edit": "Edit project",
+    "delete": "Move to Trash",
+    "milestones": "Milestones",
+    "addMilestone": "Add milestone",
+    "milestoneTitle": "Milestone",
+    "noMilestones": "No milestones yet.",
+    "tasks": "Tasks",
+    "addTask": "+ Add task",
+    "noTasks": "No tasks in this project yet.",
+    "files": "Files",
+    "members": "Members",
+    "owner": "Owner",
+    "dates": "Dates",
+    "due": "Due {date}",
+    "ok": {
+      "created": "Project created.",
+      "saved": "Saved.",
+      "deleted": "Moved to Trash."
+    }
+  },
+  "calendar": {
+    "title": "Calendar",
+    "prev": "Previous month",
+    "next": "Next month",
+    "today": "Today",
+    "nothing": "Nothing this month.",
+    "task": "Task",
+    "milestone": "Milestone",
+    "holiday": "Holiday",
+    "leave": "On leave"
   }
 }

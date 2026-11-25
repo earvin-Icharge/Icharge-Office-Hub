@@ -1,7 +1,7 @@
 import type { Viewer } from "@/lib/viewer";
 
 export type NavIcon =
-  | "myday" | "tasks" | "projects" | "meetings" | "issues" | "clients" | "cs" | "team"
+  | "myday" | "tasks" | "calendar" | "projects" | "meetings" | "issues" | "clients" | "cs" | "team"
   | "employees" | "attendance" | "leave" | "discipline" | "performance"
   | "dashboard" | "reports" | "access" | "updates" | "settings" | "audit" | "trash";
 
@@ -24,6 +24,7 @@ const everyone = () => true;
 export const NAV: NavItem[] = [
   { key: "myday", href: "/today", icon: "myday", section: "work", step: "1a", canSee: everyone },
   { key: "tasks", href: "/tasks", icon: "tasks", section: "work", step: "2", canSee: everyone },
+  { key: "calendar", href: "/calendar", icon: "calendar", section: "work", step: "4", canSee: everyone },
   { key: "projects", href: "/projects", icon: "projects", section: "work", step: "4", canSee: everyone },
   { key: "meetings", href: "/meetings", icon: "meetings", section: "work", step: "5", canSee: everyone },
   { key: "issues", href: "/issues", icon: "issues", section: "work", step: "6", canSee: everyone },
