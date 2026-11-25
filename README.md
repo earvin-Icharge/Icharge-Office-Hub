@@ -11,7 +11,6 @@ All steps 1–12 of SPEC.md are built (version 1.0.0). Step 13 (store apps with 
 | Supabase › Authentication › SMTP password = a working Resend key | Sign-in code emails |
 | Verify icharge.com.ph in Resend (DNS records) | Codes and emails reach every staff inbox, not only earvin@ |
 | Vercel env `RESEND_API_KEY` (+ `EMAIL_FROM` once the domain is verified) | Reminder, digest and invite emails from the app |
-| An SMS provider | Refund-paid and rating SMS to customers (queued in `sms_outbox` until then) |
 | Settings: office pin, field sites, CEO, iScreen BD commission % | Location checks, leave approval, BD plan |
 | Deactivate the four plus-address test accounts | Spec 14.1 |
 

@@ -898,7 +898,6 @@
     "qualityHelp": "Review 5 random solved cases per person each month (1–5).",
     "score": "Score",
     "note": "Note",
-    "smsNote": "SMS to customers are queued until an SMS provider is connected.",
     "ok": {
       "created": "Case created.",
       "saved": "Saved.",
@@ -906,7 +905,8 @@
       "refund": "Refund request sent to Finance.",
       "ops": "Sent to Ops.",
       "status": "Status updated."
-    }
+    },
+    "internalNote": "Office Hub never contacts customers. Record here what was done in the customer process (e.g. the customer's rating)."
   },
   "hr": {
     "employees": "Employees",

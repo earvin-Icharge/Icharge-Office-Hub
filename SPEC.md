@@ -12,7 +12,7 @@ One web app for Quanta Dance Inc. (iCharge Philippines) that:
 - Gives **Customer service** one place to follow every customer case from first message to refund, with each person's KPIs against targets (section 4.9).
 - **Keeps the two businesses apart**: iCharge (power bank rentals) and iScreen (kiosk screen advertising), with a company view of both (section 4.1).
 
-Users: iCharge employees only (BD, Marketing, Operations, Customer service, Finance, Tech, Admin/HR). Internal use only: no customer or public pages. Works **on the web** (computer) and **as an app on phones**, so staff can time in from the office, from home or in the field.
+Users: iCharge employees only (BD, Marketing, Operations, Customer service, Finance, Tech, Admin/HR). Internal use only, for work management and monitoring: no customer or public pages, and the app never contacts customers (no SMS, email or Viber to customers). Works **on the web** (computer) and **as an app on phones**, so staff can time in from the office, from home or in the field.
 
 ## 2. Tech stack
 - Next.js 15 (App Router) + TypeScript + Tailwind CSS
@@ -257,9 +257,9 @@ For each Customer service (CS) person to follow every customer transaction they 
 **Transaction trail**
 - Every customer message, CS reply, action, handoff and system notice is saved on the case with the time. Entries can't be deleted.
 - **Quick replies** (set by the CS lead) in English and Filipino; using one logs it on the trail.
-- **Ask Finance to refund:** creates a refund request (amount, order number, payment method). Finance approves and marks it paid with the reference number; the case updates and the customer gets an SMS.
+- **Ask Finance to refund:** creates a refund request (amount, order number, payment method). Finance approves and marks it paid with the reference number; the case updates. Office Hub never contacts the customer (that is a separate process).
 - **Send kiosk problem to Ops:** creates or links an issue in the issue log (4.7). Three or more cases at the same kiosk within 30 days create a repeat-problem alert.
-- **Mark solved:** sends the customer a 1–5 rating request by SMS or Viber.
+- **Mark solved:** closes the case. The customer's 1–5 rating, collected in the separate customer process, is entered by CS.
 
 **KPIs (per person and for the team, per month)**
 | KPI | How it is counted | Default target |
@@ -492,7 +492,7 @@ Menu items a person can't use are hidden.
 ### Customer service
 - A CS staff member sees only their own cases and KPIs; the CS lead sees the whole CS team; the Leader sees all.
 - Every reply, action and handoff appears on the case's transaction trail with the time, and can't be deleted.
-- "Ask Finance to refund" creates a refund request for Finance; when Finance marks it paid with a reference number, the case updates and the customer gets an SMS.
+- "Ask Finance to refund" creates a refund request for Finance; when Finance marks it paid with a reference number, the case updates (no message is sent to the customer).
 - "Send kiosk problem to Ops" creates or links an issue; 3 cases at the same kiosk within 30 days raise a repeat-problem alert.
 - The reply timer stops while a case is waiting on the customer, and out-of-hours messages count from the next working start.
 - KPI values match a manual count on a test month of 20 sample cases.

@@ -103,7 +103,7 @@ export default async function CasePage({ params, searchParams }: { params: Promi
                   <label className="flex flex-col gap-1 text-xs font-semibold">{t("rating")}<select name="rating" defaultValue={c.rating ?? 5} className={field}>{[1, 2, 3, 4, 5].map((n) => <option key={n} value={n}>{n}</option>)}</select></label>
                   <button className={`${btn} border border-field bg-white`}>{t("saveRating")}</button></form>
               )}
-              <p className="text-xs text-muted">{t("smsNote")}</p>
+              <p className="text-xs text-muted">{t("internalNote")}</p>
             </section>
           )}
         </div>
