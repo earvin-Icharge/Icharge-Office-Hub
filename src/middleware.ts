@@ -2,7 +2,8 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { SESSION_MAX_AGE_SECONDS, SIGNED_IN_COOKIE } from "@/lib/session";
 
-const PUBLIC_PATHS = ["/login", "/auth", "/offline", "/api/version", "/privacy"];
+// /api/cron: called by the database, not a signed-in person; each route checks the shared cron secret itself.
+const PUBLIC_PATHS = ["/login", "/auth", "/offline", "/api/version", "/api/cron", "/privacy"];
 
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({ request });
