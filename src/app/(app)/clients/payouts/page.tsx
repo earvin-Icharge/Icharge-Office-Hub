@@ -14,6 +14,7 @@ export default async function PayoutsPage({ searchParams }: { searchParams: Prom
   const last = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - 1, 1)).toISOString().slice(0, 7);
   const month = sp.month && /^\d{4}-\d{2}$/.test(sp.month) ? sp.month : last;
   const rows = await payoutRows(month);
+  const bd = viewer.level === "leader"; // the BD share is visible only to the BD person and Leaders
   const peso = (n: number | null) => (n == null ? "—" : `₱${n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
   return (
     <>
@@ -27,8 +28,8 @@ export default async function PayoutsPage({ searchParams }: { searchParams: Prom
       </form>
       <div className="overflow-x-auto rounded-[14px] border border-line bg-white">
         <table className="w-full min-w-[760px] text-sm">
-          <thead><tr className="text-left text-xs text-muted"><th className="p-3">Client</th><th className="p-3">BD</th><th className="p-3">Kiosks</th><th className="p-3">Rentals</th><th className="p-3">Sales</th><th className="p-3">{t("kind.venue_share")}</th><th className="p-3">Due</th><th className="p-3">{t("kind.bd_share")}</th><th className="p-3">Due</th></tr></thead>
-          <tbody>{rows.map((r) => <tr key={r.client} className="border-t border-line"><td className="p-3 font-semibold">{r.client}</td><td className="p-3">{r.owner}</td><td className="p-3">{r.kiosks}</td><td className="p-3">{r.rentals}</td><td className="p-3">{peso(r.sales)}</td><td className="p-3">{r.venueRate}</td><td className="p-3">{peso(r.venueDue)}</td><td className="p-3">{r.bdRate}</td><td className="p-3">{peso(r.bdDue)}</td></tr>)}</tbody>
+          <thead><tr className="text-left text-xs text-muted"><th className="p-3">Client</th><th className="p-3">BD</th><th className="p-3">Kiosks</th><th className="p-3">Rentals</th><th className="p-3">Sales</th><th className="p-3">{t("kind.venue_share")}</th><th className="p-3">Due</th>{bd && <><th className="p-3">{t("kind.bd_share")}</th><th className="p-3">Due</th></>}</tr></thead>
+          <tbody>{rows.map((r) => <tr key={r.client} className="border-t border-line"><td className="p-3 font-semibold">{r.client}</td><td className="p-3">{r.owner}</td><td className="p-3">{r.kiosks}</td><td className="p-3">{r.rentals}</td><td className="p-3">{peso(r.sales)}</td><td className="p-3">{r.venueRate}</td><td className="p-3">{peso(r.venueDue)}</td>{bd && <><td className="p-3">{r.bdRate}</td><td className="p-3">{peso(r.bdDue)}</td></>}</tr>)}</tbody>
         </table>
       </div>
     </>

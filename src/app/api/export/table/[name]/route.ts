@@ -4,7 +4,7 @@ import { getViewer } from "@/lib/viewer";
 import { BACKUP_TABLES } from "@/lib/backup";
 import { toCsv } from "@/lib/csv";
 
-const HIDDEN = new Set(["pin_hash", "passkey_public_key", "passkey_credential_id", "telegram_link_code"]);
+const HIDDEN = new Set(["pin_hash", "passkey_public_key", "passkey_credential_id"]);
 
 /** Leader only. Every download is logged. */
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ name: string }> }) {

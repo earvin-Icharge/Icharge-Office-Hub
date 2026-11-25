@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { sendPush } from "@/lib/push";
-import { APP_ONLY_KINDS, sendEmail, sendTelegram } from "@/lib/channels";
+import { APP_ONLY_KINDS, sendEmail } from "@/lib/channels";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -13,7 +13,7 @@ function inQuietHours() {
 
 /**
  * Called every minute by the database (pg_cron + pg_net) with a shared secret.
- * Sends new notifications as push / email / Telegram, and invite emails.
+ * Sends new notifications as push and email, and invite emails.
  * Notifications never carry restricted data; they link into the app.
  */
 export async function POST(request: NextRequest) {
@@ -25,14 +25,14 @@ export async function POST(request: NextRequest) {
   const quiet = inQuietHours();
   const { data: rows } = await db
     .from("notifications")
-    .select("id, profile_id, kind, title, body, url, urgent, created_at, profile:profiles!notifications_profile_id_fkey(email, active, notify_email, notify_telegram, telegram_chat_id)")
+    .select("id, profile_id, kind, title, body, url, urgent, created_at, profile:profiles!notifications_profile_id_fkey(email, active, notify_email)")
     .is("delivered_at", null)
     .order("created_at")
     .limit(200);
 
   let sent = 0;
   for (const n of rows ?? []) {
-    const p = n.profile as unknown as { email: string; active: boolean; notify_email: boolean; notify_telegram: boolean; telegram_chat_id: string | null } | null;
+    const p = n.profile as unknown as { email: string; active: boolean; notify_email: boolean } | null;
     const stale = Date.now() - new Date(n.created_at).getTime() > 24 * 3600_000;
     if (!stale && quiet && !n.urgent) continue; // wait for 7:00 am
     const channels: string[] = [];
@@ -42,7 +42,6 @@ export async function POST(request: NextRequest) {
       if (!APP_ONLY_KINDS.has(n.kind)) {
         const text = `${n.title}\n${n.body ? `${n.body}\n` : ""}\n${link}`;
         if (p.notify_email && (await sendEmail(p.email, n.title, `${text}\n\n— iCharge Office Hub`))) channels.push("email");
-        if (p.notify_telegram && p.telegram_chat_id && (await sendTelegram(p.telegram_chat_id, text))) channels.push("telegram");
       }
     }
     await db.from("notifications").update({ delivered_at: new Date().toISOString(), channels }).eq("id", n.id);

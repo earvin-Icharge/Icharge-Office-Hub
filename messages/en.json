@@ -484,15 +484,9 @@
     "urgent": "URGENT"
   },
   "channels": {
-    "title": "Email and Telegram",
-    "help": "Assignments, reminders, escalations and approvals. Comments stay in the app. Quiet hours 9:00 pm – 7:00 am (Urgent only).",
+    "title": "Email notifications",
+    "help": "Assignments, reminders, escalations and approvals also come by email. Comments stay in the app. Quiet hours 9:00 pm – 7:00 am (Urgent only).",
     "email": "Email me",
-    "telegram": "Telegram",
-    "telegramConnected": "Connected",
-    "telegramConnect": "Connect Telegram",
-    "telegramSteps": "Open the bot and send this code:",
-    "telegramOpen": "Open the Office Hub bot",
-    "telegramNotReady": "The Telegram bot isn't set up yet.",
     "save": "Save"
   },
   "projects": {
@@ -764,11 +758,11 @@
       "ad_contract_first_3_months": "of the first 3 months of the ad contract"
     },
     "plan": "Commission plan: {rate}",
-    "planNone": "Commission plan: not set (Finance to confirm)",
+    "planNone": "Commission plan: not set yet",
     "pending": "Waiting for approval",
     "approve": "Approve",
     "reject": "Reject",
-    "approvedBy": "Approved by BD head: {a} · Leader: {b}",
+    "approvedBy": "Waiting for a Leader to approve",
     "history": "Terms history",
     "from": "From {date}",
     "to": "to {date}",

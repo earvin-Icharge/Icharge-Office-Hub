@@ -484,15 +484,9 @@
     "urgent": "紧急"
   },
   "channels": {
-    "title": "邮件和 Telegram",
-    "help": "任务分配、提醒、升级和审批通知。评论只在应用内显示。免打扰时间：晚上 9:00 至早上 7:00（仅紧急）。",
+    "title": "邮件通知",
+    "help": "任务分配、提醒、升级和审批也会发邮件。评论只在应用内显示。免打扰时间：晚上 9:00 至早上 7:00（仅紧急）。",
     "email": "发邮件给我",
-    "telegram": "Telegram",
-    "telegramConnected": "已连接",
-    "telegramConnect": "连接 Telegram",
-    "telegramSteps": "打开机器人并发送此代码：",
-    "telegramOpen": "打开 Office Hub 机器人",
-    "telegramNotReady": "Telegram 机器人尚未设置。",
     "save": "保存"
   },
   "projects": {
@@ -764,11 +758,11 @@
       "ad_contract_first_3_months": "按广告合同前 3 个月"
     },
     "plan": "佣金方案：{rate}",
-    "planNone": "佣金方案：未设置（待财务确认）",
+    "planNone": "佣金方案：尚未设置",
     "pending": "等待批准",
     "approve": "批准",
     "reject": "拒绝",
-    "approvedBy": "BD 负责人批准：{a} · 领导批准：{b}",
+    "approvedBy": "等待领导批准",
     "history": "条款历史",
     "from": "自 {date}",
     "to": "至 {date}",

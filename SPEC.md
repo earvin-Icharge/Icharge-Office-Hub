@@ -25,7 +25,7 @@ Users: iCharge employees only (BD, Marketing, Operations, Customer service, Fina
   - **Phase 2, optional:** wrap the same code with Capacitor into Android and iPhone apps for staff only (screens and logic still update over the air; only changes to the native shell need a store update): iPhone as an unlisted App Store app or a Custom App through Apple Business Manager; Android through a closed Play Store track. This adds a fake-GPS (mock location) check on Android and more reliable notifications. Costs: Apple Developer Program US$99 a year, Google Play US$25 once.
 - Hosting: Vercel (every push to `main` deploys). Vercel functions and the Supabase project both in **Singapore** (`sin1` / `ap-southeast-1`).
 - i18n: `next-intl`, English and 简体中文 (`/messages/{en,zh-Hans}.json`); each user picks a language
-- Notifications: in-app, phone and computer push (PWA web push), email (Supabase/Resend free tier), optional Telegram bot
+- Notifications: in-app, phone and computer push (PWA web push), email (Supabase/Resend free tier). No Telegram.
 - **Quick sign-in:** fingerprint / Face ID / Windows Hello through passkeys (WebAuthn, free `@simplewebauthn` library), or a 6-digit PIN. See 3.5.
 - **Sign-in email (OTP codes):** Supabase Auth email OTP sent through **Resend** (custom SMTP in Supabase). Supabase's built-in email sends only a few emails an hour, so custom SMTP is required before launch. Resend needs the **icharge.com.ph** domain verified (3–4 DNS records added by whoever manages the domain) so codes arrive in the inbox, not spam. **During the build** (domain not verified yet), create the Resend account with **earvin@icharge.com.ph**: Resend's test sender then delivers codes to that address only, which is enough for testing. Domain verification is needed **before launch**, not before step 1a.
 - No paid services required. Keep dependencies minimal.
@@ -65,7 +65,7 @@ Everyone is also an employee, so every group also gets the Staff basics for thei
 | Team workload page | All departments | Own team | — | — | — |
 | Meetings | All | Meetings they attend or create | Meetings they attend or create | Meetings they attend or create | Meetings they attend |
 | Issue log | All | Issue types owned by their department | Issue types assigned to HR | Refund, unpaid power bank and venue payout issues (incl. amounts) | Report any; see ones they reported or own |
-| Client tracker (contracts, profit-sharing %, discussion log) | All | BD head: the BD team's clients; other Managers: — | — | All clients, read only (for payouts) | BD staff: own clients only; other staff: — |
+| Client tracker (contracts, profit-sharing %, discussion log) | All | BD head: the BD team's clients, without the BD person's commission; other Managers: — | — | All clients, read only (for payouts), without the BD person's commission | BD staff: own clients only, incl. own commission; other staff: — |
 | Customer service cases and KPIs | All | CS lead: the CS team's cases and KPIs; other Managers: cases handed to their department | — | Refund requests: view, approve, mark paid | CS staff: own cases and own KPIs; Ops staff: kiosk cases handed to them |
 | Employee directory (name, position, department, work email, work phone) | ✓ | ✓ | ✓ | ✓ | ✓ |
 | Employment details (status, start date, shift, supervisor) | All | Own team | All (edit) | All (view) | Own |
@@ -192,7 +192,7 @@ Views: Kanban board by status, list, calendar. Progress = done tasks ÷ all task
 ### 4.6 Meetings and action items
 - Create a meeting: date, attendees, agenda, notes.
 - Add action items in the meeting → each becomes a task with owner and due date.
-- One click sends the meeting notes and action list to attendees (email/Telegram).
+- One click sends the meeting notes and action list to attendees (in-app, push and email).
 
 ### 4.7 Issue log (problem handling)
 Issue types (editable in Settings by the Leader), each with an owning department, a default owner, a backup, a response target and a fix target:
@@ -227,7 +227,7 @@ For BD to keep track of their own clients: iCharge venue partners (malls, hospit
 **Profit sharing (the agreed terms)**
 - **iCharge venues:** the venue's share in % and its basis (gross rental sales or gross operating profit) and payout timing.
 - **iScreen advertisers:** what the client pays (₱ per kiosk per month or package) and the term.
-- **BD person's profit share:** filled in from the BD commission plan: 2% for small accounts (1–9 kiosks), 5% for 10+ kiosks, 10% for key or multi-branch accounts, of gross operating profit, paid while the kiosks stay online. iScreen ad commission: [X]% of the first 3 months of the ad contract (Finance to confirm). A different rate needs approval from the BD head and the Leader.
+- **BD person's profit share:** filled in from the BD commission plan: 2% for small accounts (1–9 kiosks), 5% for 10+ kiosks, 10% for key or multi-branch accounts, of gross operating profit, paid while the kiosks stay online. iScreen ad commission: [X]% of the first 3 months of the ad contract (Finance to confirm). A different rate needs a Leader's approval. **Who sees it:** the BD person's commission is visible only to that BD person (own clients) and Leaders — not the BD head, Finance or other staff.
 - **History is never lost:** every change to a percentage keeps the old value, the new value, the date, who changed it and why.
 
 **What was discussed**
@@ -243,7 +243,7 @@ For BD to keep track of their own clients: iCharge venue partners (malls, hospit
 
 **Screens**
 - Clients page: My clients / My team (BD head) switch, business switch, tiles (clients, renewals in 90 days, not signed yet, zero-usage alerts), renewal reminder banner, client list, client detail with the two percentages side by side, contract, special terms and the discussion log.
-- Finance gets a monthly payout export: per client, the venue share due; per BD person, the profit share due.
+- Finance gets a monthly payout export: per client, the venue share due. The BD share due per BD person is in the Leader's export only.
 
 
 ### 4.9 Customer service: cases and KPIs
@@ -357,8 +357,8 @@ Quarterly review form: simple 1–5 ratings plus comments, written by the Manage
 - Managers get one Team page: workload + attendance status today + pending leave.
 
 ## 7. Notifications
-- In-app bell for everything; phone and computer push (PWA web push; on iPhone after the Home Screen install), email and Telegram (per user setting) for assignments, reminders, escalations and approvals.
-- Notifications never include restricted data (no government IDs, GPS points, case details or profit-sharing percentages in push, email or Telegram); they link into the app.
+- In-app bell for everything; phone and computer push (PWA web push; on iPhone after the Home Screen install) and email (per user setting) for assignments, reminders, escalations and approvals.
+- Notifications never include restricted data (no government IDs, GPS points, case details or profit-sharing percentages in push or email); they link into the app.
 - **Client renewal reminders** at 90, 60 and 30 days before a contract ends (section 4.8).
 - **Daily digest at 8:30 am**: my tasks today, overdue, approvals waiting.
 - **Monday summary** to Managers (their team) and the Leader (all): overdue by person, issues past target, repeat problems, leave next week.
@@ -397,7 +397,7 @@ Excel export: tasks, projects, issues, attendance, leave balances, performance s
 Menu items a person can't use are hidden.
 
 ## 13. Data model (main tables)
-- `profiles` (id, employee_id, name, email, phone, department_id, position, supervisor_id, **access_level** (leader / manager / staff), **hr_access** (bool), **finance_access** (bool), **backup_approver_id**, **default_business** (all / icharge / iscreen), language, telegram_chat_id, active)
+- `profiles` (id, employee_id, name, email, phone, department_id, position, supervisor_id, **access_level** (leader / manager / staff), **hr_access** (bool), **finance_access** (bool), **backup_approver_id**, **default_business** (all / icharge / iscreen), language, notify_email, active)
 - `access_requests` (id, user_id, email, full_name, department_id, position, supervisor_id, mobile, requested_level, requested_hr, requested_finance, proposed_level, proposed_hr, proposed_finance, proposed_by, proposed_at, approved_by, approved_at, status (pending / proposed / approved / declined / sent_back), decline_reason, created_at)
 - `invites` (id, email, access_level, hr_access, finance_access, department_id, invited_by, approved_by, approved_at, created_at, used_at)
 - `access_changes` (id, profile_id, old/new level and switches, proposed_by, approved_by, status, reason, created_at) — every change after day one
@@ -441,7 +441,7 @@ Menu items a person can't use are hidden.
    - **1b. Access requests:** `/welcome` form, `/pending` page, HR proposal and Leader approval, invites, access changes, deactivation, audit log entries for all of these (section 3.5).
    - **1c. Phone app and updates:** PWA (install, offline shell, push), phone layout with the bottom menu, quick sign-in with fingerprint or PIN and My devices (3.5), **App updates: Update button, What's new, minimum version** (3.6).
 2. Tasks: create, assign, acknowledge, statuses, comments, attachments, My day.
-3. Reminders and escalation (pg_cron), notifications (in-app, push, email, Telegram), daily digest. Includes the access emails from 1b: "Your access is ready", the invite email, and the 2-working-day reminders for unhandled access requests (3.5).
+3. Reminders and escalation (pg_cron), notifications (in-app, push, email), daily digest. Includes the access emails from 1b: "Your access is ready", the invite email, and the 2-working-day reminders for unhandled access requests (3.5).
 4. Projects: Kanban, calendar, milestones, recurring tasks.
 5. Meetings and action items.
 6. Issue log with targets, timers and escalation. **BD client tracker**: clients, contracts, profit-sharing terms with history, discussion log, renewal reminders and zero-usage alerts. **Customer service**: cases, transaction trail, quick replies, refund requests to Finance, handoffs to Ops, ratings and KPIs.
@@ -502,10 +502,11 @@ Menu items a person can't use are hidden.
 - A BD staff member sees only their own clients; the BD head sees the whole BD team; Finance sees all clients read only; other staff see no clients.
 - 90 days before a contract ends, a renewal task is created for the owner; reminders follow at 60 and 30 days, and the BD head is alerted at 30 days.
 - Changing a percentage keeps the old value with the date, who changed it and why.
-- A BD profit share outside the commission plan can't be saved without BD head and Leader approval.
+- A BD profit share outside the commission plan can't be saved without a Leader's approval.
+- The BD person's commission (rate, plan rate, history, payout) is visible only to that BD person and Leaders: not to the BD head, Finance or anyone else.
 - A discussion note can't be deleted, and can be edited only within 24 hours.
 - A client whose kiosks had zero rentals for 3 months shows a zero-usage alert.
-- Renewal emails, push and Telegram messages name the client and the end date but never the percentages.
+- Renewal emails and push messages name the client and the end date but never the percentages.
 
 ### Business lines
 - A project, task or issue cannot be saved without a business (a task with a project takes the project's).
@@ -549,8 +550,8 @@ Menu items a person can't use are hidden.
 - When a Manager is on leave, their team's approvals go to their backup approver (or the Leader).
 - Opening government IDs, documents, private notes, GPS points or selfies creates an audit log entry.
 - Removing someone's access takes effect on their next page load and is recorded in the audit log.
-- Email, push and Telegram notifications never contain government IDs, GPS points or case details.
+- Email and push notifications never contain government IDs, GPS points or case details.
 - Every HR change is in the audit log with who and when.
 
 ## 16. Not in version 1
-Payroll calculation, BIR/SSS/PhilHealth/Pag-IBIG filing, biometric devices, in-app chat (use Telegram/Viber), customer-facing pages, store versions of the phone app (phase 2, section 2), connection to the Besitter kiosk back office.
+Payroll calculation, BIR/SSS/PhilHealth/Pag-IBIG filing, biometric devices, Telegram notifications, in-app chat (use Viber), customer-facing pages, store versions of the phone app (phase 2, section 2), connection to the Besitter kiosk back office.

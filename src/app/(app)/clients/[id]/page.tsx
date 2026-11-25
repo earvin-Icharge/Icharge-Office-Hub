@@ -31,7 +31,7 @@ export default async function ClientPage({ params, searchParams }: { params: Pro
   const supabase = await createClient();
   const { data: c } = await supabase.from("clients").select("*").eq("id", id).is("deleted_at", null).maybeSingle();
   if (!c) notFound();
-  const [{ data: kiosks }, { data: contracts }, { data: terms }, { data: notes }, { data: canEdit }, { data: bdHead }, { data: plan }, { data: zero }, { data: files }, people] = await Promise.all([
+  const [{ data: kiosks }, { data: contracts }, { data: terms }, { data: notes }, { data: canEdit }, { data: bdHead }, { data: plan }, { data: canSeeBd }, { data: zero }, { data: files }, people] = await Promise.all([
     supabase.from("client_kiosks").select("kiosk_id").eq("client_id", id),
     supabase.from("contracts").select("*").eq("client_id", id).order("end_date", { ascending: false }),
     supabase.from("client_terms").select("*").eq("client_id", id).order("created_at", { ascending: false }),
@@ -39,6 +39,7 @@ export default async function ClientPage({ params, searchParams }: { params: Pro
     supabase.rpc("can_edit_client", { p_client: id }),
     supabase.rpc("is_bd_head"),
     supabase.rpc("bd_plan_rate", { p_client: id }),
+    supabase.rpc("can_see_bd_share", { p_client: id }),
     supabase.rpc("client_zero_usage", { p_client: id }),
     supabase.from("attachments").select("id, name").eq("entity", "client").eq("entity_id", id).is("deleted_at", null),
     getPeople(),
@@ -53,7 +54,8 @@ export default async function ClientPage({ params, searchParams }: { params: Pro
   const fmtTerm = (x?: Term) => x ? `${x.value}${x.unit === "percent" ? "%" : ""} ${x.unit === "percent" ? (x.basis ? t(`bases.${x.basis}`) : "") : t(`units.${x.unit}`)}${x.payout_timing ? ` · ${x.payout_timing}` : ""}${x.term_text ? ` · ${x.term_text}` : ""}` : t("noTerm");
   const contract = (contracts ?? [])[0];
   const cd = countdown(contract?.end_date);
-  const canDecide = viewer.level === "leader" || !!bdHead;
+  // BD share: only the BD person who owns this client and Leaders see it; Leaders approve off-plan rates.
+  const canDecide = viewer.level === "leader";
   const termForm = (kind: string) => (
     <details>
       <summary className={`${btn} inline-flex cursor-pointer list-none items-center border border-field bg-white`}>{t("setTerm")}</summary>
@@ -83,19 +85,19 @@ export default async function ClientPage({ params, searchParams }: { params: Pro
           <section className={card} aria-label={t("terms")}>
             <h2 className="text-base font-bold">{t("terms")}</h2>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-              {[{ kind: clientKind, title: t(`kind.${clientKind}`) }, { kind: "bd_share", title: t("bdShare") }].map((k) => (
+              {[{ kind: clientKind, title: t(`kind.${clientKind}`) }, ...(canSeeBd ? [{ kind: "bd_share", title: t("bdShare") }] : [])].map((k) => (
                 <div key={k.kind} className="flex flex-col gap-2 rounded-xl border border-line p-3">
                   <span className="text-xs font-semibold text-muted">{k.title}</span>
                   <span className="font-display text-xl font-bold">{fmtTerm(active(k.kind))}</span>
                   {k.kind === "bd_share" && <span className="text-xs text-muted">{plan == null ? t("planNone") : t("plan", { rate: `${plan}%` })}</span>}
-                  {canEdit && termForm(k.kind)}
+                  {canEdit && (k.kind !== "bd_share" || canSeeBd) && termForm(k.kind)}
                 </div>
               ))}
             </div>
             {pending.map((x) => (
               <div key={x.id} className="flex flex-wrap items-center gap-2 rounded-xl border border-[#FCD34D] bg-[#FFFBEB] p-3 text-sm">
                 <b>{t("pending")}:</b> {t(`kind.${x.kind}`)} {fmtTerm(x)}{x.reason ? ` · ${x.reason}` : ""}
-                <span className="text-xs text-muted">{t("approvedBy", { a: name(x.approved_bd_head_by), b: name(x.approved_leader_by) })}</span>
+                <span className="text-xs text-muted">{t("approvedBy")}</span>
                 {canDecide && x.set_by !== viewer.id && (
                   <form action={decideTerm} className="flex gap-2"><input type="hidden" name="client_id" value={id} /><input type="hidden" name="term_id" value={x.id} />
                     <button name="decision" value="approve" className={`${btn} bg-charge font-bold text-forest`}>{t("approve")}</button>
