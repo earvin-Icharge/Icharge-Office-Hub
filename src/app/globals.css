@@ -1,26 +1,44 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
+/* iCharge theme (spec 2): lime, dark green, iScreen violet; Poppins headings, Inter text. */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-charge: #8fd220;        /* iCharge lime */
+  --color-charge-soft: #f1fadf;   /* lime tint */
+  --color-charge-line: #d6efa6;
+  --color-charge-ring: #b9e27a;
+  --color-leaf: #2f6b0a;          /* lime text on light backgrounds (passes contrast) */
+  --color-forest: #16210f;        /* menu, headings */
+  --color-forest-2: #223018;
+  --color-forest-line: #34472a;
+  --color-mist: #dce8d0;          /* light text on forest */
+  --color-sage: #a9c98a;          /* section labels on forest */
+  --color-screen: #6a4cf0;        /* iScreen violet */
+  --color-screen-soft: #eeeafe;
+  --color-screen-text: #4b2fc9;
+  --color-company-soft: #eef2e8;
+  --color-ink-2: #3d4734;
+  --color-muted: #59654f;
+  --color-paper: #f6f8f1;         /* page background */
+  --color-line: #e3e8da;
+  --color-field: #c9d2bd;
+  --color-danger-soft: #fee2e2;
+  --color-danger: #991b1b;
+
+  --font-sans: var(--font-inter), Arial, sans-serif;
+  --font-display: var(--font-poppins), Arial, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html,
+body {
+  background: var(--color-paper);
+  color: var(--color-forest);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-charge-ring);
+  outline-offset: 2px;
 }
