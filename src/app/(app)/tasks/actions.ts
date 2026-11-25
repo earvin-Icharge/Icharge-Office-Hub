@@ -98,14 +98,17 @@ export async function deleteTask(f: FormData) {
 
 // ------------------------------------------------------------------ files (private bucket, signed links)
 
-const CAN_SEE: Record<string, string> = { task: "can_see_task", project: "can_see_project" };
+const CAN_SEE: Record<string, [string, string, string]> = {
+  task: ["can_see_task", "p_task", "tasks"], project: ["can_see_project", "p_project", "projects"],
+  issue: ["can_see_issue", "p_issue", "issues"], meeting: ["can_see_meeting", "p_meeting", "meetings"],
+};
 
 /** Step 1 of an upload: check access, then hand back a one-time upload link. */
 export async function startUpload(entity: string, entityId: string, name: string, size: number) {
-  const fn = CAN_SEE[entity];
-  if (!fn || size > 20 * 1024 * 1024) return { ok: false as const, error: "File too large (max 20 MB)." };
+  const rule = CAN_SEE[entity];
+  if (!rule || size > 20 * 1024 * 1024) return { ok: false as const, error: "File too large (max 20 MB)." };
   const supabase = await createClient();
-  const { data: allowed } = await supabase.rpc(fn, entity === "task" ? { p_task: entityId } : { p_project: entityId });
+  const { data: allowed } = await supabase.rpc(rule[0], { [rule[1]]: entityId });
   if (!allowed) return { ok: false as const, error: "Not allowed." };
   const path = `${entity}/${entityId}/${randomUUID()}-${name.replace(/[^\w.\-]+/g, "_").slice(-80)}`;
   const { data, error } = await createAdminClient().storage.from("attachments").createSignedUploadUrl(path);
@@ -117,11 +120,12 @@ export async function startUpload(entity: string, entityId: string, name: string
 export async function finishUpload(entity: string, entityId: string, path: string, name: string, size: number, mime: string) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  const fn = CAN_SEE[entity];
-  const { data: allowed } = await supabase.rpc(fn, entity === "task" ? { p_task: entityId } : { p_project: entityId });
+  const rule = CAN_SEE[entity];
+  if (!rule) return { ok: false as const };
+  const { data: allowed } = await supabase.rpc(rule[0], { [rule[1]]: entityId });
   if (!user || !allowed || !path.startsWith(`${entity}/${entityId}/`)) return { ok: false as const };
   await createAdminClient().from("attachments").insert({ entity, entity_id: entityId, path, name: name.slice(0, 200), size_bytes: size, mime, uploaded_by: user.id });
-  revalidatePath(`/${entity === "task" ? "tasks" : "projects"}/${entityId}`);
+  revalidatePath(`/${rule[2]}/${entityId}`);
   return { ok: true as const };
 }
 
