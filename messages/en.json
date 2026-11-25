@@ -50,7 +50,8 @@
     "timein": "Time in",
     "profile": "My profile",
     "mainMenu": "Main menu",
-    "phoneMenu": "Phone menu"
+    "phoneMenu": "Phone menu",
+    "notifications": "Notifications"
   },
   "login": {
     "staffOnly": "For iCharge staff only",
@@ -473,5 +474,24 @@
       "uploaded": "File uploaded."
     },
     "leaveWarning": "Heads up: {name} is on approved leave on that date."
+  },
+  "notifications": {
+    "title": "Notifications",
+    "markAll": "Mark all as read",
+    "none": "No notifications yet.",
+    "unread": "Unread",
+    "urgent": "URGENT"
+  },
+  "channels": {
+    "title": "Email and Telegram",
+    "help": "Assignments, reminders, escalations and approvals. Comments stay in the app. Quiet hours 9:00 pm – 7:00 am (Urgent only).",
+    "email": "Email me",
+    "telegram": "Telegram",
+    "telegramConnected": "Connected",
+    "telegramConnect": "Connect Telegram",
+    "telegramSteps": "Open the bot and send this code:",
+    "telegramOpen": "Open the Office Hub bot",
+    "telegramNotReady": "The Telegram bot isn't set up yet.",
+    "save": "Save"
   }
 }

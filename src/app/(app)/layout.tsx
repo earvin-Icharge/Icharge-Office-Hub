@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { SIGNED_IN_COOKIE } from "@/lib/session";
 import { deviceGate, getDevice, readDeviceKey } from "@/lib/device";
 import { AppRuntime } from "@/components/AppRuntime";
+import { Bell } from "@/components/Bell";
 import { getTranslations } from "next-intl/server";
 import { LogOut, UserRound } from "lucide-react";
 import { Logo } from "@/components/Logo";
@@ -35,6 +36,8 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   if (gate === "reauth") redirect("/auth/reauth?why=device");
   if (gate === "unlock") redirect("/unlock");
 
+  const supabaseN = await createClient();
+  const { count: unread } = await supabaseN.from("notifications").select("id", { count: "exact", head: true }).is("read_at", null);
   let accessBadge = 0;
   if (viewer.level === "leader" || viewer.hr) {
     const supabase = await createClient();
@@ -47,7 +50,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
     const i = NAV.find((n) => n.key === key)!;
     return { key: i.key, href: i.href, icon: i.icon, label: t(`nav.${i.key}`) };
   };
-  const titles = Object.fromEntries([...NAV.map((n) => [n.href, t(`nav.${n.key}`)]), ["/profile", t("nav.profile")]]);
+  const titles = Object.fromEntries([...NAV.map((n) => [n.href, t(`nav.${n.key}`)]), ["/profile", t("nav.profile")], ["/notifications", t("nav.notifications")]]);
 
   return (
     <div className="flex min-h-screen flex-wrap bg-paper">
@@ -58,6 +61,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         </span>
         <span className="flex items-center gap-3">
           <PageTitle titles={titles} className="text-[13px] font-semibold text-mist" />
+          <Bell count={unread ?? 0} label={t("nav.notifications")} className="text-mist" />
           <Link href="/profile" aria-label={t("nav.profile")} className="flex h-11 w-11 items-center justify-center rounded-full text-mist">
             <UserRound aria-hidden size={22} />
           </Link>
@@ -66,8 +70,9 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
       {/* Side menu (hidden on phones) */}
       <nav aria-label={t("nav.mainMenu")} className="hidden flex-[1_1_220px] flex-col gap-1 bg-forest px-4 py-6 min-[700px]:flex min-[700px]:max-w-[260px]">
-        <div className="mx-3 mb-5">
+        <div className="mx-3 mb-5 flex items-center justify-between gap-2">
           <Logo subtitle={t("common.officeHub")} />
+          <Bell count={unread ?? 0} label={t("nav.notifications")} className="text-mist hover:bg-forest-2" />
         </div>
         <SideNav items={items} sections={{ work: t("nav.work"), hr: t("nav.hr"), admin: t("nav.admin") }} />
         <div className="mt-auto flex flex-col gap-3 pt-5">

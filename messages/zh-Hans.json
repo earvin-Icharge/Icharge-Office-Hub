@@ -50,7 +50,8 @@
     "timein": "打卡",
     "profile": "我的资料",
     "mainMenu": "主菜单",
-    "phoneMenu": "手机菜单"
+    "phoneMenu": "手机菜单",
+    "notifications": "通知"
   },
   "login": {
     "staffOnly": "仅限 iCharge 员工",
@@ -473,5 +474,24 @@
       "uploaded": "文件已上传。"
     },
     "leaveWarning": "提醒：{name} 在该日期已获批休假。"
+  },
+  "notifications": {
+    "title": "通知",
+    "markAll": "全部标为已读",
+    "none": "暂无通知。",
+    "unread": "未读",
+    "urgent": "紧急"
+  },
+  "channels": {
+    "title": "邮件和 Telegram",
+    "help": "任务分配、提醒、升级和审批通知。评论只在应用内显示。免打扰时间：晚上 9:00 至早上 7:00（仅紧急）。",
+    "email": "发邮件给我",
+    "telegram": "Telegram",
+    "telegramConnected": "已连接",
+    "telegramConnect": "连接 Telegram",
+    "telegramSteps": "打开机器人并发送此代码：",
+    "telegramOpen": "打开 Office Hub 机器人",
+    "telegramNotReady": "Telegram 机器人尚未设置。",
+    "save": "保存"
   }
 }

@@ -5,6 +5,7 @@ import { getDevice, readDeviceKey } from "@/lib/device";
 import { QuickSignIn } from "./QuickSignIn";
 import { MyDevices, type DeviceItem } from "./MyDevices";
 import { InstallApp, PushToggle } from "./PushAndInstall";
+import { Channels } from "./Channels";
 import { redirect } from "next/navigation";
 import { getViewer } from "@/lib/viewer";
 import { LanguagePicker } from "./LanguagePicker";
@@ -60,6 +61,10 @@ export default async function ProfilePage() {
       <section className={card}>
         <h2 className="text-base font-bold">{t("push.title")}</h2>
         <PushToggle />
+      </section>
+      <section className={card}>
+        <h2 className="text-base font-bold">{t("channels.title")}</h2>
+        <Channels profileId={viewer.id} />
       </section>
       <section className={card}>
         <h2 className="text-base font-bold">{t("install.title")}</h2>
