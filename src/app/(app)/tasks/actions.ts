@@ -29,18 +29,23 @@ export async function createTask(f: FormData) {
     const q = new URLSearchParams({ error: error.message, ...Object.fromEntries([...f.entries()].filter(([k, v]) => typeof v === "string" && k !== "watchers" && !k.startsWith("$")).map(([k, v]) => [k, String(v)])) });
     redirect(`/tasks/new?${q.toString()}`);
   }
+  // Spec 5.3: warn when the task is due during the owner's approved leave.
+  const { data: warn } = await supabase.rpc("leave_conflict", { p_owner: payload.owner_id, p_due: payload.due_at });
+  const w = warn ? `&warn=${encodeURIComponent(String(warn))}` : "";
   const next = s(f, "return_to");
-  redirect(next.startsWith("/") ? `${next}${next.includes("?") ? "&" : "?"}ok=created` : `/tasks/${data}?ok=created`);
+  redirect(next.startsWith("/") ? `${next}${next.includes("?") ? "&" : "?"}ok=created${w}` : `/tasks/${data}?ok=created${w}`);
 }
 
 export async function updateTask(f: FormData) {
   const id = s(f, "id");
   const supabase = await createClient();
+  const { data: warn } = await supabase.rpc("leave_conflict", { p_owner: s(f, "owner_id"), p_due: fromManilaInput(s(f, "due_at")) });
   const r = await supabase.rpc("update_task", { p_id: id, p: {
     title: s(f, "title"), description: s(f, "description"), owner_id: s(f, "owner_id"), due_at: fromManilaInput(s(f, "due_at")),
     priority: s(f, "priority"), needs_approval: f.get("needs_approval") === "on", follow_up_at: fromManilaInput(s(f, "follow_up_at")),
     recurrence_rule: s(f, "recurrence_rule"),
   } });
+  if (!r.error && warn) redirect(`/tasks/${id}?ok=saved&warn=${encodeURIComponent(String(warn))}`);
   back(id, r, "saved");
 }
 

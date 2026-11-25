@@ -1084,5 +1084,57 @@
       "reviewed": "已标记审核。",
       "wfh": "已发送给人事。"
     }
+  },
+  "leave": {
+    "title": "请假",
+    "balances": "我的假期余额 {year}",
+    "available": "剩余 {n} 天",
+    "used": "已用 {n}",
+    "pending": "待批 {n}",
+    "file": "申请请假",
+    "type": "假期类型",
+    "start": "开始日期",
+    "end": "结束日期",
+    "half": "半天（仅限一天）",
+    "reason": "原因（可选）",
+    "send": "提交申请",
+    "mine": "我的申请",
+    "approvals": "待我审批",
+    "all": "全部申请",
+    "none": "暂无内容。",
+    "approve": "批准",
+    "decline": "拒绝",
+    "declineReason": "拒绝原因",
+    "cancel": "撤销申请",
+    "status": {
+      "pending": "待审批",
+      "approved": "已批准",
+      "declined": "已拒绝",
+      "cancelled": "已撤销"
+    },
+    "days": "{n} 天",
+    "approver": "审批人：{name}",
+    "tasksDuring": "请假期间到期的任务",
+    "reassign": "打开以改派",
+    "hrBalances": "假期余额 {year}",
+    "entitled": "应有天数",
+    "adjust": "调整",
+    "save": "保存",
+    "types": "假期类型",
+    "yearly": "每年天数",
+    "paid": "带薪",
+    "holidays": "假日",
+    "holidayName": "假日名称",
+    "regular": "法定假日",
+    "special": "特别非工作日",
+    "add": "添加",
+    "remove": "删除",
+    "warning": "提醒：{text}。请考虑换负责人或日期。",
+    "ok": {
+      "filed": "请假申请已提交。",
+      "decided": "已完成。",
+      "saved": "已保存。",
+      "cancelled": "申请已撤销。"
+    }
   }
 }

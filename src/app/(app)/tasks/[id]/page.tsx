@@ -29,12 +29,13 @@ type Task = {
   owner: { name: string } | null; assigner: { name: string } | null; project: { id: string; name: string } | null;
 };
 
-export default async function TaskPage({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ ok?: string; error?: string }> }) {
+export default async function TaskPage({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ ok?: string; error?: string; warn?: string }> }) {
   const viewer = await getViewer();
   if (!viewer) redirect("/pending");
   const { id } = await params;
   const sp = await searchParams;
   const t = await getTranslations("tasks");
+  const tl = await getTranslations("leave");
   const format = await getFormatter();
   const when = (d: string) => format.dateTime(new Date(d), { weekday: "short", day: "numeric", month: "short", hour: "numeric", minute: "2-digit" });
   const supabase = await createClient();
@@ -77,6 +78,7 @@ export default async function TaskPage({ params, searchParams }: { params: Promi
         </div>
       </div>
       <Flash ok={sp.ok ? (t.has(`ok.${sp.ok}`) ? t(`ok.${sp.ok}`) : null) : null} error={sp.error} />
+      {sp.warn && <p role="alert" className="rounded-[10px] border border-[#FCD34D] bg-[#FFFBEB] px-3 py-2.5 text-sm font-semibold text-[#92400E]">{tl("warning", { text: sp.warn })}</p>}
 
       <div className="flex flex-wrap items-start gap-5">
         <div className="flex min-w-0 flex-[2_1_480px] flex-col gap-4">

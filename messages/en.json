@@ -1084,5 +1084,57 @@
       "reviewed": "Marked reviewed.",
       "wfh": "Sent to HR."
     }
+  },
+  "leave": {
+    "title": "Leave",
+    "balances": "My balances {year}",
+    "available": "{n} days left",
+    "used": "Used {n}",
+    "pending": "Pending {n}",
+    "file": "File leave",
+    "type": "Leave type",
+    "start": "First day",
+    "end": "Last day",
+    "half": "Half day (one day only)",
+    "reason": "Reason (optional)",
+    "send": "Send request",
+    "mine": "My requests",
+    "approvals": "Waiting for my approval",
+    "all": "All requests",
+    "none": "Nothing here.",
+    "approve": "Approve",
+    "decline": "Decline",
+    "declineReason": "Reason for declining",
+    "cancel": "Cancel request",
+    "status": {
+      "pending": "Pending",
+      "approved": "Approved",
+      "declined": "Declined",
+      "cancelled": "Cancelled"
+    },
+    "days": "{n} days",
+    "approver": "Approver: {name}",
+    "tasksDuring": "Tasks due during this leave",
+    "reassign": "Open to reassign",
+    "hrBalances": "Balances {year}",
+    "entitled": "Entitled",
+    "adjust": "Adjustment",
+    "save": "Save",
+    "types": "Leave types",
+    "yearly": "Days per year",
+    "paid": "Paid",
+    "holidays": "Holidays",
+    "holidayName": "Holiday",
+    "regular": "Regular",
+    "special": "Special non-working",
+    "add": "Add",
+    "remove": "Remove",
+    "warning": "Heads up: {text}. Consider another owner or date.",
+    "ok": {
+      "filed": "Leave request sent.",
+      "decided": "Done.",
+      "saved": "Saved.",
+      "cancelled": "Request cancelled."
+    }
   }
 }
