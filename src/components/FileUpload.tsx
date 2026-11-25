@@ -7,7 +7,7 @@ import { createClient } from "@/lib/supabase/client";
 import { finishUpload, startUpload } from "@/app/(app)/tasks/actions";
 
 /** Uploads straight to the private bucket with a one-time link (max 20 MB). */
-export function FileUpload({ entity, entityId }: { entity: "task" | "project" | "issue" | "meeting"; entityId: string }) {
+export function FileUpload({ entity, entityId }: { entity: "task" | "project" | "issue" | "meeting" | "client"; entityId: string }) {
   const t = useTranslations("tasks");
   const router = useRouter();
   const input = useRef<HTMLInputElement>(null);

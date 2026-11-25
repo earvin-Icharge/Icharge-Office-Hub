@@ -30,7 +30,7 @@ export const NAV: NavItem[] = [
   { key: "issues", href: "/issues", icon: "issues", section: "work", step: "6", canSee: everyone },
   {
     key: "clients", href: "/clients", icon: "clients", section: "work", step: "6",
-    canSee: (v) => leader(v) || v.finance || heads(v, "bd") || (v.level === "staff" && v.departmentCode === "bd"),
+    canSee: (v) => leader(v) || v.finance || heads(v, "bd") || v.departmentCode === "bd",
   },
   {
     key: "cs", href: "/cs", icon: "cs", section: "work", step: "6",
