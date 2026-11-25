@@ -106,7 +106,7 @@ export async function deleteTask(f: FormData) {
 const CAN_SEE: Record<string, [string, string, string]> = {
   task: ["can_see_task", "p_task", "tasks"], project: ["can_see_project", "p_project", "projects"],
   issue: ["can_see_issue", "p_issue", "issues"], meeting: ["can_see_meeting", "p_meeting", "meetings"],
-  client: ["can_edit_client", "p_client", "clients"],
+  client: ["can_edit_client", "p_client", "clients"], discipline: ["can_file_discipline_files", "p_case", "hr/discipline"],
 };
 
 /** Step 1 of an upload: check access, then hand back a one-time upload link. */

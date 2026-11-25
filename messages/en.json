@@ -1136,5 +1136,53 @@
       "saved": "Saved.",
       "cancelled": "Request cancelled."
     }
+  },
+  "disc": {
+    "title": "Disciplinary records",
+    "mine": "My cases",
+    "all": "All cases",
+    "team": "Incident reports I filed",
+    "fileIncident": "File an incident report",
+    "issue": "Issue a document",
+    "employee": "Employee",
+    "type": "Type",
+    "date": "Date",
+    "description": "What happened",
+    "responseDays": "Response due in (days)",
+    "send": "Save",
+    "none": "Nothing here.",
+    "types": {
+      "incident_report": "Incident report",
+      "nte": "Notice to explain (NTE)",
+      "verbal_warning": "Verbal warning (record)",
+      "written_warning": "Written warning",
+      "decision": "Decision"
+    },
+    "status": {
+      "open": "Open",
+      "waiting_response": "Waiting for response",
+      "responded": "Responded",
+      "decided": "Decided",
+      "closed": "Closed"
+    },
+    "ref": "Case #{ref}",
+    "acknowledge": "I acknowledge receipt",
+    "acknowledged": "Received {date}",
+    "notAck": "Not acknowledged yet",
+    "respond": "Your written response",
+    "sendResponse": "Send response",
+    "responded": "Responded {date}",
+    "due": "Response due {date}",
+    "decision": "Decision",
+    "record": "Record decision",
+    "close": "Close the case",
+    "files": "Files",
+    "note": "The app records the process; it does not decide outcomes.",
+    "statusOnly": "You see the status only.",
+    "ok": {
+      "saved": "Saved.",
+      "ack": "Receipt acknowledged.",
+      "response": "Response sent."
+    }
   }
 }

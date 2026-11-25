@@ -1136,5 +1136,53 @@
       "saved": "已保存。",
       "cancelled": "申请已撤销。"
     }
+  },
+  "disc": {
+    "title": "纪律记录",
+    "mine": "我的记录",
+    "all": "全部记录",
+    "team": "我提交的事件报告",
+    "fileIncident": "提交事件报告",
+    "issue": "发出文件",
+    "employee": "员工",
+    "type": "类型",
+    "date": "日期",
+    "description": "发生了什么",
+    "responseDays": "回复期限（天）",
+    "send": "保存",
+    "none": "暂无内容。",
+    "types": {
+      "incident_report": "事件报告",
+      "nte": "说明通知（NTE）",
+      "verbal_warning": "口头警告（记录）",
+      "written_warning": "书面警告",
+      "decision": "决定"
+    },
+    "status": {
+      "open": "处理中",
+      "waiting_response": "等待回复",
+      "responded": "已回复",
+      "decided": "已决定",
+      "closed": "已结案"
+    },
+    "ref": "记录 #{ref}",
+    "acknowledge": "我确认已收到",
+    "acknowledged": "已于 {date} 收到",
+    "notAck": "尚未确认",
+    "respond": "您的书面回复",
+    "sendResponse": "发送回复",
+    "responded": "已于 {date} 回复",
+    "due": "回复期限 {date}",
+    "decision": "决定",
+    "record": "记录决定",
+    "close": "结案",
+    "files": "文件",
+    "note": "本应用只记录流程，不决定结果。",
+    "statusOnly": "您只能看到状态。",
+    "ok": {
+      "saved": "已保存。",
+      "ack": "已确认收到。",
+      "response": "回复已发送。"
+    }
   }
 }
