@@ -1,6 +1,7 @@
 import "server-only";
 import { randomUUID } from "crypto";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { cache } from "react";
 import { DEVICE_COOKIE, EMAIL_CODE_EVERY_DAYS, LOCK_AFTER_HOURS } from "@/lib/session";
 
 export type DeviceRow = {
@@ -67,12 +68,21 @@ export async function recordEmailSignIn(deviceKey: string, profileId: string, ua
     );
 }
 
+export type AuthSettings = { lockHours: number; emailCodeDays: number; sessionDays: number };
+
+/** Quick sign-in rules from Settings (Leader): lock after 12 h, email code every 90 days, stay signed in 30 days. */
+export const authSettings = cache(async (): Promise<AuthSettings> => {
+  const { data } = await createAdminClient().from("app_settings").select("key, value").in("key", ["lock_hours", "email_code_days", "session_days"]);
+  const v = (k: string, d: number) => Number(data?.find((x) => x.key === k)?.value ?? d) || d;
+  return { lockHours: v("lock_hours", LOCK_AFTER_HOURS), emailCodeDays: v("email_code_days", EMAIL_CODE_EVERY_DAYS), sessionDays: v("session_days", 30) };
+});
+
 /** What this device must do before the app opens. */
-export function deviceGate(d: DeviceRow | null): "ok" | "reauth" | "unlock" {
+export function deviceGate(d: DeviceRow | null, s: AuthSettings = { lockHours: LOCK_AFTER_HOURS, emailCodeDays: EMAIL_CODE_EVERY_DAYS, sessionDays: 30 }): "ok" | "reauth" | "unlock" {
   if (!d) return "ok";
   if (d.removed_at) return "reauth";
-  if (Date.now() - new Date(d.last_email_code_at).getTime() > EMAIL_CODE_EVERY_DAYS * 86400_000) return "reauth";
-  if (d.quick_method && Date.now() - new Date(d.last_seen_at).getTime() > LOCK_AFTER_HOURS * 3600_000) return "unlock";
+  if (Date.now() - new Date(d.last_email_code_at).getTime() > s.emailCodeDays * 86400_000) return "reauth";
+  if (d.quick_method && Date.now() - new Date(d.last_seen_at).getTime() > s.lockHours * 3600_000) return "unlock";
   return "ok";
 }
 

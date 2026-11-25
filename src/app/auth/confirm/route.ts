@@ -3,7 +3,7 @@ import type { EmailOtpType } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/server";
 import { languageFor } from "@/lib/auth-rules";
 import { DEVICE_COOKIE, LOCALE_COOKIE, SIGNED_IN_COOKIE, deviceCookieOptions, signedInCookieOptions } from "@/lib/session";
-import { newDeviceKey, readDeviceKey, recordEmailSignIn } from "@/lib/device";
+import { authSettings, newDeviceKey, readDeviceKey, recordEmailSignIn } from "@/lib/device";
 
 /** Opens a one-time sign-in link (used by the builder's test-login script for the test accounts). */
 export async function GET(request: NextRequest) {
@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
   if (error || !data.user) return fail;
 
   const res = NextResponse.redirect(new URL("/today", url.origin));
-  res.cookies.set(SIGNED_IN_COOKIE, new Date().toISOString(), signedInCookieOptions);
+  res.cookies.set(SIGNED_IN_COOKIE, new Date().toISOString(), { ...signedInCookieOptions, maxAge: (await authSettings()).sessionDays * 86400 });
   res.cookies.set(LOCALE_COOKIE, await languageFor(data.user.id), { path: "/", maxAge: 60 * 60 * 24 * 365 });
   let key = readDeviceKey(request.cookies);
   if (!key) {

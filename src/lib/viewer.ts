@@ -22,6 +22,7 @@ export type Viewer = {
   language: "en" | "zh-Hans";
   /** Set when level, HR/Finance access or active status changes: older sessions must sign in again. */
   accessChangedAt: string;
+  privacyAccepted: boolean;
 };
 
 type ProfileRow = {
@@ -36,6 +37,7 @@ type ProfileRow = {
   default_business: BusinessFilter;
   language: "en" | "zh-Hans";
   access_changed_at: string;
+  privacy_accepted_at: string | null;
   department: { code: string; name: string } | null;
 };
 
@@ -50,7 +52,7 @@ export const getViewer = cache(async (): Promise<Viewer | null> => {
   const { data } = await supabase
     .from("profiles")
     .select(
-      "id, name, email, position, access_level, hr_access, finance_access, active, default_business, language, access_changed_at, department:departments!profiles_department_id_fkey(code, name)",
+      "id, name, email, position, access_level, hr_access, finance_access, active, default_business, language, access_changed_at, privacy_accepted_at, department:departments!profiles_department_id_fkey(code, name)",
     )
     .eq("id", user.id)
     .maybeSingle<ProfileRow>();
@@ -73,5 +75,6 @@ export const getViewer = cache(async (): Promise<Viewer | null> => {
     defaultBusiness: data.default_business,
     language: data.language,
     accessChangedAt: data.access_changed_at,
+    privacyAccepted: !!data.privacy_accepted_at,
   };
 });

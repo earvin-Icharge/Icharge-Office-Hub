@@ -22,6 +22,7 @@ export default async function WelcomePage({ searchParams }: { searchParams: Prom
   if (isOpen(await getMyLatestRequest())) redirect("/pending");
 
   const t = await getTranslations("welcome");
+  const tp = await getTranslations("privacy");
   const { error } = await searchParams;
   const opts = ((await supabase.rpc("welcome_options")).data ?? { departments: [], supervisors: [] }) as Options;
 
@@ -56,6 +57,8 @@ export default async function WelcomePage({ searchParams }: { searchParams: Prom
           </label>
           <label className={label}>{t("mobile")}<input name="mobile" type="tel" required minLength={7} maxLength={30} autoComplete="tel" placeholder="0917 123 4567" className={field} /></label>
         </div>
+        <label className="flex items-start gap-2 text-sm"><input type="checkbox" required className="mt-0.5 h-4 w-4 accent-[#2F6B0A]" />
+          <span>{tp("consentWelcome")} — <a href="/privacy?view=1" target="_blank" className="font-semibold text-leaf underline">{tp("title")}</a></span></label>
         <button type="submit" className="mt-1 h-12 rounded-xl bg-charge text-base font-bold text-forest">{t("submit")}</button>
       </form>
     </div>

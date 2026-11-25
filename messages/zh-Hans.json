@@ -1311,5 +1311,98 @@
       "leave": "假期余额",
       "performance": "绩效快照"
     }
+  },
+  "privacy": {
+    "title": "隐私声明",
+    "intro": "iCharge Office Hub 根据菲律宾《2012 年数据隐私法》（RA 10173），保存 Quanta Dance Inc.（iCharge Philippines）开展工作和人事管理所需的信息。",
+    "p1": "我们保存：您的姓名、职位、部门、工作邮箱和电话；您参与的任务、会议、问题和工单；考勤时间；请假和人事记录。",
+    "p2": "仅在上下班打卡时读取位置；上班打卡时拍一张自拍，仅用于考勤。位置信息 1 年后删除，自拍 90 天后删除。只有您本人、人事和领导可以查看。",
+    "p3": "每个人只能看到工作所需的内容。查看政府证件号码、文件、人事私密备注、定位或自拍都会记录在审计日志中。",
+    "p4": "您可以在应用中查看自己的记录。如需更正或有疑问，请联系人事。",
+    "agree": "我已阅读并同意",
+    "consentWelcome": "我已阅读隐私声明并同意"
+  },
+  "settings": {
+    "title": "设置",
+    "saved": "已保存。",
+    "company": "公司和登录（领导）",
+    "hrSet": "人事设置",
+    "csSet": "客服（客服负责人）",
+    "mine": "我的设置",
+    "myProfile": "语言、通知、快速登录和设备在「我的资料」中设置。",
+    "departments": "部门和负责人",
+    "head": "负责人",
+    "addDept": "添加部门",
+    "code": "代码",
+    "domains": "允许的邮箱域名",
+    "addDomain": "添加域名",
+    "remove": "删除",
+    "shifts": "班次",
+    "grace": "宽限（分钟）",
+    "days": "工作日（1 = 周一 … 7 = 周日）",
+    "addShift": "添加班次",
+    "links": "更多设置",
+    "issueTypes": "问题类型和时限",
+    "access": "权限级别",
+    "updates": "应用更新",
+    "sites": "办公室定位和外勤地点",
+    "holidays": "假日和假期类型",
+    "checklists": "入职和离职清单",
+    "cs": "客服快捷回复和 KPI 目标",
+    "backup": "每周备份",
+    "k": {
+      "ack_hours": "确认新任务时限（工作小时）",
+      "work_start": "工作日开始",
+      "work_end": "工作日结束",
+      "work_days": "工作日（1 = 周一 … 7 = 周日）",
+      "quiet_start": "免打扰开始",
+      "quiet_end": "免打扰结束",
+      "digest_time": "每日摘要时间",
+      "lock_hours": "关闭超过多少小时后要求指纹/PIN",
+      "email_code_days": "每隔多少天需要邮箱验证码",
+      "session_days": "保持登录天数",
+      "probation_months": "试用期（月）",
+      "iscreen_bd_commission": "iScreen BD 佣金（%）— 待财务确认",
+      "ceo_profile_id": "CEO（本人请假无需审批）",
+      "cs_anonymize_years": "多少年后匿名化客户信息",
+      "location_radius_m": "定位检查半径（米）",
+      "selfie_required": "上班打卡需要自拍",
+      "selfie_days": "自拍保留天数",
+      "location_days": "定位保留天数",
+      "offline_gap_minutes": "离线打卡延迟超过多少分钟需标记",
+      "cs_hours": "客服工作时间"
+    }
+  },
+  "audit": {
+    "title": "审计日志",
+    "help": "所有人事变更、权限变更、任务和问题状态变更，以及查看敏感数据的记录：谁、做了什么、何时、旧值 → 新值。",
+    "table": "范围",
+    "person": "相关人员",
+    "actor": "操作人",
+    "all": "全部",
+    "from": "从",
+    "none": "未找到记录。",
+    "changes": "更改：{fields}",
+    "viewed": "查看了 {what}"
+  },
+  "trash": {
+    "title": "回收站",
+    "help": "已删除的内容保留 30 天。只有领导可以恢复或永久删除。",
+    "restore": "恢复",
+    "delete": "永久删除",
+    "none": "回收站是空的。",
+    "kind": {
+      "task": "任务",
+      "project": "项目",
+      "meeting": "会议",
+      "issue": "问题",
+      "client": "客户",
+      "file": "文件"
+    }
+  },
+  "backup": {
+    "title": "每周备份",
+    "help": "将每个数据表下载为可用 Excel 打开的 CSV 文件。请把文件存放在安全、私密的地方。下载操作会记录在审计日志中。",
+    "download": "下载"
   }
 }

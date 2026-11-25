@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { deviceGate, deviceNameFrom, getDevice, newDeviceKey, readDeviceKey } from "@/lib/device";
+import { authSettings, deviceGate, deviceNameFrom, getDevice, newDeviceKey, readDeviceKey } from "@/lib/device";
 import { DEVICE_COOKIE, SIGNED_IN_COOKIE, deviceCookieOptions } from "@/lib/session";
 
 /**
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
     });
     return res;
   }
-  const gate = deviceGate(device);
+  const gate = deviceGate(device, await authSettings());
   if (gate !== "ok") return NextResponse.json({ gate });
   await db.from("user_devices").update({ last_seen_at: new Date().toISOString(), app_version: version, device_name: deviceNameFrom(ua) }).eq("id", device.id);
   return res;

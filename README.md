@@ -3,9 +3,19 @@
 Work + HR app for iCharge staff. The full plan is in [SPEC.md](SPEC.md).
 
 ## Build status
-- [x] Step 1a: foundation (theme, languages, email-code sign-in, access levels, RLS helpers, test accounts)
-- [x] Step 1b: access requests and invites (emails for these come in step 3)
-- [x] Step 1c: phone app (PWA), quick sign-in, app updates
+All steps 1–12 of SPEC.md are built (version 1.0.0). Step 13 (store apps with Capacitor) is optional.
+
+## Before launch (needs the owner)
+| Item | Why |
+|---|---|
+| Supabase › Authentication › SMTP password = a working Resend key | Sign-in code emails |
+| Verify icharge.com.ph in Resend (DNS records) | Codes and emails reach every staff inbox, not only earvin@ |
+| Vercel env `RESEND_API_KEY` (+ `EMAIL_FROM` once the domain is verified) | Reminder, digest and invite emails from the app |
+| Telegram bot (BotFather) → Vercel env `TELEGRAM_BOT_TOKEN`, `TELEGRAM_BOT_USERNAME`, `TELEGRAM_WEBHOOK_SECRET` | Telegram notifications |
+| An SMS provider | Refund-paid and rating SMS to customers (queued in `sms_outbox` until then) |
+| Settings: office pin, field sites, CEO, iScreen BD commission % | Location checks, leave approval, BD plan |
+| Vercel Pro plan | Vercel's free plan is for non-commercial use |
+| Deactivate the four plus-address test accounts | Spec 14.1 |
 
 ## Where things are
 | What | Where |
@@ -16,6 +26,7 @@ Work + HR app for iCharge staff. The full plan is in [SPEC.md](SPEC.md).
 | Menu and who sees each item | `src/lib/nav.ts` |
 | English / Chinese text | `messages/en.json`, `messages/zh-Hans.json` |
 | Test accounts and test sign-in link (builder only, never deployed) | `scripts/seed.ts`, `scripts/test-login.ts` |
+| Apply a database file (builder only) | `scripts/db-apply.sh` |
 
 ## Builder commands
 ```bash

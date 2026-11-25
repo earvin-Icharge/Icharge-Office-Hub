@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
 import { SIGNED_IN_COOKIE } from "@/lib/session";
-import { deviceGate, getDevice, readDeviceKey } from "@/lib/device";
+import { authSettings, deviceGate, getDevice, readDeviceKey } from "@/lib/device";
 import { AppRuntime } from "@/components/AppRuntime";
 import { Bell } from "@/components/Bell";
 import { getTranslations } from "next-intl/server";
@@ -31,8 +31,11 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   const signedInAt = store.get(SIGNED_IN_COOKIE)?.value;
   if (signedInAt && new Date(viewer.accessChangedAt) > new Date(signedInAt)) redirect("/auth/reauth");
 
+  // Data Privacy Act: notice and consent on first sign-in (spec 10).
+  if (!viewer.privacyAccepted) redirect("/privacy");
+
   // Quick sign-in (spec 3.5): removed device or 90 days -> email code; closed over 12 h -> fingerprint/PIN.
-  const gate = deviceGate(await getDevice(readDeviceKey(store), viewer.id));
+  const gate = deviceGate(await getDevice(readDeviceKey(store), viewer.id), await authSettings());
   if (gate === "reauth") redirect("/auth/reauth?why=device");
   if (gate === "unlock") redirect("/unlock");
 

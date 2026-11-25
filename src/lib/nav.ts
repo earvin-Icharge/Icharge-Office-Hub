@@ -49,8 +49,8 @@ export const NAV: NavItem[] = [
   { key: "access", href: "/settings/access", icon: "access", section: "admin", step: "1b", canSee: (v) => leader(v) || v.hr },
   { key: "updates", href: "/settings/updates", icon: "updates", section: "admin", step: "1c", canSee: leader },
   {
-    key: "settings", href: "/settings", icon: "settings", section: "admin", step: "later",
-    canSee: (v) => leader(v) || v.hr || heads(v, "cs") || heads(v, "ops"),
+    key: "settings", href: "/settings", icon: "settings", section: "admin", step: "12",
+    canSee: everyone,
   },
   { key: "audit", href: "/audit", icon: "audit", section: "admin", step: "12", canSee: (v) => leader(v) || v.hr },
   { key: "trash", href: "/trash", icon: "trash", section: "admin", step: "12", canSee: leader },

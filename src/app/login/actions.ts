@@ -1,7 +1,7 @@
 "use server";
 
 import { cookies, headers } from "next/headers";
-import { newDeviceKey, readDeviceKey, recordEmailSignIn } from "@/lib/device";
+import { authSettings, newDeviceKey, readDeviceKey, recordEmailSignIn } from "@/lib/device";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import {
@@ -68,7 +68,7 @@ export async function verifyCode(rawEmail: string, rawCode: string): Promise<Ver
 
   await clearAttempts(email);
   const store = await cookies();
-  store.set(SIGNED_IN_COOKIE, new Date().toISOString(), signedInCookieOptions);
+  store.set(SIGNED_IN_COOKIE, new Date().toISOString(), { ...signedInCookieOptions, maxAge: (await authSettings()).sessionDays * 86400 });
   store.set(LOCALE_COOKIE, await languageFor(data.user.id), { path: "/", maxAge: 60 * 60 * 24 * 365 });
   // This device is trusted again for 90 days (spec 3.5).
   let key = readDeviceKey(store);

@@ -1311,5 +1311,98 @@
       "leave": "Leave balances",
       "performance": "Performance snapshot"
     }
+  },
+  "privacy": {
+    "title": "Privacy notice",
+    "intro": "iCharge Office Hub keeps the information needed to run work and HR at Quanta Dance Inc. (iCharge Philippines), under the Data Privacy Act of 2012 (RA 10173).",
+    "p1": "What we keep: your name, position, department, work email and phone; tasks, meetings, issues and cases you work on; attendance times; leave and HR records.",
+    "p2": "Location is read only at time-in and time-out, and a selfie is taken at time-in, for attendance only. Location is deleted after 1 year and selfies after 90 days. Both are visible only to you, HR and the Leader.",
+    "p3": "Each person sees only what their job needs. Opening government IDs, documents, private HR notes, GPS points or selfies is recorded in the audit log.",
+    "p4": "You can see your own records in the app. For corrections or questions, contact HR.",
+    "agree": "I have read this and I agree",
+    "consentWelcome": "I have read the privacy notice and agree"
+  },
+  "settings": {
+    "title": "Settings",
+    "saved": "Saved.",
+    "company": "Company and sign-in (Leader)",
+    "hrSet": "HR settings",
+    "csSet": "Customer service (CS lead)",
+    "mine": "My settings",
+    "myProfile": "Language, notifications, quick sign-in and devices are in My profile.",
+    "departments": "Departments and heads",
+    "head": "Head",
+    "addDept": "Add department",
+    "code": "Code",
+    "domains": "Allowed email domains",
+    "addDomain": "Add domain",
+    "remove": "Remove",
+    "shifts": "Shifts",
+    "grace": "Grace (min)",
+    "days": "Days (1 = Mon … 7 = Sun)",
+    "addShift": "Add shift",
+    "links": "More settings",
+    "issueTypes": "Issue types and targets",
+    "access": "Access levels",
+    "updates": "App updates",
+    "sites": "Office pin and field sites",
+    "holidays": "Holidays and leave types",
+    "checklists": "Onboarding and offboarding checklists",
+    "cs": "CS quick replies and KPI targets",
+    "backup": "Weekly backup",
+    "k": {
+      "ack_hours": "Acknowledge new tasks within (working hours)",
+      "work_start": "Working day starts",
+      "work_end": "Working day ends",
+      "work_days": "Working days (1 = Mon … 7 = Sun)",
+      "quiet_start": "Quiet hours start",
+      "quiet_end": "Quiet hours end",
+      "digest_time": "Daily digest time",
+      "lock_hours": "Ask for fingerprint/PIN after closed for (hours)",
+      "email_code_days": "Email code needed every (days)",
+      "session_days": "Stay signed in for (days)",
+      "probation_months": "Probation period (months)",
+      "iscreen_bd_commission": "iScreen BD commission (%) — Finance to confirm",
+      "ceo_profile_id": "CEO (their own leave needs no approval)",
+      "cs_anonymize_years": "Anonymize customer details after (years)",
+      "location_radius_m": "Location check radius (m)",
+      "selfie_required": "Selfie required at time-in",
+      "selfie_days": "Keep selfies for (days)",
+      "location_days": "Keep GPS points for (days)",
+      "offline_gap_minutes": "Flag offline time-ins sent more than (minutes) later",
+      "cs_hours": "CS working hours"
+    }
+  },
+  "audit": {
+    "title": "Audit log",
+    "help": "Every HR change, access change, task and issue status change, and every view of sensitive data: who, what, when, old → new.",
+    "table": "Area",
+    "person": "About",
+    "actor": "By",
+    "all": "All",
+    "from": "From",
+    "none": "Nothing found.",
+    "changes": "Changed: {fields}",
+    "viewed": "Viewed {what}"
+  },
+  "trash": {
+    "title": "Trash",
+    "help": "Deleted items stay here for 30 days. Only a Leader can restore them or delete them permanently.",
+    "restore": "Restore",
+    "delete": "Delete permanently",
+    "none": "Trash is empty.",
+    "kind": {
+      "task": "Task",
+      "project": "Project",
+      "meeting": "Meeting",
+      "issue": "Issue",
+      "client": "Client",
+      "file": "File"
+    }
+  },
+  "backup": {
+    "title": "Weekly backup",
+    "help": "Download every table as a CSV file that opens in Excel. Store the files somewhere safe and private. Downloading is recorded in the audit log.",
+    "download": "Download"
   }
 }
