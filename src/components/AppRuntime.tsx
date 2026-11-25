@@ -3,6 +3,7 @@
 import { useLocale, useTranslations } from "next-intl";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { APP_VERSION, BUILD_ID, compareVersions } from "@/lib/version";
+import { flushQueue } from "@/lib/clock-send";
 
 const CHECK_EVERY_MS = 5 * 60 * 1000;
 const WHATS_NEW_PENDING = "oh_whats_new_pending";
@@ -83,11 +84,15 @@ export function AppRuntime() {
     if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(() => undefined);
     heartbeat();
     checkVersion();
-    const id = setInterval(() => { heartbeat(); checkVersion(); }, CHECK_EVERY_MS);
+    // Time records saved with no signal are sent as soon as the phone is back online (spec 5.2).
+    const flush = () => { if (navigator.onLine) flushQueue().catch(() => undefined); };
+    flush();
+    window.addEventListener("online", flush);
+    const id = setInterval(() => { heartbeat(); checkVersion(); flush(); }, CHECK_EVERY_MS);
     const busyId = setInterval(() => setBusyNow(isBusy()), 2000);
     const onVisible = () => { if (document.visibilityState === "visible") { heartbeat(); checkVersion(); } };
     document.addEventListener("visibilitychange", onVisible);
-    return () => { clearInterval(id); clearInterval(busyId); document.removeEventListener("visibilitychange", onVisible); };
+    return () => { clearInterval(id); clearInterval(busyId); document.removeEventListener("visibilitychange", onVisible); window.removeEventListener("online", flush); };
   }, [heartbeat, checkVersion, isBusy]);
 
   // What's new: after tapping Update, or the first time this version opens on this device.
