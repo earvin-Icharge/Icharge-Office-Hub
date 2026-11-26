@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import { isCsStaff } from "@/lib/nav";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { getFormatter, getTranslations } from "next-intl/server";
@@ -22,6 +23,7 @@ type Priv = { address?: string; emergency_name?: string; emergency_phone?: strin
 export default async function EmployeePage({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ ok?: string; error?: string; show?: string }> }) {
   const viewer = await getViewer();
   if (!viewer) redirect("/pending");
+  if (isCsStaff(viewer)) redirect("/cs"); // CS staff: CS menu only (src/lib/nav.ts)
   const { id } = await params;
   const sp = await searchParams;
   const t = await getTranslations("hr");

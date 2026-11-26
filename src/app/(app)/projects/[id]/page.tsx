@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { isCsStaff } from "@/lib/nav";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { getFormatter, getTranslations } from "next-intl/server";
@@ -23,6 +24,7 @@ const field = "h-10 rounded-[10px] border border-field bg-white px-3 text-sm min
 export default async function ProjectPage({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ ok?: string; error?: string }> }) {
   const viewer = await getViewer();
   if (!viewer) redirect("/pending");
+  if (isCsStaff(viewer)) redirect("/cs"); // CS staff: CS menu only (src/lib/nav.ts)
   const { id } = await params;
   const sp = await searchParams;
   const t = await getTranslations("projects");

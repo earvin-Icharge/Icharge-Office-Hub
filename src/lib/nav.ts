@@ -21,6 +21,13 @@ const manager = (v: Viewer) => v.level === "manager";
 const heads = (v: Viewer, code: string) => v.headOf.includes(code);
 const everyone = () => true;
 
+/**
+ * Customer service staff (owner decision 26 Nov 2026): Staff-level people in the CS department see only the CS menu below.
+ * A CS lead (head of CS), people with HR or Finance access, Managers and Leaders keep the full menu.
+ */
+export const isCsStaff = (v: Viewer) => v.level === "staff" && v.departmentCode === "cs" && !v.hr && !v.finance && !heads(v, "cs");
+const CS_STAFF_MENU = new Set(["myday", "tasks", "calendar", "meetings", "issues", "cs", "attendance", "leave", "settings"]);
+
 export const NAV: NavItem[] = [
   { key: "myday", href: "/today", icon: "myday", section: "work", step: "1a", canSee: everyone },
   { key: "tasks", href: "/tasks", icon: "tasks", section: "work", step: "2", canSee: everyone },
@@ -57,7 +64,8 @@ export const NAV: NavItem[] = [
 ];
 
 export function visibleNav(v: Viewer) {
-  return NAV.filter((item) => item.canSee(v));
+  const cs = isCsStaff(v);
+  return NAV.filter((item) => item.canSee(v) && (!cs || CS_STAFF_MENU.has(item.key)));
 }
 
 export function findNav(pathname: string) {

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { isCsStaff } from "@/lib/nav";
 import { getTranslations } from "next-intl/server";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
@@ -11,6 +12,7 @@ export const metadata = { title: "Employees" };
 export default async function EmployeesPage({ searchParams }: { searchParams: Promise<{ q?: string; dept?: string }> }) {
   const viewer = await getViewer();
   if (!viewer) redirect("/pending");
+  if (isCsStaff(viewer)) redirect("/cs"); // CS staff: CS menu only (src/lib/nav.ts)
   const t = await getTranslations("hr");
   const sp = await searchParams;
   const supabase = await createClient();

@@ -1,4 +1,5 @@
 import { getTranslations } from "next-intl/server";
+import { isCsStaff } from "@/lib/nav";
 import { redirect } from "next/navigation";
 import { Flash } from "@/components/Flash";
 import { getViewer } from "@/lib/viewer";
@@ -9,6 +10,7 @@ export const metadata = { title: "New project" };
 export default async function NewProjectPage({ searchParams }: { searchParams: Promise<{ error?: string }> }) {
   const viewer = await getViewer();
   if (!viewer) redirect("/pending");
+  if (isCsStaff(viewer)) redirect("/cs"); // CS staff: CS menu only (src/lib/nav.ts)
   const t = await getTranslations("projects");
   const { error } = await searchParams;
   return (

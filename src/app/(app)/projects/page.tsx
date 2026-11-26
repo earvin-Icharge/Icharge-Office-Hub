@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { isCsStaff } from "@/lib/nav";
 import Link from "next/link";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { redirect } from "next/navigation";
@@ -17,6 +18,7 @@ type Project = { id: string; name: string; business: "icharge" | "iscreen" | "co
 export default async function ProjectsPage({ searchParams }: { searchParams: Promise<{ view?: string; ok?: string; error?: string }> }) {
   const viewer = await getViewer();
   if (!viewer) redirect("/pending");
+  if (isCsStaff(viewer)) redirect("/cs"); // CS staff: CS menu only (src/lib/nav.ts)
   const sp = await searchParams;
   const view = sp.view === "list" ? "list" : "board";
   const t = await getTranslations("projects");

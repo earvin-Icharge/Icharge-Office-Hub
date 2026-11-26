@@ -1,4 +1,5 @@
 import { getTranslations } from "next-intl/server";
+import { isCsStaff } from "@/lib/nav";
 import { redirect } from "next/navigation";
 import { getDepartments, getPeople } from "@/lib/people";
 import { getViewer } from "@/lib/viewer";
@@ -11,6 +12,7 @@ const lab = "flex flex-col gap-1.5 text-[13px] font-semibold";
 export default async function ReportsPage() {
   const viewer = await getViewer();
   if (!viewer) redirect("/pending");
+  if (isCsStaff(viewer)) redirect("/cs"); // CS staff: CS menu only (src/lib/nav.ts)
   const t = await getTranslations("reports");
   const tb = await getTranslations("business");
   const [depts, people] = await Promise.all([getDepartments(), getPeople()]);

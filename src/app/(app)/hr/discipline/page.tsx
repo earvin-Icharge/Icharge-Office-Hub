@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { isCsStaff } from "@/lib/nav";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { redirect } from "next/navigation";
 import { Flash } from "@/components/Flash";
@@ -16,6 +17,7 @@ type Row = { id: string; ref: number; profile_id: string; type: string; case_dat
 export default async function DisciplinePage({ searchParams }: { searchParams: Promise<{ ok?: string; error?: string }> }) {
   const viewer = await getViewer();
   if (!viewer) redirect("/pending");
+  if (isCsStaff(viewer)) redirect("/cs"); // CS staff: CS menu only (src/lib/nav.ts)
   const t = await getTranslations("disc");
   const format = await getFormatter();
   const sp = await searchParams;

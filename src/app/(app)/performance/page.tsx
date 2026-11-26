@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import { isCsStaff } from "@/lib/nav";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { redirect } from "next/navigation";
 import { Battery } from "@/components/Battery";
@@ -18,6 +19,7 @@ const RATINGS = ["quality", "timeliness", "teamwork", "communication", "initiati
 export default async function PerformancePage({ searchParams }: { searchParams: Promise<{ who?: string; month?: string; ok?: string; error?: string }> }) {
   const viewer = await getViewer();
   if (!viewer) redirect("/pending");
+  if (isCsStaff(viewer)) redirect("/cs"); // CS staff: CS menu only (src/lib/nav.ts)
   const t = await getTranslations("perf");
   const tc = await getTranslations("cs");
   const format = await getFormatter();
