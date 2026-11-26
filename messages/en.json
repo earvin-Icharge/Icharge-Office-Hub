@@ -245,6 +245,7 @@
     "gotIt": "Got it"
   },
   "quick": {
+    "notEnrolled": "Add a fingerprint or screen lock in your phone's Settings first.",
     "title": "Quick sign-in",
     "help": "Open the app with your fingerprint, Face ID or a 6-digit PIN instead of an email code. For this device only.",
     "fingerprint": "Fingerprint or Face ID",
@@ -275,6 +276,10 @@
     "useEmail": "Sign in with an email code instead",
     "emailNeeded": "An email code is needed on a new device, every 90 days, or after 5 wrong PINs.",
     "errors": {
+      "changed": "Fingerprints on this phone changed. Set up quick sign-in again in My profile.",
+      "lockout": "Too many tries. Wait a minute or unlock your phone first, then try again.",
+      "phoneFailed": "Your phone couldn't use its fingerprint. Try again, or use the 6-digit PIN.",
+      "notHere": "Fingerprint sign-in isn't available here. Use the 6-digit PIN instead.",
       "pinFormat": "The PIN is 6 digits.",
       "pinSame": "Don't use the same digit 6 times.",
       "pinSequence": "Don't use 123456 or 654321.",
@@ -1413,7 +1418,7 @@
     "sub": "For iCharge staff. Sign in with your work email.",
     "button": "Download the app",
     "s1": "Tap Download the app.",
-    "s2": "Open the file named office-hub-2.1.apk (from the notification, or Files › Downloads). Delete older office-hub files first.",
+    "s2": "Open the file named office-hub-2.2.apk (from the notification, or Files › Downloads). Delete older office-hub files first.",
     "s3": "If your phone asks, allow your browser to install unknown apps, then tap Install (or Update). If Google Play Protect asks, tap Install anyway (or Scan app, then Install).",
     "s4": "Open Office Hub from your home screen and sign in once with your work email. Allow the camera and location when you first Time in.",
     "chrome": "The app shows the live Office Hub in its own window, so it is always the same as the website: same screens, same data, updated at once.",

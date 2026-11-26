@@ -23,7 +23,59 @@ Never put passwords, API keys, or customer data in this file.
 
 ## All Lessons
 
-(none yet)
+### L-001 · 2026-11-25 · Go-live · [server]
+- What happened: Reminders and app emails were never sent after go-live.
+- Root cause: The sign-in gate (middleware) redirected the database's /api/cron calls to the login page.
+- Rule: ALWAYS add every route called without a user (cron, webhooks, /.well-known, downloads) to the middleware's public paths.
+- Check: Call the route without cookies; it must answer itself (JSON/403), not show the login page.
+
+### L-002 · 2026-11-25 · Phone UI · [ui]
+- What happened: On phones most pages could not be reached; the top bar grew huge on short pages; the ☰ sheet sat under the bottom bar.
+- Root cause: No full menu on phones; wrapping flex rows stretch to min-h-screen; an overlay inside the sticky header was trapped in its layer.
+- Rule: ALWAYS give phones a ☰ menu to every page, use content-start on wrapping layouts, and portal full-screen overlays to document.body.
+- Check: At 320 and 360 px, screenshot short pages and tap every ☰ item.
+
+### L-003 · 2026-11-26 · Phone UI · [ui]
+- What happened: React error #418 (hydration) on My profile.
+- Root cause: Read navigator (browser-only) while rendering, so the server and the phone rendered different text.
+- Rule: NEVER read window/navigator during render; read them in useEffect and keep the result in state.
+- Check: Open the page and confirm no page errors in the browser console.
+
+### L-004 · 2026-11-26 · Android app · [deploy]
+- What happened: App 1.0 opened Firefox; app 2.0 could drop sign-in cookies.
+- Root cause: 1.0 was a Trusted Web Activity (hands the page to a browser); 2.0 used Capacitor server.url, whose local relay loses Set-Cookie on redirects.
+- Rule: NEVER use a browser hand-off, Capacitor server.url or allowNavigation for the live site; load it directly in the WebView (see mobile/README.md).
+- Check: Read mobile/README.md before changing the app shell.
+
+### L-005 · 2026-11-26 · Android app · [deploy]
+- What happened: The phone kept reinstalling the old app.
+- Root cause: Every release had the same file name; phones keep office-hub.apk, office-hub(1).apk… and the oldest was opened.
+- Rule: ALWAYS name the app file with its version (office-hub-X.Y.apk) and show the version on /download.
+- Check: /download link, file name and versionName all match.
+
+### L-006 · 2026-11-26 · Android app · [login]
+- What happened: Fingerprint set-up in the app always said "Cancelled".
+- Root cause: Browser passkeys are unreliable inside an Android WebView, and every error was shown as "Cancelled".
+- Rule: ALWAYS use the phone's own fingerprint prompt in the app (QuickUnlock), and NEVER show one message for every kind of failure.
+- Check: Run the simulated-phone test: set up, wrong signature refused, right one unlocks.
+
+### L-007 · 2026-11-26 · Testing · [testing]
+- What happened: A browser test failed although the app was right.
+- Root cause: [role="alert"] also matches Next.js's empty route announcer, and fixed pauses raced the server.
+- Rule: ALWAYS target the app's own element (p[role="alert"]) and wait for the result, never a fixed pause.
+- Check: Run the test twice; both runs must pass.
+
+### L-008 · 2026-11-25 · Database · [database]
+- What happened: Several SQL functions failed when first applied.
+- Root cause: Set-returning functions inside CASE; `text[] || 'x'` read as an array; a security_invoker view could not read hidden columns.
+- Rule: ALWAYS use `union all … where` instead of CASE around set-returning functions, array_append for one item, and a definer security_barrier view with an explicit access filter for masked data.
+- Check: Apply the migration, then call each function as a test user.
+
+### L-009 · 2026-11-25 · Security · [security]
+- What happened: Time in trusted a selfie path sent by the phone.
+- Root cause: The server did not check the file really existed in storage.
+- Rule: NEVER trust a file path from the browser; check it in storage.objects (owner and folder) on the server.
+- Check: Try a fake path as a test user; it must be refused.
 
 ## Archive
 

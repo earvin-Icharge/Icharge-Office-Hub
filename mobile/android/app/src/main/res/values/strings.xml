@@ -5,4 +5,5 @@
     <string name="package_name">ph.com.icharge.officehub</string>
     <string name="custom_url_scheme">ph.com.icharge.officehub</string>
     <string name="downloading">Downloading %1$s</string>
+    <string name="bio_subtitle">Confirm it\'s you to open Office Hub</string>
 </resources>

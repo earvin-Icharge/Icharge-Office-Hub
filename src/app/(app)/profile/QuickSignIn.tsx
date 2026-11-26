@@ -5,13 +5,16 @@ import { Fingerprint, KeyRound } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
-import { passkeyRegisterOptions, passkeyRegisterVerify, removeQuickSignIn, setPin } from "@/app/actions/quick";
+import { nativeBioChallenge, nativeBioRegister, passkeyRegisterOptions, passkeyRegisterVerify, removeQuickSignIn, setPin } from "@/app/actions/quick";
+import { hasNativeAlerts, nativeBioRegister as phoneRegister, nativeBioRemove, nativeBioStatus } from "@/lib/native";
 
 /** Set up fingerprint / Face ID / Windows Hello (passkey) or a 6-digit PIN on this device (spec 3.5). */
 export function QuickSignIn({ hasPasskey, hasPin }: { hasPasskey: boolean; hasPin: boolean }) {
   const t = useTranslations("quick");
   const router = useRouter();
   const [canPasskey, setCanPasskey] = useState<boolean | null>(null);
+  const [phone, setPhone] = useState(false); // inside the Android app: use the phone's own fingerprint prompt
+  const [phoneState, setPhoneState] = useState<string>();
   const [showPin, setShowPin] = useState(false);
   const [pin, setPinValue] = useState("");
   const [confirm, setConfirm] = useState("");
@@ -19,15 +22,37 @@ export function QuickSignIn({ hasPasskey, hasPin }: { hasPasskey: boolean; hasPi
   const [pending, start] = useTransition();
 
   useEffect(() => {
+    if (hasNativeAlerts()) {
+      nativeBioStatus().then((st) => {
+        if (!st) { setCanPasskey(false); return; } // app 2.1: no phone fingerprint yet
+        setPhone(true);
+        setPhoneState(st.state);
+        setCanPasskey(st.ready);
+      });
+      return;
+    }
     const pkc = (window as unknown as { PublicKeyCredential?: { isUserVerifyingPlatformAuthenticatorAvailable?: () => Promise<boolean> } }).PublicKeyCredential;
     if (!pkc?.isUserVerifyingPlatformAuthenticatorAvailable) { setCanPasskey(false); return; }
     pkc.isUserVerifyingPlatformAuthenticatorAvailable().then(setCanPasskey).catch(() => setCanPasskey(false));
   }, []);
 
   const err = (code: string) => (t.has(`errors.${code}`) ? t(`errors.${code}`) : t("errors.generic"));
+  const phoneErr = (code?: string) => (code === "cancelled" ? t("errors.cancelled") : code === "lockout" ? t("errors.lockout") : code === "changed" ? t("errors.changed") : t("errors.phoneFailed"));
 
   function addPasskey() {
     setMsg(undefined);
+    if (phone) {
+      start(async () => {
+        const c = await nativeBioChallenge();
+        if (!c.ok) return setMsg({ ok: false, text: err(c.error) });
+        const r = await phoneRegister(c.challenge);
+        if (!r.publicKey || !r.signature) return setMsg({ ok: false, text: phoneErr(r.error) });
+        const v = await nativeBioRegister(r.publicKey, r.signature);
+        setMsg(v.ok ? { ok: true, text: t("saved") } : { ok: false, text: err(v.error) });
+        router.refresh();
+      });
+      return;
+    }
     start(async () => {
       const o = await passkeyRegisterOptions();
       if (!o.ok) return setMsg({ ok: false, text: err(o.error) });
@@ -36,8 +61,9 @@ export function QuickSignIn({ hasPasskey, hasPin }: { hasPasskey: boolean; hasPi
         const v = await passkeyRegisterVerify(resp);
         setMsg(v.ok ? { ok: true, text: t("saved") } : { ok: false, text: err(v.error) });
         router.refresh();
-      } catch {
-        setMsg({ ok: false, text: t("errors.cancelled") });
+      } catch (e) {
+        // Only a real "cancel" says Cancelled; anything else says fingerprint isn't available here.
+        setMsg({ ok: false, text: (e as { name?: string })?.name === "NotAllowedError" ? t("errors.cancelled") : t("errors.notHere") });
       }
     });
   }
@@ -54,6 +80,7 @@ export function QuickSignIn({ hasPasskey, hasPin }: { hasPasskey: boolean; hasPi
 
   function removeAll() {
     start(async () => {
+      if (phone) await nativeBioRemove();
       const r = await removeQuickSignIn();
       setMsg(r.ok ? { ok: true, text: t("removed") } : { ok: false, text: err(r.error) });
       router.refresh();
@@ -76,7 +103,7 @@ export function QuickSignIn({ hasPasskey, hasPin }: { hasPasskey: boolean; hasPi
         </span>
         <span className="flex items-center gap-2">
           {status(hasPasskey)}
-          {canPasskey === false ? <span className="text-xs text-muted">{t("notAvailable")}</span>
+          {canPasskey === false ? <span className="text-xs text-muted">{phone && phoneState === "not-enrolled" ? t("notEnrolled") : t("notAvailable")}</span>
             : <button type="button" disabled={pending || canPasskey === null} onClick={addPasskey} className="h-10 rounded-[10px] bg-charge px-4 text-sm font-bold text-forest disabled:opacity-60">{hasPasskey ? t("change") : t("setUp")}</button>}
         </span>
       </div>

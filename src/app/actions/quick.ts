@@ -1,5 +1,6 @@
 "use server";
 
+import { createPublicKey, randomBytes, verify as cryptoVerify } from "crypto";
 import { cookies, headers } from "next/headers";
 import {
   generateAuthenticationOptions, generateRegistrationOptions, verifyAuthenticationResponse, verifyRegistrationResponse,
@@ -92,6 +93,48 @@ export async function passkeyRegisterVerify(response: RegistrationResponseJSON):
   }
 }
 
+// Android app 2.2+: the phone's own fingerprint. The phone keeps a private key that only the fingerprint
+// (or screen lock) can use; we keep its public key (marked "native:android") and check each signed challenge.
+const NATIVE_KEY_ID = "native:android";
+
+function nativeSignatureOk(publicKeyB64: string, challenge: string, signatureB64: string) {
+  try {
+    const key = createPublicKey({ key: Buffer.from(publicKeyB64, "base64"), format: "der", type: "spki" });
+    return cryptoVerify("sha256", Buffer.from(challenge, "utf8"), key, Buffer.from(signatureB64, "base64"));
+  } catch {
+    return false;
+  }
+}
+
+export async function nativeBioChallenge(): Promise<Ok<{ challenge: string }> | Fail> {
+  const m = await me();
+  if (!m) return { ok: false, error: "signedOut" };
+  const challenge = randomBytes(32).toString("base64url");
+  (await cookies()).set(CHALLENGE_COOKIE, challenge, challengeCookieOptions);
+  return { ok: true, challenge };
+}
+
+export async function nativeBioRegister(publicKey: string, signature: string): Promise<Ok | Fail> {
+  const m = await me();
+  if (!m) return { ok: false, error: "signedOut" };
+  const challenge = await takeChallenge();
+  if (!challenge) return { ok: false, error: "expired" };
+  if (typeof publicKey !== "string" || publicKey.length > 400 || !nativeSignatureOk(publicKey, challenge, signature)) return { ok: false, error: "notVerified" };
+  await saveQuick(m.device, { passkey_credential_id: NATIVE_KEY_ID, passkey_public_key: publicKey, passkey_counter: 0 });
+  await audit(m.viewer.id, "quick_signin_fingerprint_added", m.viewer.id, { device: m.device.device_name, method: "android app" });
+  return { ok: true };
+}
+
+export async function nativeBioUnlock(signature: string): Promise<Ok | Fail> {
+  const m = await me();
+  if (m?.device.passkey_credential_id !== NATIVE_KEY_ID || !m.device.passkey_public_key) return { ok: false, error: "noPasskey" };
+  const challenge = await takeChallenge();
+  if (!challenge) return { ok: false, error: "expired" };
+  if (!nativeSignatureOk(m.device.passkey_public_key, challenge, signature)) return { ok: false, error: "notVerified" };
+  await touchDevice(m.device.id, { failed_pins: 0 });
+  return { ok: true };
+}
+
 export async function setPin(pin: string, confirm: string): Promise<Ok | Fail> {
   const m = await me();
   if (!m) return { ok: false, error: "signedOut" };
@@ -115,7 +158,7 @@ export async function removeQuickSignIn(): Promise<Ok | Fail> {
 
 export async function passkeyAuthOptions() {
   const m = await me();
-  if (!m?.device.passkey_credential_id) return { ok: false, error: "noPasskey" } as Fail;
+  if (!m?.device.passkey_credential_id || m.device.passkey_credential_id === NATIVE_KEY_ID) return { ok: false, error: "noPasskey" } as Fail;
   const rp = await relyingParty();
   const options = await generateAuthenticationOptions({ rpID: rp.rpID, allowCredentials: [{ id: m.device.passkey_credential_id }], userVerification: "required" });
   (await cookies()).set(CHALLENGE_COOKIE, options.challenge, challengeCookieOptions);

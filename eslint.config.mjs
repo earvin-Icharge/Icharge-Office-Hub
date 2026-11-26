@@ -18,6 +18,8 @@ const eslintConfig = [
       "out/**",
       "build/**",
       "next-env.d.ts",
+      // The Android app project (its build folder holds generated files).
+      "mobile/**",
     ],
   },
 ];

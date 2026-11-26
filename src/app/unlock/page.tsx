@@ -17,7 +17,7 @@ export default async function UnlockPage() {
     <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-paper px-4 py-10">
       <div className="rounded-full bg-forest px-5 py-3"><Logo size={32} wordmarkClass="text-xl" /></div>
       <div className="flex w-full max-w-[400px] flex-col items-center gap-4 rounded-[20px] border border-line bg-white p-7 text-center">
-        <UnlockForm name={viewer.name.split(" ")[0]} email={viewer.email} hasPasskey={!!device.passkey_credential_id} hasPin={!!device.pin_hash} />
+        <UnlockForm name={viewer.name.split(" ")[0]} email={viewer.email} hasPasskey={!!device.passkey_credential_id} hasPin={!!device.pin_hash} phoneKey={device.passkey_credential_id === "native:android"} />
       </div>
     </div>
   );

@@ -4,9 +4,10 @@ import { startAuthentication } from "@simplewebauthn/browser";
 import { Fingerprint } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState, useTransition } from "react";
-import { passkeyAuthOptions, passkeyAuthVerify, unlockWithPin } from "@/app/actions/quick";
+import { nativeBioChallenge, nativeBioUnlock, passkeyAuthOptions, passkeyAuthVerify, unlockWithPin } from "@/app/actions/quick";
+import { nativeBioSign } from "@/lib/native";
 
-export function UnlockForm({ name, email, hasPasskey, hasPin }: { name: string; email: string; hasPasskey: boolean; hasPin: boolean }) {
+export function UnlockForm({ name, email, hasPasskey, hasPin, phoneKey = false }: { name: string; email: string; hasPasskey: boolean; hasPin: boolean; phoneKey?: boolean }) {
   const t = useTranslations("quick");
   const [mode, setMode] = useState<"finger" | "pin">(hasPasskey ? "finger" : "pin");
   const [pin, setPin] = useState("");
@@ -18,6 +19,20 @@ export function UnlockForm({ name, email, hasPasskey, hasPin }: { name: string; 
 
   function finger() {
     setError(undefined);
+    if (phoneKey) {
+      // Android app: the phone's own fingerprint prompt signs a challenge from the server.
+      start(async () => {
+        const c = await nativeBioChallenge();
+        if (!c.ok) return setError(err(c.error));
+        const r = await nativeBioSign(c.challenge);
+        if (!r.signature) {
+          return setError(r.error === "cancelled" ? t("errors.cancelled") : r.error === "lockout" ? t("errors.lockout") : r.error === "changed" ? t("errors.changed") : t("errors.phoneFailed"));
+        }
+        const v = await nativeBioUnlock(r.signature);
+        if (v.ok) done(); else setError(err(v.error));
+      });
+      return;
+    }
     start(async () => {
       const o = await passkeyAuthOptions();
       if (!o.ok) return setError(err(o.error));
@@ -25,8 +40,8 @@ export function UnlockForm({ name, email, hasPasskey, hasPin }: { name: string; 
         const resp = await startAuthentication({ optionsJSON: o.options });
         const v = await passkeyAuthVerify(resp);
         if (v.ok) done(); else setError(err(v.error));
-      } catch {
-        setError(t("errors.cancelled"));
+      } catch (e) {
+        setError((e as { name?: string })?.name === "NotAllowedError" ? t("errors.cancelled") : t("errors.notHere"));
       }
     });
   }

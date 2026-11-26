@@ -10,6 +10,9 @@ Rebuild this app only to change its name, icon, permissions or native features.
 - `MainActivity` loads the live site directly. Do **not** use Capacitor `server.url` or put the site in `allowNavigation`:
   both route pages through Capacitor's local relay, which drops sign-in cookies on redirects. `OfficeHubPlugin` keeps
   Office Hub links in the app instead.
+- Quick sign-in in the app uses the phone's own fingerprint prompt (`QuickUnlock.java`): a key in the phone's secure
+  key store signs a server challenge; the server keeps the public key (`user_devices.passkey_credential_id = native:android`).
+  Browser passkeys (WebAuthn) are unreliable inside an Android WebView, so the app does not use them.
 - Pages talk to the app through `window.OfficeHubNative` (only https://icharge-office-hub.vercel.app; see `src/lib/native.ts`).
 - Alerts: tokens in `public.fcm_tokens`; the server sends with `FIREBASE_SERVICE_ACCOUNT` (Vercel, sensitive), see `src/lib/push.ts`.
 - The website knows it is inside the app from the user agent (`OfficeHubApp/<n>`, see `src/lib/native.ts`).

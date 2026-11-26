@@ -23,6 +23,33 @@ export function hasNativeAlerts() {
   return !!port();
 }
 
+/** App 2.2+: quick sign-in with the phone's own fingerprint (or screen lock). */
+export async function nativeBioStatus() {
+  const r = await ask("bio-status", ["bio-status"], 5000);
+  if (!r) return null;
+  const [state, key] = r.value.split(",");
+  return { ready: state === "ready", state, hasKey: key === "key" };
+}
+
+/** Creates the phone key and signs the challenge with the fingerprint: public key + signature, or an error code. */
+export async function nativeBioRegister(challenge: string): Promise<{ publicKey?: string; signature?: string; error?: string }> {
+  const r = await ask("bio-register", ["bio-registered", "bio-error"], 120000, { challenge });
+  if (!r) return { error: "timeout" };
+  if (r.type !== "bio-registered") return { error: r.value };
+  const [publicKey, signature] = r.value.split(".");
+  return { publicKey, signature };
+}
+
+export async function nativeBioSign(challenge: string): Promise<{ signature?: string; error?: string }> {
+  const r = await ask("bio-sign", ["bio-signed", "bio-error"], 120000, { challenge });
+  if (!r) return { error: "timeout" };
+  return r.type === "bio-signed" ? { signature: r.value } : { error: r.value };
+}
+
+export async function nativeBioRemove() {
+  await ask("bio-remove", ["bio-removed"], 5000);
+}
+
 // Several parts of a page may ask at once: each answer goes to the oldest question waiting for that kind of answer.
 const waiting: { answers: string[]; resolve: (r: Reply | null) => void }[] = [];
 let wired: NativePort | null = null;
@@ -39,7 +66,7 @@ function wire(p: NativePort) {
 }
 
 /** Ask the app something and wait for its answer (one of `answers`). */
-function ask(type: string, answers: string[], timeoutMs = 20000): Promise<Reply | null> {
+function ask(type: string, answers: string[], timeoutMs = 20000, extra: Record<string, string> = {}): Promise<Reply | null> {
   const p = port();
   if (!p) return Promise.resolve(null);
   wire(p);
@@ -51,7 +78,7 @@ function ask(type: string, answers: string[], timeoutMs = 20000): Promise<Reply 
       resolve(null);
     }, timeoutMs);
     waiting.push(entry);
-    p.postMessage(JSON.stringify({ type }));
+    p.postMessage(JSON.stringify({ ...extra, type }));
   });
 }
 

@@ -43,6 +43,7 @@ public class MainActivity extends BridgeActivity {
     static final String CHANNEL = "officehub";
 
     private JavaScriptReplyProxy pageReply;
+    private QuickUnlock quickUnlock;
     private final ActivityResultLauncher<String> askNotifications = registerForActivityResult(
         new ActivityResultContracts.RequestPermission(),
         granted -> {
@@ -54,6 +55,7 @@ public class MainActivity extends BridgeActivity {
     public void onCreate(Bundle savedInstanceState) {
         registerPlugin(OfficeHubPlugin.class);
         super.onCreate(savedInstanceState);
+        quickUnlock = new QuickUnlock(this, this::reply);
         WebView webView = getBridge().getWebView();
 
         // No signal when opening a page: show the app's own offline page with a Try again button.
@@ -144,8 +146,11 @@ public class MainActivity extends BridgeActivity {
 
     private void onPageMessage(String data) {
         String type;
+        String challenge;
         try {
-            type = new JSONObject(data == null ? "{}" : data).optString("type");
+            JSONObject o = new JSONObject(data == null ? "{}" : data);
+            type = o.optString("type");
+            challenge = o.optString("challenge");
         } catch (Exception e) {
             return;
         }
@@ -167,6 +172,19 @@ public class MainActivity extends BridgeActivity {
             case "push-disable":
                 if (firebaseReady()) FirebaseMessaging.getInstance().deleteToken().addOnCompleteListener(t -> reply("push-disabled", "ok"));
                 else reply("push-disabled", "ok");
+                break;
+            // Quick sign-in with the phone's fingerprint (see QuickUnlock)
+            case "bio-status":
+                quickUnlock.status();
+                break;
+            case "bio-register":
+                if (challenge.length() >= 16) quickUnlock.register(challenge); else reply("bio-error", "challenge");
+                break;
+            case "bio-sign":
+                if (challenge.length() >= 16) quickUnlock.unlock(challenge); else reply("bio-error", "challenge");
+                break;
+            case "bio-remove":
+                quickUnlock.remove();
                 break;
             default:
                 break;

@@ -2,7 +2,7 @@
   "appId": "ph.com.icharge.officehub",
   "appName": "Office Hub",
   "webDir": "www",
-  "appendUserAgent": "OfficeHubApp/3",
+  "appendUserAgent": "OfficeHubApp/4",
   "server": {
     "androidScheme": "https"
   },

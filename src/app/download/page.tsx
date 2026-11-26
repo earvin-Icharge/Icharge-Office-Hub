@@ -18,10 +18,10 @@ export default async function DownloadPage() {
           <div>
             <h1 className="font-display text-2xl leading-tight font-bold">{t("title")}</h1>
             <p className="text-sm text-muted">{t("sub")}</p>
-            <p className="text-xs font-semibold text-leaf">{t("version", { v: "2.1" })}</p>
+            <p className="text-xs font-semibold text-leaf">{t("version", { v: "2.2" })}</p>
           </div>
         </div>
-        <a href="/download/office-hub-2.1.apk" download="office-hub-2.1.apk"
+        <a href="/download/office-hub-2.2.apk" download="office-hub-2.2.apk"
           className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-charge px-6 text-base font-bold text-forest">
           <Download aria-hidden size={20} />
           {t("button")}
