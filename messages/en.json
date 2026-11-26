@@ -303,6 +303,7 @@
     "removedAll": "All devices removed. Their next visit needs an email code."
   },
   "push": {
+    "inApp": "In the Office Hub app, alerts arrive in the bell and by email for now. Phone alerts for the app are being added.",
     "title": "Phone notifications",
     "help": "Get reminders and approvals on this device.",
     "turnOn": "Turn on",
@@ -1409,9 +1410,9 @@
     "button": "Download the app",
     "s1": "Tap Download the app.",
     "s2": "Open the downloaded file (from the notification, or Files › Downloads).",
-    "s3": "If your phone asks, allow your browser to install unknown apps, then tap Install. If Google Play Protect asks, tap Install anyway (or Scan app, then Install).",
-    "s4": "Open Office Hub from your home screen and sign in with your work email.",
-    "chrome": "The app runs on Google Chrome, which comes with most Android phones. Keep Chrome installed; you can still use Firefox for everything else.",
+    "s3": "If your phone asks, allow your browser to install unknown apps, then tap Install (or Update). If Google Play Protect asks, tap Install anyway (or Scan app, then Install).",
+    "s4": "Open Office Hub from your home screen and sign in once with your work email. Allow the camera and location when you first Time in.",
+    "chrome": "The app shows the live Office Hub in its own window, so it is always the same as the website: same screens, same data, updated at once.",
     "iphone": "iPhone: open icharge-office-hub.vercel.app in Safari, tap Share, then Add to Home Screen."
   }
 }

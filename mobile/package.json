@@ -1,0 +1,18 @@
+{
+  "name": "office-hub-mobile",
+  "private": true,
+  "description": "iCharge Office Hub phone app: a native shell that shows the live web app (always in sync with the website).",
+  "scripts": {
+    "sync": "cap sync android"
+  },
+  "dependencies": {
+    "@capacitor/android": "8.6.3",
+    "@capacitor/app": "8.1.2",
+    "@capacitor/core": "8.6.3",
+    "@capacitor/splash-screen": "8.0.2",
+    "@capacitor/status-bar": "8.0.4"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "8.6.3"
+  }
+}

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useEffect, useState, useTransition } from "react";
 import { removePushSubscription, savePushSubscription, sendTestPush } from "@/app/actions/quick";
+import { inOfficeHubApp } from "@/lib/native";
 
 function urlB64ToUint8(base64: string) {
   const pad = "=".repeat((4 - (base64.length % 4)) % 4);
@@ -14,12 +15,13 @@ function urlB64ToUint8(base64: string) {
 /** Phone notifications on this device (spec 2, 7). */
 export function PushToggle() {
   const t = useTranslations("push");
-  const [state, setState] = useState<"loading" | "unsupported" | "blocked" | "off" | "on">("loading");
+  const [state, setState] = useState<"loading" | "app" | "unsupported" | "blocked" | "off" | "on">("loading");
   const [msg, setMsg] = useState<string>();
   const [pending, start] = useTransition();
   const [iphone, setIphone] = useState(false);
 
   useEffect(() => {
+    if (inOfficeHubApp()) { setState("app"); return; }
     setIphone(/iPhone|iPad/.test(navigator.userAgent) && !window.matchMedia("(display-mode: standalone)").matches);
     if (!("serviceWorker" in navigator) || !("PushManager" in window) || !("Notification" in window)) { setState("unsupported"); return; }
     if (Notification.permission === "denied") { setState("blocked"); return; }
@@ -58,6 +60,7 @@ export function PushToggle() {
     <div className="flex flex-col gap-2.5">
       <p className="text-sm text-muted">{t("help")}</p>
       {iphone && <p className="rounded-[10px] bg-charge-soft px-3 py-2 text-[13px]">{t("iphoneHint")}</p>}
+      {state === "app" && <p className="rounded-[10px] bg-charge-soft px-3 py-2 text-[13px]">{t("inApp")}</p>}
       {state === "unsupported" && <p className="text-sm text-muted">{t("unsupported")}</p>}
       {state === "blocked" && <p className="text-sm text-danger">{t("blocked")}</p>}
       {(state === "off" || state === "on") && (
@@ -86,7 +89,7 @@ export function InstallApp() {
   const [evt, setEvt] = useState<BIPEvent | null>(null);
   const [installed, setInstalled] = useState(false);
   useEffect(() => {
-    setInstalled(window.matchMedia("(display-mode: standalone)").matches);
+    setInstalled(window.matchMedia("(display-mode: standalone)").matches || inOfficeHubApp());
     const on = (e: Event) => { e.preventDefault(); setEvt(e as BIPEvent); };
     window.addEventListener("beforeinstallprompt", on);
     window.addEventListener("appinstalled", () => setInstalled(true));
