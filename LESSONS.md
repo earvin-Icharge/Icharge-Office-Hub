@@ -101,6 +101,12 @@ Never put passwords, API keys, or customer data in this file.
 - Rule: ALWAYS put flex sizes for side-by-side layouts behind the same breakpoint as the row (e.g. min-[1100px]:flex-[3_1_0]), never on the stacked phone version.
 - Check: Screenshot the page at 360 px and confirm every section has height.
 
+### L-014 · 2026-11-26 · Trial sign-in · [login]
+- What happened: One-time sign-in links for the testers said "expired or already used" in Chrome.
+- Root cause: The link signed in on a plain visit (GET); Chrome loads pasted links in advance (and email/chat apps preview them), which used up the one-time link first.
+- Rule: NEVER use up a one-time token on a GET; show a page with a Continue button and sign in on the POST.
+- Check: Open the link twice with a plain request, then tap Continue: it must still sign in.
+
 ## Archive
 
 (none yet)
