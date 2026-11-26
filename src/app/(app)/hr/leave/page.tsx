@@ -13,6 +13,7 @@ export const metadata = { title: "Leave" };
 const field = "h-11 rounded-[10px] border border-field bg-white px-3 text-[15px] min-w-0";
 const lab = "flex flex-col gap-1.5 text-[13px] font-semibold";
 type Req = { id: string; profile_id: string; type_id: string; start_date: string; end_date: string; days: number; status: string; reason: string | null; approver_id: string | null; decline_reason: string | null };
+type Unused = { profile_id: string; employee_id: string | null; name: string; department: string | null; entitled: number; used: number; pending: number; unused: number };
 type Sum = { type_id: string; code: string; name: string; entitled: number; adjustment: number; used: number; pending: number; available: number };
 
 export default async function LeavePage({ searchParams }: { searchParams: Promise<{ tab?: string; ok?: string; error?: string; req?: string }> }) {
@@ -26,7 +27,7 @@ export default async function LeavePage({ searchParams }: { searchParams: Promis
   const supabase = await createClient();
   const hrView = viewer.hr || viewer.level === "leader";
   const [{ data: types }, { data: sum }, { data: mine }, { data: toApprove }, people] = await Promise.all([
-    supabase.from("leave_types").select("id, name").eq("active", true).order("position"),
+    supabase.from("leave_types").select("id, name, code, legal").eq("active", true).order("position"),
     supabase.rpc("leave_summary", { p_profile: viewer.id, p_year: year }),
     supabase.from("leave_requests").select("*").eq("profile_id", viewer.id).order("start_date", { ascending: false }).limit(50),
     supabase.from("leave_requests").select("*").eq("status", "pending").neq("profile_id", viewer.id).order("start_date"),
@@ -69,10 +70,10 @@ export default async function LeavePage({ searchParams }: { searchParams: Promis
       </li>
     );
   };
-  let balanceRows: { profile: string; id: string; rows: Sum[] }[] = [];
-  if (sp.tab === "balances" && (hrView || viewer.finance)) {
-    balanceRows = await Promise.all(people.map(async (p) => ({ profile: p.name, id: p.id, rows: ((await supabase.rpc("leave_summary", { p_profile: p.id, p_year: year })).data ?? []) as Sum[] })));
-  }
+  // HR / Finance: one list of everyone's incentive leave (one query).
+  const silType = (types ?? []).find((x) => x.code === "sil");
+  const unused = sp.tab === "balances" && (hrView || viewer.finance)
+    ? (((await supabase.rpc("unused_incentive_leave", { p_year: year })).data ?? []) as Unused[]) : [];
   return (
     <>
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -84,43 +85,64 @@ export default async function LeavePage({ searchParams }: { searchParams: Promis
       </div>
       <Flash ok={sp.ok && t.has(`ok.${sp.ok}`) ? t(`ok.${sp.ok}`) : null} error={sp.error} />
       {sp.tab === "balances" ? (
-        <section className="overflow-x-auto rounded-[14px] border border-line bg-white p-[18px]">
-          <h2 className="mb-3 text-base font-bold">{t("hrBalances", { year })}</h2>
-          {balanceRows.map((b) => (
-            <div key={b.id} className="mb-4 flex flex-col gap-1.5">
-              <b className="text-sm">{b.profile}</b>
-              {b.rows.map((r) => (
-                <form key={r.type_id} action={setBalance} className="flex flex-wrap items-center gap-2 text-sm">
-                  <input type="hidden" name="profile_id" value={b.id} /><input type="hidden" name="type_id" value={r.type_id} /><input type="hidden" name="year" value={year} />
-                  <span className="w-[200px]">{r.name}</span>
-                  <span className="w-[140px] text-xs text-muted">{t("used", { n: r.used })} · {t("available", { n: r.available })}</span>
-                  {hrView && b.id !== viewer.id || viewer.level === "leader" ? (
-                    <>
-                      <input name="entitled" type="number" step="0.5" defaultValue={r.entitled} aria-label={t("entitled")} title={t("entitled")} className="h-8 w-20 rounded-lg border border-field px-2" />
-                      <input name="adjustment" type="number" step="0.5" defaultValue={r.adjustment} aria-label={t("adjust")} title={t("adjust")} className="h-8 w-20 rounded-lg border border-field px-2" />
-                      <button className="h-8 rounded-lg border border-field bg-white px-2.5 text-xs font-semibold">{t("save")}</button>
-                    </>
-                  ) : <span className="text-xs">{t("entitled")} {r.entitled}</span>}
-                </form>
-              ))}
+        <section className="flex flex-col gap-3">
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-[14px] border border-line bg-white p-4">
+            <div className="min-w-0 flex-[1_1_240px]">
+              <h2 className="text-base font-bold">{t("silTitle", { year })}</h2>
+              <p className="text-sm text-muted">{t("silHrHelp")}</p>
             </div>
-          ))}
+            <a href={`/api/export/leave-unused?year=${year}`} className="inline-flex h-11 items-center rounded-[10px] bg-charge px-4 text-sm font-bold text-forest">{t("exportUnused")}</a>
+          </div>
+          <ul className="overflow-hidden rounded-[14px] border border-line bg-white">
+            {unused.map((u) => {
+              const canEdit = !!silType && ((hrView && u.profile_id !== viewer.id) || viewer.level === "leader");
+              return (
+                <li key={u.profile_id} className="flex flex-col gap-2 border-t border-line px-4 py-3 first:border-t-0">
+                  <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+                    <div className="min-w-0 flex-[1_1_180px]">
+                      <b className="block truncate text-sm">{u.name}</b>
+                      <span className="block truncate text-xs text-muted">{[u.employee_id, u.department].filter(Boolean).join(" · ")}</span>
+                    </div>
+                    <dl className="grid grid-cols-4 gap-4 text-center text-sm">
+                      <div><dt className="text-[11px] text-muted">{t("colDays")}</dt><dd className="font-semibold">{u.entitled}</dd></div>
+                      <div><dt className="text-[11px] text-muted">{t("colUsed")}</dt><dd className="font-semibold">{u.used}</dd></div>
+                      <div><dt className="text-[11px] text-muted">{t("colPending")}</dt><dd className="font-semibold">{u.pending}</dd></div>
+                      <div><dt className="text-[11px] text-muted">{t("colUnused")}</dt><dd className="font-bold text-leaf">{u.unused}</dd></div>
+                    </dl>
+                  </div>
+                  {canEdit && (
+                    <details>
+                      <summary className="w-fit cursor-pointer text-xs font-semibold text-leaf">{t("editBalance")}</summary>
+                      <form action={setBalance} className="mt-2 flex flex-wrap items-end gap-2">
+                        <input type="hidden" name="profile_id" value={u.profile_id} /><input type="hidden" name="type_id" value={silType.id} /><input type="hidden" name="year" value={year} />
+                        <label className="flex flex-col gap-1 text-xs font-semibold">{t("entitled")}<input name="entitled" type="number" step="0.5" min="0" defaultValue={u.entitled} className="h-10 w-24 rounded-[10px] border border-field px-3 text-sm" /></label>
+                        <label className="flex flex-col gap-1 text-xs font-semibold">{t("adjust")}<input name="adjustment" type="number" step="0.5" defaultValue={0} className="h-10 w-24 rounded-[10px] border border-field px-3 text-sm" /></label>
+                        <label className="flex min-w-[160px] flex-1 flex-col gap-1 text-xs font-semibold">{t("note")}<input name="note" className="h-10 rounded-[10px] border border-field px-3 text-sm" /></label>
+                        <button className="h-10 rounded-[10px] border border-field bg-white px-4 text-sm font-semibold">{t("save")}</button>
+                      </form>
+                    </details>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
         </section>
       ) : (
         <>
           <div className="flex flex-wrap gap-3">
-            {((sum ?? []) as Sum[]).filter((x) => ["vacation", "sick", "emergency", "sil"].includes(x.code) || x.used > 0 || x.pending > 0).map((x) => (
-              <div key={x.type_id} className="flex flex-[1_1_180px] flex-col gap-1.5 rounded-[14px] border border-line bg-white p-4">
-                <span className="text-xs font-semibold text-muted">{x.name}</span>
-                <span className="font-display text-2xl font-bold">{t("available", { n: x.available })}</span>
-                <Battery percent={x.entitled + x.adjustment ? (x.available / (x.entitled + x.adjustment)) * 100 : 0} label={`${x.name}: ${x.available}`} />
+            {((sum ?? []) as Sum[]).filter((x) => x.code === "sil" || x.used > 0 || x.pending > 0).map((x) => (
+              <div key={x.type_id} className="flex flex-[1_1_240px] flex-col gap-1.5 rounded-[14px] border border-line bg-white p-4">
+                <span className="text-xs font-semibold text-muted">{x.code === "sil" ? t("silName") : x.name}</span>
+                <span className="font-display text-2xl font-bold">{t("available", { n: x.available - x.pending })}</span>
+                <Battery percent={x.entitled + x.adjustment ? ((x.available - x.pending) / (x.entitled + x.adjustment)) * 100 : 0} label={`${x.name}: ${x.available}`} />
                 <span className="text-xs text-muted">{t("used", { n: x.used })}{x.pending ? ` · ${t("pending", { n: x.pending })}` : ""}</span>
+                {x.code === "sil" && <span className="text-xs text-ink-2">{t("silNote")}</span>}
               </div>
             ))}
           </div>
           <form action={fileLeave} className="grid max-w-[760px] grid-cols-1 gap-3 rounded-[14px] border border-line bg-white p-5 sm:grid-cols-2">
             <h2 className="text-base font-bold sm:col-span-2">{t("file")}</h2>
-            <label className={lab}>{t("type")}<select name="type_id" required className={field}>{(types ?? []).map((x) => <option key={x.id} value={x.id}>{x.name}</option>)}</select></label>
+            <label className={lab}>{t("type")}<select name="type_id" required className={field}>{(types ?? []).map((x) => <option key={x.id} value={x.id}>{x.code === "sil" ? t("silName") : x.legal ? t("ifQualify", { name: x.name }) : x.name}</option>)}</select></label>
             <label className={lab}>{t("reason")}<input name="reason" className={field} /></label>
             <label className={lab}>{t("start")}<input type="date" name="start_date" required className={field} /></label>
             <label className={lab}>{t("end")}<input type="date" name="end_date" className={field} /></label>

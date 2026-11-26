@@ -64,3 +64,12 @@ body::before {
     font-size: 16px;
   }
 }
+
+/* Top progress bar while a page or a Save is on its way (NavProgress). */
+@keyframes oh-progress {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(300%); }
+}
+.oh-progress {
+  animation: oh-progress 1s ease-in-out infinite;
+}

@@ -36,9 +36,10 @@ export async function middleware(request: NextRequest) {
     return r;
   };
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  // Checks the sign-in token on this server (signed with the project's key) instead of asking the sign-in server
+  // on every click; it still refreshes the token when it expires.
+  const { data: claimsData } = await supabase.auth.getClaims();
+  const user = claimsData?.claims?.sub ? { id: claimsData.claims.sub } : null;
   const path = request.nextUrl.pathname;
   const isPublic = PUBLIC_PATHS.some((p) => path === p || path.startsWith(p + "/"));
 

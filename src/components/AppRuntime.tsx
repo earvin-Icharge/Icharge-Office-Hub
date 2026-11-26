@@ -4,6 +4,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { APP_VERSION, BUILD_ID, compareVersions } from "@/lib/version";
 import { flushQueue } from "@/lib/clock-send";
+import { updateApp } from "@/lib/update-app";
 import { saveFcmToken } from "@/app/actions/quick";
 import { hasNativeAlerts, nativeAlertToken } from "@/lib/native";
 
@@ -118,17 +119,7 @@ export function AppRuntime() {
       .catch(() => undefined);
   }, [locale]);
 
-  const doUpdate = useCallback(async () => {
-    store("set", WHATS_NEW_PENDING, "1");
-    try {
-      const reg = await navigator.serviceWorker?.getRegistration();
-      await reg?.update();
-      reg?.waiting?.postMessage("SKIP_WAITING");
-    } catch {
-      /* no service worker */
-    }
-    window.location.reload();
-  }, []);
+  const doUpdate = useCallback(() => updateApp(), []);
 
   return (
     <>

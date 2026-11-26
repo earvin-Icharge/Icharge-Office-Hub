@@ -1,4 +1,5 @@
 import { getTranslations } from "next-intl/server";
+import { ChoiceList } from "@/components/SettingsUi";
 import { notFound } from "next/navigation";
 import { Flash } from "@/components/Flash";
 import { createClient } from "@/lib/supabase/server";
@@ -24,7 +25,7 @@ export default async function NewCasePage({ searchParams }: { searchParams: Prom
       <Flash error={(await searchParams).error} />
       <form action={createCase} className="flex max-w-[720px] flex-col gap-3.5 rounded-[14px] border border-line bg-white p-5">
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-          <label className={label}>{t("f.type")}<select name="type_code" required className={field}>{(types ?? []).map((x) => <option key={x.code} value={x.code}>{viewer.language === "zh-Hans" ? x.name_zh : x.name_en}</option>)}</select></label>
+          <fieldset className={`${label} sm:col-span-2`}><legend className="mb-1.5">{t("f.type")}</legend><ChoiceList name="type_code" required options={(types ?? []).map((x) => ({ value: x.code, label: viewer.language === "zh-Hans" ? x.name_zh : x.name_en }))} /></fieldset>
           <label className={label}>{t("f.channel")}<select name="channel" required className={field}>{["hotline", "viber", "facebook", "app", "email", "walkin"].map((x) => <option key={x} value={x}>{t(`channel.${x}`)}</option>)}</select></label>
           <label className={label}>{t("f.customer")}<input name="customer_name" autoComplete="off" className={field} /></label>
           <label className={label}>{t("f.mobile")}<input name="customer_mobile" type="tel" autoComplete="off" className={field} /></label>

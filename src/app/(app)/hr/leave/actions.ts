@@ -24,7 +24,7 @@ export async function setBalance(f: FormData) {
   done(`/hr/leave?tab=balances`, (await rpc("set_leave_balance", { p_profile: s(f, "profile_id"), p_type: s(f, "type_id"), p_year: Number(s(f, "year")), p_entitled: Number(s(f, "entitled")), p_adjustment: Number(s(f, "adjustment") || 0), p_note: s(f, "note") })).error, "saved");
 }
 export async function saveLeaveType(f: FormData) {
-  done(`/hr/leave/holidays`, (await rpc("save_leave_type", { p_id: s(f, "id") || null, p: { name: s(f, "name"), yearly_days: Number(s(f, "yearly_days")), paid: f.get("paid") === "on", active: f.get("active") === "on" || !s(f, "id") } })).error, "saved");
+  done(`/hr/leave/holidays`, (await rpc("save_leave_type", { p_id: s(f, "id") || null, p: { name: s(f, "name").replace(/\s*\n+\s*/g, " "), yearly_days: Number(s(f, "yearly_days")), paid: f.get("paid") === "on", active: f.get("active") === "on" || !s(f, "id") } })).error, "saved");
 }
 export async function saveHoliday(f: FormData) {
   done(`/hr/leave/holidays`, (await rpc("save_holiday", { p_day: s(f, "day"), p_name: s(f, "name"), p_kind: s(f, "kind") || "regular", p_delete: s(f, "delete") === "1" })).error, "saved");

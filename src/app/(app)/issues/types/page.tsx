@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { WrapField } from "@/components/SettingsUi";
 import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { Flash } from "@/components/Flash";
@@ -25,7 +26,7 @@ export default async function IssueTypesPage({ searchParams }: { searchParams: P
   const form = (x: IT) => (
     <form key={x.id ?? "new"} action={saveIssueType} className="grid grid-cols-1 gap-2.5 rounded-[14px] border border-line bg-white p-4 sm:grid-cols-2 lg:grid-cols-4">
       {x.id && <input type="hidden" name="id" value={x.id} />}
-      <label className={`${label} sm:col-span-2`}>{t("typeName")}<input name="name" required defaultValue={x.name ?? ""} className={field} /></label>
+      <label className={`${label} sm:col-span-2`}>{t("typeName")}<WrapField name="name" required value={x.name} label={t("typeName")} /></label>
       <label className={label}>{t("dept")}<select name="department_id" defaultValue={x.department_id ?? ""} className={field}><option value="">—</option>{depts.map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}</select></label>
       <label className={label}>{t("dept2")}<select name="second_department_id" defaultValue={x.second_department_id ?? ""} className={field}><option value="">—</option>{depts.map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}</select></label>
       <label className={label}>{t("defaultOwner")}<select name="default_owner_id" defaultValue={x.default_owner_id ?? ""} className={field}><option value="">—</option>{people.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}</select></label>

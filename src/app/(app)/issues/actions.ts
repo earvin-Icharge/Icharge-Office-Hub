@@ -40,7 +40,7 @@ export async function setIssueAmount(f: FormData) {
 }
 export async function saveIssueType(f: FormData) {
   const { error } = await (await createClient()).rpc("save_issue_type", { p_id: s(f, "id") || null, p: {
-    name: s(f, "name"), department_id: s(f, "department_id"), second_department_id: s(f, "second_department_id"), default_owner_id: s(f, "default_owner_id"),
+    name: s(f, "name").replace(/\s*\n+\s*/g, " "), department_id: s(f, "department_id"), second_department_id: s(f, "second_department_id"), default_owner_id: s(f, "default_owner_id"),
     backup_id: s(f, "backup_id"), respond_minutes: Number(s(f, "respond_minutes")), fix_minutes: Number(s(f, "fix_minutes")),
     is_finance: f.get("is_finance") === "on", business: s(f, "business"), active: f.get("active") === "on" || !s(f, "id"),
   } });

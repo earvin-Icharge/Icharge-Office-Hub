@@ -27,7 +27,7 @@ export default async function CsSettingsPage({ searchParams }: { searchParams: P
       {r.id && <input type="hidden" name="id" value={r.id} />}
       <select name="language" defaultValue={r.language ?? "en"} aria-label={t("qrLang")} className={field}><option value="en">English</option><option value="fil">Filipino</option></select>
       <input name="title" required defaultValue={r.title ?? ""} placeholder={t("qrTitle")} aria-label={t("qrTitle")} className={field} />
-      <textarea name="text" required rows={2} defaultValue={r.text ?? ""} aria-label={t("qrText")} className="rounded-[10px] border border-field px-3 py-2 text-sm sm:col-span-2" />
+      <textarea name="text" required rows={Math.max(3, Math.ceil((r.text ?? "").length / 34) + 1)} defaultValue={r.text ?? ""} aria-label={t("qrText")} className="rounded-[10px] border border-field px-3 py-2 text-sm leading-relaxed [field-sizing:content] sm:col-span-2" />
       <div className="flex items-center gap-3 sm:col-span-2">
         {r.id && <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="active" defaultChecked={r.active} className="h-4 w-4 accent-[#2F6B0A]" />{t("qrActive")}</label>}
         <button className="h-9 rounded-[10px] bg-charge px-4 text-sm font-bold text-forest">{t("save")}</button>

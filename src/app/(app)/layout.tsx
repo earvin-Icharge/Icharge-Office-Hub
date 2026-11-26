@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Suspense } from "react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
@@ -6,6 +7,7 @@ import { createClient } from "@/lib/supabase/server";
 import { SIGNED_IN_COOKIE } from "@/lib/session";
 import { authSettings, deviceGate, getDevice, readDeviceKey } from "@/lib/device";
 import { AppRuntime } from "@/components/AppRuntime";
+import { NavProgress } from "@/components/NavProgress";
 import { Bell } from "@/components/Bell";
 import { getTranslations } from "next-intl/server";
 import { LogOut, UserRound } from "lucide-react";
@@ -35,20 +37,23 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   // Data Privacy Act: notice and consent on first sign-in (spec 10).
   if (!viewer.privacyAccepted) redirect("/privacy");
 
+  // Everything this frame needs, fetched together (not one after another).
+  const supabase = await createClient();
+  const [device, settings, unreadRes, accessRes, t] = await Promise.all([
+    getDevice(readDeviceKey(store), viewer.id),
+    authSettings(),
+    supabase.from("notifications").select("id", { count: "exact", head: true }).is("read_at", null),
+    viewer.level === "leader" || viewer.hr ? supabase.rpc("access_inbox_count") : Promise.resolve({ data: 0 }),
+    getTranslations(),
+  ]);
+
   // Quick sign-in (spec 3.5): removed device or 90 days -> email code; closed over 12 h -> fingerprint/PIN.
-  const gate = deviceGate(await getDevice(readDeviceKey(store), viewer.id), await authSettings());
+  const gate = deviceGate(device, settings);
   if (gate === "reauth") redirect("/auth/reauth?why=device");
   if (gate === "unlock") redirect("/unlock");
 
-  const supabaseN = await createClient();
-  const { count: unread } = await supabaseN.from("notifications").select("id", { count: "exact", head: true }).is("read_at", null);
-  let accessBadge = 0;
-  if (viewer.level === "leader" || viewer.hr) {
-    const supabase = await createClient();
-    accessBadge = (await supabase.rpc("access_inbox_count")).data ?? 0;
-  }
-
-  const t = await getTranslations();
+  const unread = unreadRes.count;
+  const accessBadge = (accessRes.data as number | null) ?? 0;
   const items = visibleNav(viewer).map((i) => ({ key: i.key, href: i.href, icon: i.icon, section: i.section, label: t(`nav.${i.key}`), badge: i.key === "access" ? accessBadge : 0 }));
   const phone = (key: string) => {
     const i = NAV.find((n) => n.key === key)!;
@@ -103,6 +108,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       </main>
 
       <AppRuntime />
+      <Suspense fallback={null}><NavProgress /></Suspense>
 
       <PhoneNav
         label={t("nav.phoneMenu")}

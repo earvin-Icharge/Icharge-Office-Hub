@@ -44,21 +44,23 @@ type ProfileRow = {
 /** The signed-in person and their access. null = signed in but no employee record yet. */
 export const getViewer = cache(async (): Promise<Viewer | null> => {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) return null;
+  // Token checked locally (project signing key); the profile row below is read fresh on every request,
+  // so a deactivated person or an access change still takes effect at once.
+  const { data: claimsData } = await supabase.auth.getClaims();
+  const userId = claimsData?.claims?.sub;
+  if (!userId) return null;
 
-  const { data } = await supabase
-    .from("profiles")
-    .select(
-      "id, name, email, position, access_level, hr_access, finance_access, active, default_business, language, access_changed_at, privacy_accepted_at, department:departments!profiles_department_id_fkey(code, name)",
-    )
-    .eq("id", user.id)
-    .maybeSingle<ProfileRow>();
+  const [{ data }, { data: heads }] = await Promise.all([
+    supabase
+      .from("profiles")
+      .select(
+        "id, name, email, position, access_level, hr_access, finance_access, active, default_business, language, access_changed_at, privacy_accepted_at, department:departments!profiles_department_id_fkey(code, name)",
+      )
+      .eq("id", userId)
+      .maybeSingle<ProfileRow>(),
+    supabase.from("departments").select("code").eq("head_id", userId),
+  ]);
   if (!data) return null;
-
-  const { data: heads } = await supabase.from("departments").select("code").eq("head_id", user.id);
 
   return {
     id: data.id,

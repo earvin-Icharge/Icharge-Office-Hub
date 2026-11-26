@@ -37,7 +37,7 @@ export async function startChecklist(f: FormData) {
   back(id, (await rpc("start_checklist", { p_profile: id, p_kind: s(f, "kind"), p_date: s(f, "date") })).error, "started");
 }
 export async function saveChecklistItem(f: FormData) {
-  const { error } = await rpc("save_checklist_item", { p_id: s(f, "id") || null, p: { kind: s(f, "kind"), text: s(f, "text"), owner_role: s(f, "owner_role"), days_offset: s(f, "days_offset"), position: s(f, "position"), active: f.get("active") === "on" || !s(f, "id") } });
+  const { error } = await rpc("save_checklist_item", { p_id: s(f, "id") || null, p: { kind: s(f, "kind"), text: s(f, "text").replace(/\s*\n+\s*/g, " "), owner_role: s(f, "owner_role"), days_offset: s(f, "when_days") !== "" ? String((s(f, "when_dir") === "before" ? -1 : s(f, "when_dir") === "on" ? 0 : 1) * Math.abs(Number(s(f, "when_days")))) : s(f, "days_offset"), position: s(f, "position"), active: f.get("active") === "on" || !s(f, "id") } });
   revalidatePath("/hr/checklists");
   redirect(`/hr/checklists?${error ? `error=${encodeURIComponent(error.message)}` : "ok=saved"}`);
 }

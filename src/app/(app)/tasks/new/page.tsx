@@ -37,7 +37,7 @@ export default async function NewTaskPage({ searchParams }: { searchParams: Prom
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <label className={label}>{t("f.owner")}
             <select name="owner_id" required defaultValue={sp.owner_id ?? viewer.id} className={field}>
-              {people.map((p) => <option key={p.id} value={p.id}>{p.name}{p.position ? ` · ${p.position}` : ""}</option>)}
+              {people.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
             </select>
           </label>
           <label className={label}>{t("f.due")}<input type="datetime-local" name="due_at" required defaultValue={defaultDue} className={field} /></label>

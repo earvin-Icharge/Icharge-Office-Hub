@@ -324,7 +324,7 @@ Fields: employee ID, name, position, department, supervisor, employment status (
 - Monthly attendance export for payroll (Excel), available to HR, Finance and the Leader.
 
 ### 5.3 Leave
-- Leave types and yearly balances are set in Settings by HR (e.g., Vacation, Sick, Emergency, Service Incentive Leave, Maternity, Paternity, Solo Parent).
+- Leave types and yearly balances are set in Settings by HR. **Owner decision (26 Nov 2026):** everyone gets **5 days of Service Incentive Leave a year** and no other leave to file, except the legal leaves for those who qualify (Maternity, Paternity, Solo Parent). Incentive leave cannot go over what is left (approved + pending). Unused days are paid in cash at year end: on 31 December HR and Finance are reminded to download the unused-days list for payroll; every 1 January starts again at 5 days (no carry-over).
 - Employee files leave → their Manager approves or declines (with reason) → HR sees it and the balance updates. Managers' and HR users' leave goes to the Leader.
 - Finance sees balances and approved leave for payroll, read only.
 - Holidays (regular and special non-working) are maintained in Settings and skipped in leave and reminder counts.

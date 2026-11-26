@@ -77,6 +77,24 @@ Never put passwords, API keys, or customer data in this file.
 - Rule: NEVER trust a file path from the browser; check it in storage.objects (owner and folder) on the server.
 - Check: Try a fake path as a test user; it must be refused.
 
+### L-010 · 2026-11-26 · HR settings · [ui]
+- What happened: New settings screens showed "08:00 AN" (time cut) and a checklist dropdown ran past its card; long names were cut in dropdowns on phones.
+- Root cause: Time boxes too narrow for 16 px phone text; a row of fields with no wrap; long option text in a native dropdown on a 360 px screen.
+- Rule: ALWAYS give time boxes at least 9.5rem, let field rows wrap, and NEVER put long text in a phone dropdown (use wrapping choice buttons, or show the name only).
+- Check: node scripts/check-text-fits.mjs (also with OPEN=1) and look at the 360 px screenshots.
+
+### L-011 · 2026-11-26 · HR settings · [ui]
+- What happened: An empty gap appeared under every settings card title.
+- Root cause: Hidden inputs were wrapped in <span>s inside a flex column with gap, so each empty span added a gap.
+- Rule: ALWAYS put hidden inputs directly in the form (or a Fragment), NEVER inside an element in a gap layout.
+- Check: Screenshot the form and look for blank space under the title.
+
+### L-012 · 2026-11-26 · Testing · [testing]
+- What happened: The first text-overflow scan missed problems found by eye.
+- Root cause: It skipped time fields and closed Edit sections, and did not check boxes pushed past their card edge.
+- Rule: ALWAYS run scripts/check-text-fits.mjs (all pages, then OPEN=1) after UI changes, and ALWAYS look at the screenshots too.
+- Check: The script prints "PASS: all text fits its boxes".
+
 ## Archive
 
 (none yet)
