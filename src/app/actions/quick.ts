@@ -172,6 +172,7 @@ export async function removeMyDevice(deviceId: string): Promise<Ok<{ signedOut: 
   if (!d) return { ok: false, error: "notFound" };
   await db.from("user_devices").update({ removed_at: new Date().toISOString(), passkey_credential_id: null, passkey_public_key: null, pin_hash: null, quick_method: null }).eq("id", d.id);
   await db.from("push_subscriptions").delete().eq("profile_id", m.viewer.id).eq("device_key", d.device_key);
+  await db.from("fcm_tokens").delete().eq("profile_id", m.viewer.id).eq("device_key", d.device_key);
   await audit(m.viewer.id, "device_removed", m.viewer.id, { device: d.device_name });
   const isThis = d.device_key === m.key;
   if (isThis) {
@@ -199,6 +200,25 @@ export async function removePushSubscription(endpoint: string): Promise<Ok | Fai
   const m = await me();
   if (!m) return { ok: false, error: "signedOut" };
   await createAdminClient().from("push_subscriptions").delete().eq("endpoint", endpoint).eq("profile_id", m.viewer.id);
+  return { ok: true };
+}
+
+/** Android app: save this install's alert token (called when alerts are turned on and each time the app opens). */
+export async function saveFcmToken(token: string): Promise<Ok | Fail> {
+  const m = await me();
+  if (!m) return { ok: false, error: "signedOut" };
+  if (typeof token !== "string" || token.length < 20 || token.length > 4096) return { ok: false, error: "badToken" };
+  await createAdminClient().from("fcm_tokens").upsert(
+    { token, profile_id: m.viewer.id, device_key: m.key, last_seen_at: new Date().toISOString() },
+    { onConflict: "token" },
+  );
+  return { ok: true };
+}
+
+export async function removeFcmToken(token: string): Promise<Ok | Fail> {
+  const m = await me();
+  if (!m) return { ok: false, error: "signedOut" };
+  await createAdminClient().from("fcm_tokens").delete().eq("token", token).eq("profile_id", m.viewer.id);
   return { ok: true };
 }
 

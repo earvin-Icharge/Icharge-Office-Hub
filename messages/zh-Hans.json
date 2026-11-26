@@ -303,7 +303,10 @@
     "removedAll": "已移除所有设备。下次访问需要邮箱验证码。"
   },
   "push": {
-    "inApp": "在 Office Hub 应用中，提醒暂时通过铃铛和邮件发送。应用的手机推送正在添加中。",
+    "blockedApp": "Office Hub 的通知已被关闭。请在手机“设置 › 应用 › Office Hub › 通知”中开启。",
+    "getUpdate": "获取更新",
+    "appOld": "手机提醒需要新版 Office Hub 应用。",
+    "inApp": "此应用暂未开通手机提醒。您仍会在铃铛和邮件中收到提醒。",
     "title": "手机通知",
     "help": "在本设备接收提醒和审批通知。",
     "turnOn": "开启",

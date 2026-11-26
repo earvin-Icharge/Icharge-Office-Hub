@@ -303,7 +303,10 @@
     "removedAll": "All devices removed. Their next visit needs an email code."
   },
   "push": {
-    "inApp": "In the Office Hub app, alerts arrive in the bell and by email for now. Phone alerts for the app are being added.",
+    "blockedApp": "Alerts are blocked for Office Hub. Allow them in your phone's Settings › Apps › Office Hub › Notifications.",
+    "getUpdate": "Get the update",
+    "appOld": "Phone alerts need the newer Office Hub app.",
+    "inApp": "Phone alerts are not ready in this app yet. You still get them in the bell and by email.",
     "title": "Phone notifications",
     "help": "Get reminders and approvals on this device.",
     "turnOn": "Turn on",

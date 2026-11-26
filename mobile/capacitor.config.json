@@ -2,19 +2,16 @@
   "appId": "ph.com.icharge.officehub",
   "appName": "Office Hub",
   "webDir": "www",
-  "appendUserAgent": "OfficeHubApp/2",
+  "appendUserAgent": "OfficeHubApp/3",
   "server": {
-    "url": "https://icharge-office-hub.vercel.app/today",
-    "androidScheme": "https",
-    "allowNavigation": ["icharge-office-hub.vercel.app"],
-    "errorPath": "offline.html"
+    "androidScheme": "https"
   },
   "android": {
     "webContentsDebuggingEnabled": false
   },
   "plugins": {
     "SplashScreen": {
-      "launchShowDuration": 1200,
+      "launchShowDuration": 1500,
       "launchAutoHide": true,
       "backgroundColor": "#16210F",
       "showSpinner": false,

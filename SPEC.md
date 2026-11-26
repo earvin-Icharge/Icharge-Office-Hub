@@ -451,7 +451,7 @@ Menu items a person can't use are hidden.
 10. Disciplinary records with acknowledgment.
 11. Performance snapshot, team page, dashboards per group (with iCharge and iScreen panels and `business_metrics` entry/upload), reports, Excel export.
 12. Audit log, Trash, backups, **access test run with all five test accounts (14.1)**, **deactivate the four plus-address test accounts**, **install test on one iPhone and one Android phone**, deploy to Vercel.
-13. (Optional, phase 2) Capacitor phone apps for Android and iPhone with the mock-location check; staff-only distribution. **Android done (26 Nov 2026): direct download** (`/download`, no Play Store): a Capacitor app that shows the live web app in its own window (no browser), so it is always in sync with the website; camera and location for Time in, Excel exports to Downloads. Phone alerts in the app need Firebase Cloud Messaging (free Firebase project). iPhone stays Add to Home Screen until the Apple Developer account.
+13. (Optional, phase 2) Capacitor phone apps for Android and iPhone with the mock-location check; staff-only distribution. **Android done (26 Nov 2026): direct download** (`/download`, no Play Store): a Capacitor app that shows the live web app in its own window (no browser), so it is always in sync with the website; camera and location for Time in, Excel exports to Downloads. Phone alerts in the app through Firebase Cloud Messaging (turned on in My profile; signing out stops them on that phone). iPhone stays Add to Home Screen until the Apple Developer account.
 
 ### 14.1 Test accounts
 - **Main tester:** earvin@icharge.com.ph (the Special Assistant's real account, Leader level).

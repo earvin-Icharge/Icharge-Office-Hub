@@ -4,6 +4,8 @@ import { useLocale, useTranslations } from "next-intl";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { APP_VERSION, BUILD_ID, compareVersions } from "@/lib/version";
 import { flushQueue } from "@/lib/clock-send";
+import { saveFcmToken } from "@/app/actions/quick";
+import { hasNativeAlerts, nativeAlertToken } from "@/lib/native";
 
 const CHECK_EVERY_MS = 5 * 60 * 1000;
 const WHATS_NEW_PENDING = "oh_whats_new_pending";
@@ -94,6 +96,12 @@ export function AppRuntime() {
     document.addEventListener("visibilitychange", onVisible);
     return () => { clearInterval(id); clearInterval(busyId); document.removeEventListener("visibilitychange", onVisible); window.removeEventListener("online", flush); };
   }, [heartbeat, checkVersion, isBusy]);
+
+  // Android app: refresh this install's alert token each time the app opens (only if alerts are allowed; never asks).
+  useEffect(() => {
+    if (!hasNativeAlerts()) return;
+    nativeAlertToken().then((token) => { if (token) saveFcmToken(token).catch(() => undefined); }).catch(() => undefined);
+  }, []);
 
   // What's new: after tapping Update, or the first time this version opens on this device.
   useEffect(() => {

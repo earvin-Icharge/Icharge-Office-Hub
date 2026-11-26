@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useEffect, useState, useTransition } from "react";
-import { removePushSubscription, savePushSubscription, sendTestPush } from "@/app/actions/quick";
-import { inOfficeHubApp } from "@/lib/native";
+import { removeFcmToken, removePushSubscription, saveFcmToken, savePushSubscription, sendTestPush } from "@/app/actions/quick";
+import { hasNativeAlerts, inOfficeHubApp, nativeAlertDisable, nativeAlertEnable, nativeAlertStatus, nativeAlertToken } from "@/lib/native";
 
 function urlB64ToUint8(base64: string) {
   const pad = "=".repeat((4 - (base64.length % 4)) % 4);
@@ -15,13 +15,25 @@ function urlB64ToUint8(base64: string) {
 /** Phone notifications on this device (spec 2, 7). */
 export function PushToggle() {
   const t = useTranslations("push");
-  const [state, setState] = useState<"loading" | "app" | "unsupported" | "blocked" | "off" | "on">("loading");
+  const [state, setState] = useState<"loading" | "app" | "appOld" | "unsupported" | "blocked" | "off" | "on">("loading");
+  const [native, setNative] = useState(false);
   const [msg, setMsg] = useState<string>();
   const [pending, start] = useTransition();
   const [iphone, setIphone] = useState(false);
 
   useEffect(() => {
-    if (inOfficeHubApp()) { setState("app"); return; }
+    if (inOfficeHubApp()) {
+      // Android app: alerts through the app itself (Firebase).
+      if (!hasNativeAlerts()) { setState("appOld"); return; }
+      setNative(true);
+      nativeAlertStatus().then(async (st) => {
+        if (!st?.ready) { setState("app"); return; }
+        if (!st.granted) { setState("off"); return; }
+        const token = await nativeAlertToken();
+        if (token) { await saveFcmToken(token); setState("on"); } else setState("off");
+      });
+      return;
+    }
     setIphone(/iPhone|iPad/.test(navigator.userAgent) && !window.matchMedia("(display-mode: standalone)").matches);
     if (!("serviceWorker" in navigator) || !("PushManager" in window) || !("Notification" in window)) { setState("unsupported"); return; }
     if (Notification.permission === "denied") { setState("blocked"); return; }
@@ -30,6 +42,14 @@ export function PushToggle() {
 
   function turnOn() {
     setMsg(undefined);
+    if (native) {
+      start(async () => {
+        const r = await nativeAlertEnable();
+        if (r.token) { const saved = await saveFcmToken(r.token); setState(saved.ok ? "on" : "off"); }
+        else setState(r.error === "denied" ? "blocked" : "off");
+      });
+      return;
+    }
     start(async () => {
       const perm = await Notification.requestPermission();
       if (perm !== "granted") { setState(perm === "denied" ? "blocked" : "off"); return; }
@@ -41,6 +61,15 @@ export function PushToggle() {
   }
 
   function turnOff() {
+    if (native) {
+      start(async () => {
+        const token = await nativeAlertToken();
+        if (token) await removeFcmToken(token);
+        await nativeAlertDisable();
+        setState("off");
+      });
+      return;
+    }
     start(async () => {
       const reg = await navigator.serviceWorker.ready;
       const sub = await reg.pushManager.getSubscription();
@@ -61,8 +90,9 @@ export function PushToggle() {
       <p className="text-sm text-muted">{t("help")}</p>
       {iphone && <p className="rounded-[10px] bg-charge-soft px-3 py-2 text-[13px]">{t("iphoneHint")}</p>}
       {state === "app" && <p className="rounded-[10px] bg-charge-soft px-3 py-2 text-[13px]">{t("inApp")}</p>}
+      {state === "appOld" && <p className="rounded-[10px] bg-charge-soft px-3 py-2 text-[13px]">{t("appOld")} <Link href="/download" className="font-semibold text-leaf underline">{t("getUpdate")}</Link></p>}
       {state === "unsupported" && <p className="text-sm text-muted">{t("unsupported")}</p>}
-      {state === "blocked" && <p className="text-sm text-danger">{t("blocked")}</p>}
+      {state === "blocked" && <p className="text-sm text-danger">{native ? t("blockedApp") : t("blocked")}</p>}
       {(state === "off" || state === "on") && (
         <div className="flex flex-wrap items-center gap-2">
           {state === "off" ? (

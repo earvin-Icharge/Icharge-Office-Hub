@@ -1,1 +1,3 @@
 node_modules/
+# Firebase app settings: kept out of the public repository (copy in public.app_secrets)
+android/app/google-services.json
