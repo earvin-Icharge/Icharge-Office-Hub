@@ -1,5 +1,5 @@
 /** Version of this release. The builder raises it and adds a row to app_releases (What's new) with each release. */
-export const APP_VERSION = "1.0.4";
+export const APP_VERSION = "1.0.5";
 
 /** Newest Android app (mobile/). The app tells its build number in its user agent: OfficeHubApp/<code>. */
 export const ANDROID_APP = { code: 4, name: "2.2" };

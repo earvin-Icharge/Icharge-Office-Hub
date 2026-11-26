@@ -92,8 +92,11 @@
       "codeFormat": "验证码为 6 位数字。",
       "linkFailed": "此登录链接已过期或已被使用。",
       "accessChanged": "您的权限已更改，请重新登录。",
-      "signInAgain": "为了安全，请使用邮箱验证码重新登录。"
-    }
+      "signInAgain": "为了安全，请使用邮箱验证码重新登录。",
+      "microsoftFailed": "Microsoft 登录失败。请使用 iCharge 的 Microsoft 账户，或用邮箱验证码登录。"
+    },
+    "or": "或",
+    "microsoft": "使用 Microsoft 登录"
   },
   "pending": {
     "title": "等待批准",
@@ -560,7 +563,24 @@
     "task": "任务",
     "milestone": "里程碑",
     "holiday": "假日",
-    "leave": "休假"
+    "leave": "休假",
+    "regular": "法定节假日",
+    "special": "特别非工作日",
+    "meeting": "会议",
+    "leaveShort": "请假",
+    "pending": "待批",
+    "more": "另 {n} 项",
+    "dayEmpty": "这天没有安排。",
+    "holidaysThisMonth": "本月节假日",
+    "noHolidays": "本月没有节假日。",
+    "addHoliday": "设为节假日",
+    "removeHoliday": "删除此节假日",
+    "holidayName": "节假日名称",
+    "holidayKind": "类型",
+    "add": "添加",
+    "saved": "已保存。",
+    "legend": "图例",
+    "hrHint": "人事：如有临时变动（例如新宣布的特别假日），点日期即可添加或删除节假日。"
   },
   "meetings": {
     "title": "会议",

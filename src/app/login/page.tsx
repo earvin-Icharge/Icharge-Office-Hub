@@ -3,12 +3,14 @@ import { getTranslations } from "next-intl/server";
 import { Logo } from "@/components/Logo";
 import { LoginForm } from "./LoginForm";
 import { LanguageToggle } from "./LanguageToggle";
+import { MicrosoftButton, microsoftEnabled } from "./MicrosoftButton";
 
 export const metadata = { title: "Sign in" };
 
 export default async function LoginPage({ searchParams }: { searchParams: Promise<{ e?: string }> }) {
   const t = await getTranslations();
   const { e } = await searchParams;
+  const microsoft = await microsoftEnabled();
   return (
     <div className="flex min-h-screen flex-wrap bg-paper">
       <section className="order-2 flex flex-[1_1_380px] min-[700px]:order-none flex-col justify-center gap-7 bg-forest px-6 py-10 text-white sm:px-10 sm:py-12">
@@ -33,7 +35,8 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
         </div>
         <LanguageToggle />
         <div className="flex w-full max-w-[440px] flex-col gap-4 rounded-[20px] border border-line bg-white p-6 sm:p-8">
-          <LoginForm initialError={e === "link" ? t("login.errors.linkFailed") : e === "inactive" ? t("login.errors.inactive") : e === "changed" ? t("login.errors.accessChanged") : e === "device" ? t("login.errors.signInAgain") : undefined} />
+          <LoginForm initialError={e === "link" ? t("login.errors.linkFailed") : e === "inactive" ? t("login.errors.inactive") : e === "changed" ? t("login.errors.accessChanged") : e === "device" ? t("login.errors.signInAgain") : e === "microsoft" ? t("login.errors.microsoftFailed") : undefined} />
+          {microsoft && <MicrosoftButton />}
         </div>
         <p className="max-w-[440px] text-center text-xs leading-normal text-muted">{t("login.privacy")}</p>
       </main>

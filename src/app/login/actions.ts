@@ -85,3 +85,17 @@ export async function setLoginLanguage(locale: "en" | "zh-Hans") {
   const store = await cookies();
   store.set(LOCALE_COOKIE, locale === "zh-Hans" ? "zh-Hans" : "en", { path: "/", maxAge: 60 * 60 * 24 * 365 });
 }
+
+/** Sign in with Microsoft 365 (Outlook work account). Supabase sends the person to Microsoft and back to /auth/callback. */
+export async function signInWithMicrosoft() {
+  const h = await headers();
+  const host = (h.get("x-forwarded-host") ?? h.get("host") ?? "").split(",")[0].trim();
+  const proto = (h.get("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https")).split(",")[0].trim();
+  const supabase = await createClient();
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "azure",
+    options: { scopes: "email openid profile", redirectTo: `${proto}://${host}/auth/callback` },
+  });
+  if (error || !data.url) redirect("/login?e=microsoft");
+  redirect(data.url);
+}

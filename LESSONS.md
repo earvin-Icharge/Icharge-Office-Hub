@@ -95,6 +95,12 @@ Never put passwords, API keys, or customer data in this file.
 - Rule: ALWAYS run scripts/check-text-fits.mjs (all pages, then OPEN=1) after UI changes, and ALWAYS look at the screenshots too.
 - Check: The script prints "PASS: all text fits its boxes".
 
+### L-013 · 2026-11-26 · Calendar · [ui]
+- What happened: On phones the new calendar grid was invisible (zero height); only the side panel showed.
+- Root cause: flex-[3_1_0] (basis 0) meant for the side-by-side computer layout also applied in the stacked phone column, so the grid shrank to nothing.
+- Rule: ALWAYS put flex sizes for side-by-side layouts behind the same breakpoint as the row (e.g. min-[1100px]:flex-[3_1_0]), never on the stacked phone version.
+- Check: Screenshot the page at 360 px and confirm every section has height.
+
 ## Archive
 
 (none yet)

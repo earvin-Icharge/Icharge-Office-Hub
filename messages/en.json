@@ -92,8 +92,11 @@
       "codeFormat": "The code is 6 digits.",
       "linkFailed": "That sign-in link has expired or was already used.",
       "accessChanged": "Your access was changed. Please sign in again.",
-      "signInAgain": "For your security, please sign in again with an email code."
-    }
+      "signInAgain": "For your security, please sign in again with an email code.",
+      "microsoftFailed": "Microsoft sign-in didn't work. Use your iCharge Microsoft account, or sign in with an email code."
+    },
+    "or": "or",
+    "microsoft": "Sign in with Microsoft"
   },
   "pending": {
     "title": "Waiting for approval",
@@ -560,7 +563,24 @@
     "task": "Task",
     "milestone": "Milestone",
     "holiday": "Holiday",
-    "leave": "On leave"
+    "leave": "On leave",
+    "regular": "Regular holiday",
+    "special": "Special non-working day",
+    "meeting": "Meeting",
+    "leaveShort": "Leave",
+    "pending": "Pending",
+    "more": "+{n} more",
+    "dayEmpty": "Nothing on this day.",
+    "holidaysThisMonth": "Holidays this month",
+    "noHolidays": "No holidays this month.",
+    "addHoliday": "Make this day a holiday",
+    "removeHoliday": "Remove this holiday",
+    "holidayName": "Holiday name",
+    "holidayKind": "Kind",
+    "add": "Add",
+    "saved": "Saved.",
+    "legend": "Legend",
+    "hrHint": "HR: tap a day to add or remove a holiday if there are sudden changes (e.g. a newly declared special day)."
   },
   "meetings": {
     "title": "Meetings",

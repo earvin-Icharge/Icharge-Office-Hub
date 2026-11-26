@@ -27,5 +27,7 @@ export async function saveLeaveType(f: FormData) {
   done(`/hr/leave/holidays`, (await rpc("save_leave_type", { p_id: s(f, "id") || null, p: { name: s(f, "name").replace(/\s*\n+\s*/g, " "), yearly_days: Number(s(f, "yearly_days")), paid: f.get("paid") === "on", active: f.get("active") === "on" || !s(f, "id") } })).error, "saved");
 }
 export async function saveHoliday(f: FormData) {
-  done(`/hr/leave/holidays`, (await rpc("save_holiday", { p_day: s(f, "day"), p_name: s(f, "name"), p_kind: s(f, "kind") || "regular", p_delete: s(f, "delete") === "1" })).error, "saved");
+  // From the calendar: go back to the same day there.
+  const back = s(f, "back");
+  done(back.startsWith("/calendar?") ? back : `/hr/leave/holidays`, (await rpc("save_holiday", { p_day: s(f, "day"), p_name: s(f, "name"), p_kind: s(f, "kind") || "regular", p_delete: s(f, "delete") === "1" })).error, "saved");
 }
