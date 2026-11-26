@@ -42,6 +42,7 @@ const ACCOUNTS: Account[] = [
   { email: "earvin+hr@icharge.com.ph", name: "Test HR", employee_id: "TEST-HR", position: "HR officer", dept: "hr", access_level: "staff", hr_access: true },
   { email: "earvin+finance@icharge.com.ph", name: "Test Finance", employee_id: "TEST-FIN", position: "Payroll officer", dept: "finance", access_level: "staff", finance_access: true },
   { email: "earvin+staff@icharge.com.ph", name: "Test Staff", employee_id: "TEST-STF", position: "Operations associate", dept: "ops", access_level: "staff", supervisor: "earvin+manager@icharge.com.ph" },
+  { email: "earvin+bd@icharge.com.ph", name: "Test BD", employee_id: "TEST-BD", position: "BD associate", dept: "bd", access_level: "staff" },
 ];
 
 async function findUserId(email: string) {
