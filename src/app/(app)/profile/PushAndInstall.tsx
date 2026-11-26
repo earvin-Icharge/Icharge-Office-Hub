@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useEffect, useState, useTransition } from "react";
 import { removePushSubscription, savePushSubscription, sendTestPush } from "@/app/actions/quick";
@@ -97,6 +98,7 @@ export function InstallApp() {
       {evt && <button type="button" onClick={async () => { await evt.prompt(); setEvt(null); }} className="h-10 w-fit rounded-[10px] bg-charge px-4 text-sm font-bold text-forest">{t("button")}</button>}
       <p className="text-sm text-muted">{t("iphone")}</p>
       <p className="text-sm text-muted">{t("android")}</p>
+      <Link href="/download" className="text-sm font-semibold text-leaf underline">{t("androidApp")}</Link>
     </div>
   );
 }

@@ -3,7 +3,7 @@
 Work + HR app for iCharge staff. The full plan is in [SPEC.md](SPEC.md).
 
 ## Build status
-All steps 1–12 of SPEC.md are built (version 1.0.0). Live at icharge-office-hub.vercel.app since 25 Nov 2026. Step 13 (store apps with Capacitor) is optional.
+All steps 1–12 of SPEC.md are built (version 1.0.0). Live at icharge-office-hub.vercel.app since 25 Nov 2026. Android app: direct download at /download (see android/README.md). Step 13 store apps (Capacitor) stay optional.
 
 Done: Supabase SMTP (sign-in codes) and Vercel env `RESEND_API_KEY` (app emails).
 

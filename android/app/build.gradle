@@ -1,0 +1,40 @@
+plugins {
+    id "com.android.application"
+}
+
+android {
+    namespace "ph.com.icharge.officehub"
+    compileSdk 36
+
+    defaultConfig {
+        applicationId "ph.com.icharge.officehub"
+        minSdk 24
+        targetSdk 36
+        versionCode 1
+        versionName "1.0"
+    }
+
+    // The signing key is never in the repository (see android/README.md).
+    signingConfigs {
+        release {
+            storeFile file(System.getenv("OH_KEYSTORE") ?: "missing.jks")
+            storePassword System.getenv("OH_KEYSTORE_PASSWORD")
+            keyAlias "officehub"
+            keyPassword System.getenv("OH_KEYSTORE_PASSWORD")
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    implementation "com.google.androidbrowserhelper:androidbrowserhelper:2.8.0"
+}

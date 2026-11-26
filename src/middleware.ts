@@ -3,7 +3,8 @@ import { NextResponse, type NextRequest } from "next/server";
 import { SESSION_MAX_AGE_SECONDS, SIGNED_IN_COOKIE } from "@/lib/session";
 
 // /api/cron: called by the database, not a signed-in person; each route checks the shared cron secret itself.
-const PUBLIC_PATHS = ["/login", "/auth", "/offline", "/api/version", "/api/cron", "/privacy"];
+// /download: the Android app page and file; /.well-known: lets Android trust the app (Digital Asset Links).
+const PUBLIC_PATHS = ["/login", "/auth", "/offline", "/api/version", "/api/cron", "/privacy", "/download", "/.well-known"];
 
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({ request });

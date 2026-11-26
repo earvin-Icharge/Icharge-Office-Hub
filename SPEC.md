@@ -451,7 +451,7 @@ Menu items a person can't use are hidden.
 10. Disciplinary records with acknowledgment.
 11. Performance snapshot, team page, dashboards per group (with iCharge and iScreen panels and `business_metrics` entry/upload), reports, Excel export.
 12. Audit log, Trash, backups, **access test run with all five test accounts (14.1)**, **deactivate the four plus-address test accounts**, **install test on one iPhone and one Android phone**, deploy to Vercel.
-13. (Optional, phase 2) Capacitor phone apps for Android and iPhone with the mock-location check; staff-only distribution.
+13. (Optional, phase 2) Capacitor phone apps for Android and iPhone with the mock-location check; staff-only distribution. **Done first (26 Nov 2026): Android app as a direct download** (`/download`): a Trusted Web Activity that opens the live web app full screen through Chrome, with Office Hub notifications under its own name and icon; no Play Store needed. iPhone stays Add to Home Screen.
 
 ### 14.1 Test accounts
 - **Main tester:** earvin@icharge.com.ph (the Special Assistant's real account, Leader level).

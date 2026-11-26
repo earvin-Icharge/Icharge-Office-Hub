@@ -318,6 +318,7 @@
     "iphoneHint": "On iPhone: first tap Share › Add to Home Screen, then open Office Hub from the Home Screen."
   },
   "install": {
+    "androidApp": "Android: get the Office Hub app",
     "title": "Install on this phone",
     "button": "Install app",
     "installed": "Installed. Open it from your Home Screen.",
@@ -1401,5 +1402,16 @@
     "title": "Weekly backup",
     "help": "Download every table as a CSV file that opens in Excel. Store the files somewhere safe and private. Downloading is recorded in the audit log.",
     "download": "Download"
+  },
+  "download": {
+    "title": "Office Hub for Android",
+    "sub": "For iCharge staff. Sign in with your work email.",
+    "button": "Download the app",
+    "s1": "Tap Download the app.",
+    "s2": "Open the downloaded file (from the notification, or Files › Downloads).",
+    "s3": "If your phone asks, allow your browser to install unknown apps, then tap Install. If Google Play Protect asks, tap Install anyway (or Scan app, then Install).",
+    "s4": "Open Office Hub from your home screen and sign in with your work email.",
+    "chrome": "The app runs on Google Chrome, which comes with most Android phones. Keep Chrome installed; you can still use Firefox for everything else.",
+    "iphone": "iPhone: open icharge-office-hub.vercel.app in Safari, tap Share, then Add to Home Screen."
   }
 }

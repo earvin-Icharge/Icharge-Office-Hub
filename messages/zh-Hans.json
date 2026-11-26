@@ -318,6 +318,7 @@
     "iphoneHint": "iPhone：请先点“分享”›“添加到主屏幕”，再从主屏幕打开 Office Hub。"
   },
   "install": {
+    "androidApp": "安卓：下载 Office Hub 应用",
     "title": "安装到本手机",
     "button": "安装应用",
     "installed": "已安装，请从主屏幕打开。",
@@ -1401,5 +1402,16 @@
     "title": "每周备份",
     "help": "将每个数据表下载为可用 Excel 打开的 CSV 文件。请把文件存放在安全、私密的地方。下载操作会记录在审计日志中。",
     "download": "下载"
+  },
+  "download": {
+    "title": "Office Hub 安卓版",
+    "sub": "仅限 iCharge 员工，用工作邮箱登录。",
+    "button": "下载应用",
+    "s1": "点“下载应用”。",
+    "s2": "打开下载的文件（在通知栏，或“文件 › 下载”）。",
+    "s3": "如手机提示，请允许浏览器安装未知应用，然后点“安装”。如 Google Play 保护机制提示，点“仍然安装”（或先“扫描应用”再安装）。",
+    "s4": "从主屏幕打开 Office Hub，用工作邮箱登录。",
+    "chrome": "本应用通过 Google Chrome 运行，大多数安卓手机自带 Chrome。请保留 Chrome；其他用途仍可使用 Firefox。",
+    "iphone": "iPhone：用 Safari 打开 icharge-office-hub.vercel.app，点“分享”，再点“添加到主屏幕”。"
   }
 }

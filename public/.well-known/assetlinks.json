@@ -1,0 +1,10 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "ph.com.icharge.officehub",
+      "sha256_cert_fingerprints": ["B8:F8:C4:1D:9D:8D:69:25:99:34:41:2C:3E:D9:F0:C4:3D:5B:45:9C:ED:C6:82:FE:7C:C3:63:27:50:D7:60:17"]
+    }
+  }
+]
