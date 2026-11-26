@@ -26,4 +26,6 @@ Rebuild this app only to change its name, icon, permissions or native features.
 3. Raise `versionCode` / `versionName` in `android/app/build.gradle`.
 4. Restore the key file from `app_secrets` to a private folder outside the repository, then
    `cd android && OH_KEYSTORE=/path/officehub.jks OH_KEYSTORE_PASSWORD=… ./gradlew assembleRelease`
-5. Copy `android/app/build/outputs/apk/release/app-release.apk` to `public/download/office-hub.apk` and release the web app.
+5. Copy `android/app/build/outputs/apk/release/app-release.apk` to `public/download/office-hub-<version>.apk` (and `office-hub.apk` for old links),
+   update the link and version in `src/app/download/page.tsx` and the filename in `next.config.ts`, then release the web app.
+   A versioned file name stops phones from reinstalling an older download by mistake.

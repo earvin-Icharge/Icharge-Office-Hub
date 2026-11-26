@@ -1408,11 +1408,12 @@
     "download": "Download"
   },
   "download": {
+    "version": "Version {v} · app name: Office Hub",
     "title": "Office Hub for Android",
     "sub": "For iCharge staff. Sign in with your work email.",
     "button": "Download the app",
     "s1": "Tap Download the app.",
-    "s2": "Open the downloaded file (from the notification, or Files › Downloads).",
+    "s2": "Open the file named office-hub-2.1.apk (from the notification, or Files › Downloads). Delete older office-hub files first.",
     "s3": "If your phone asks, allow your browser to install unknown apps, then tap Install (or Update). If Google Play Protect asks, tap Install anyway (or Scan app, then Install).",
     "s4": "Open Office Hub from your home screen and sign in once with your work email. Allow the camera and location when you first Time in.",
     "chrome": "The app shows the live Office Hub in its own window, so it is always the same as the website: same screens, same data, updated at once.",

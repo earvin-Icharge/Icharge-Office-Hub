@@ -10,7 +10,8 @@ const nextConfig: NextConfig = {
   },
   async headers() {
     return [
-      { source: "/download/office-hub.apk", headers: [{ key: "Content-Type", value: "application/vnd.android.package-archive" }, { key: "Content-Disposition", value: "attachment; filename=office-hub.apk" }, { key: "Cache-Control", value: "no-cache" }] },
+      { source: "/download/office-hub.apk", headers: [{ key: "Content-Type", value: "application/vnd.android.package-archive" }, { key: "Content-Disposition", value: "attachment; filename=office-hub-2.1.apk" }, { key: "Cache-Control", value: "no-cache" }] },
+      { source: "/download/office-hub-2.1.apk", headers: [{ key: "Content-Type", value: "application/vnd.android.package-archive" }, { key: "Content-Disposition", value: "attachment; filename=office-hub-2.1.apk" }, { key: "Cache-Control", value: "no-cache" }] },
       { source: "/.well-known/assetlinks.json", headers: [{ key: "Content-Type", value: "application/json" }] },
       { source: "/sw.js", headers: [{ key: "Cache-Control", value: "no-cache, no-store, must-revalidate" }, { key: "Service-Worker-Allowed", value: "/" }] },
     ];
