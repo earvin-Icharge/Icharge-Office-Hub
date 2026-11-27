@@ -9,6 +9,7 @@ Never put passwords, API keys, or customer data in this file.
 - ALWAYS turn on RLS and write its policies in the same migration for every new table.
 - ALWAYS run the Done Check (LESSONS-SPEC.md Section 5) before saying "done".
 - NEVER rewrite 01-SPEC.md / SPEC.md. Edit in place, and only when asked.
+- ALWAYS screenshot every changed page at 360 px and run scripts/check-text-fits.mjs before saying done (phone layouts broke 4 times: L-002, L-010, L-011, L-013).
 
 ## Starter Rules (Next.js + Supabase + Vercel)
 
@@ -19,7 +20,6 @@ Never put passwords, API keys, or customer data in this file.
 - ALWAYS check what a file does before changing it. NEVER change files outside the current task without asking.
 - ALWAYS add new text to every app language file (no hard-coded English in screens).
 - ALWAYS ask Earvin when the spec is unclear. NEVER guess a business rule.
-- NEVER mark a task done because the code "looks right". Run it.
 
 ## Rules from Earvin's other apps (imported 2026-11-27, trimmed)
 
@@ -32,7 +32,7 @@ From the pack "Earvin-App-Lessons-2026-11-28" (≈190 lessons from 15 apps). Kep
 - ALWAYS search the app for a word before using it as a new screen or button name. [#189]
 
 ### Proving it works
-- ALWAYS show Earvin real screenshots and click the whole flow, last button included, before saying done or building an APK. If it cannot be seen, say "unverified" and why. [#125]
+- ALWAYS run it, show Earvin real screenshots and click the whole flow, last button included, before saying done or building an APK; code that "looks right" is not done. If it cannot be seen, say "unverified" and why. [#125, merged with the old starter rule]
 - ALWAYS prove which part failed (browser, server, database, network) before changing anything. [#147]
 - ALWAYS stop explaining when the same bug comes back twice; read the code, data and logs instead. [#136]
 - ALWAYS query the real table before claiming something ran, saved or exists. [#71, #72]
@@ -139,19 +139,13 @@ From the pack "Earvin-App-Lessons-2026-11-28" (≈190 lessons from 15 apps). Kep
 - What happened: New settings screens showed "08:00 AN" (time cut) and a checklist dropdown ran past its card; long names were cut in dropdowns on phones.
 - Root cause: Time boxes too narrow for 16 px phone text; a row of fields with no wrap; long option text in a native dropdown on a 360 px screen.
 - Rule: ALWAYS give time boxes at least 9.5rem, let field rows wrap, and NEVER put long text in a phone dropdown (use wrapping choice buttons, or show the name only).
-- Check: node scripts/check-text-fits.mjs (also with OPEN=1) and look at the 360 px screenshots.
+- Check: node scripts/check-text-fits.mjs (all pages, then OPEN=1) prints PASS, and look at the 360 px screenshots too; the script alone missed problems (merged L-012).
 
 ### L-011 · 2026-11-26 · HR settings · [ui]
 - What happened: An empty gap appeared under every settings card title.
 - Root cause: Hidden inputs were wrapped in <span>s inside a flex column with gap, so each empty span added a gap.
 - Rule: ALWAYS put hidden inputs directly in the form (or a Fragment), NEVER inside an element in a gap layout.
 - Check: Screenshot the form and look for blank space under the title.
-
-### L-012 · 2026-11-26 · Testing · [testing]
-- What happened: The first text-overflow scan missed problems found by eye.
-- Root cause: It skipped time fields and closed Edit sections, and did not check boxes pushed past their card edge.
-- Rule: ALWAYS run scripts/check-text-fits.mjs (all pages, then OPEN=1) after UI changes, and ALWAYS look at the screenshots too.
-- Check: The script prints "PASS: all text fits its boxes".
 
 ### L-013 · 2026-11-26 · Calendar · [ui]
 - What happened: On phones the new calendar grid was invisible (zero height); only the side panel showed.
@@ -167,4 +161,9 @@ From the pack "Earvin-App-Lessons-2026-11-28" (≈190 lessons from 15 apps). Kep
 
 ## Archive
 
-(none yet)
+### L-012 · 2026-11-26 · Testing · [testing]
+- What happened: The first text-overflow scan missed problems found by eye.
+- Root cause: It skipped time fields and closed Edit sections, and did not check boxes pushed past their card edge.
+- Rule: ALWAYS run scripts/check-text-fits.mjs (all pages, then OPEN=1) after UI changes, and ALWAYS look at the screenshots too.
+- Check: The script prints "PASS: all text fits its boxes".
+- Archived 2026-11-27: merged into L-010 (same rule: run the text-fit script and look at the screenshots).
